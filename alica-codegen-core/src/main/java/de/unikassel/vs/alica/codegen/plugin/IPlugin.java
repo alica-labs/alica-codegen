@@ -1,6 +1,5 @@
 package de.unikassel.vs.alica.codegen.plugin;
 
-import de.unikassel.vs.alica.codegen.Codegenerator;
 import de.unikassel.vs.alica.codegen.IConstraintCodeGenerator;
 import de.unikassel.vs.alica.codegen.IGenerator;
 import de.unikassel.vs.alica.planDesigner.alicamodel.Condition;
@@ -17,7 +16,8 @@ public interface IPlugin<T> {
 
     /**
      * @return the custom {@link IConstraintCodeGenerator}.
-     * This is the main functionality of the plugin from the perspective of the {@link Codegenerator}
+     * This is the main functionality of the plugin from the perspective of the
+     * de.unikassel.vs.alica.codegen.Codegenerator
      * or the {@link IGenerator}
      */
     IConstraintCodeGenerator getConstraintCodeGenerator();

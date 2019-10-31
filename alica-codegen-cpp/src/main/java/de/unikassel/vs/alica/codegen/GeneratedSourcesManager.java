@@ -1,9 +1,9 @@
 package de.unikassel.vs.alica.codegen;
 
-import de.unikassel.vs.alica.planDesigner.alicamodel.*;
+import de.unikassel.vs.alica.planDesigner.alicamodel.AbstractPlan;
+import de.unikassel.vs.alica.planDesigner.alicamodel.Behaviour;
 
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -99,10 +99,6 @@ public class GeneratedSourcesManager {
      * @return line number of generated code
      */
     public int getLineNumberForGeneratedElement(long modelElementId) {
-        if (linesForGeneratedElements.containsKey(modelElementId)) {
-            return linesForGeneratedElements.get(modelElementId);
-        } else {
-            return 0;
-        }
+        return linesForGeneratedElements.getOrDefault(modelElementId, 0);
     }
 }

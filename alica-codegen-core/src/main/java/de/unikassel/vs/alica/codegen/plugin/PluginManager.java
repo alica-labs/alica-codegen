@@ -38,7 +38,7 @@ public class PluginManager {
     }
 
     private static Logger LOG = LogManager.getLogger(PluginManager.class);
-    private Map<String,IPlugin<?>> availablePlugins;
+    private Map<String, IPlugin<?>> availablePlugins;
     private IPlugin<?> defaultPlugin;
 
     /**

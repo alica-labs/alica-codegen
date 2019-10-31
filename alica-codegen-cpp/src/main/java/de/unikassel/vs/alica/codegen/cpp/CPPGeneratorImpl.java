@@ -387,19 +387,6 @@ public class CPPGeneratorImpl implements IGenerator {
         return PluginManager.getInstance().getDefaultPlugin().getConstraintCodeGenerator();
     }
 
-
-    private <T> void useTemplateAndSaveResults(String sourcePath, String headerPath, T objectToInteractWith,
-                                               Function<T, String> templateForHeader, Function<T, String> templateForSource) {
-        String fileContentHeader = templateForHeader.apply(objectToInteractWith);
-        writeSourceFile(headerPath, fileContentHeader);
-        formatFile(headerPath);
-
-
-        String fileContentSource = templateForSource.apply(objectToInteractWith);
-        writeSourceFile(sourcePath, fileContentSource);
-        formatFile(sourcePath);
-    }
-
     /**
      * Calls the executable found by the formatter attribute on the file found by filename.
      * It is assumed that the executable is clang-format or has the same CLI as clang-format.

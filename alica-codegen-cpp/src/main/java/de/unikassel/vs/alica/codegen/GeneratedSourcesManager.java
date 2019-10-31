@@ -36,32 +36,6 @@ public class GeneratedSourcesManager {
         this.editorExecutablePath = editorExecutablePath;
     }
 
-    public void showSourceCode(PlanElement planElement) {
-        List<File> allGeneratedFilesForPlanElement = new ArrayList<>();
-        int lineNumber = 0;
-        if (planElement instanceof Behaviour) {
-            allGeneratedFilesForPlanElement.addAll(getGeneratedFilesForBehaviour((Behaviour) planElement));
-        } else if (planElement instanceof State) {
-            allGeneratedFilesForPlanElement.addAll(getGeneratedConditionFilesForPlan(((State) planElement).getParentPlan()));
-        } else if (planElement instanceof Transition) {
-            allGeneratedFilesForPlanElement.addAll(getGeneratedConditionFilesForPlan(((Transition) planElement).getOutState().getParentPlan()));
-        } else if (planElement instanceof Plan) {
-            allGeneratedFilesForPlanElement.addAll(getGeneratedConditionFilesForPlan((Plan) planElement));
-            allGeneratedFilesForPlanElement.addAll(getGeneratedConstraintFilesForPlan((Plan) planElement));
-        } else {
-            throw new RuntimeException("File for unkown generated source elementType requested!");
-        }
-        lineNumber = getLineNumberForGeneratedElement(planElement.getId());
-
-        for (File generatedSource : allGeneratedFilesForPlanElement) {
-            try {
-                Runtime.getRuntime().exec(editorExecutablePath + " " + generatedSource.getAbsolutePath() + " +" + lineNumber);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     public List<File> getGeneratedFilesForBehaviour(Behaviour behaviour) {
         List<File> generatedFiles = new ArrayList<>();
         String destinationPath = trimFileFromPath(behaviour.getRelativeDirectory());

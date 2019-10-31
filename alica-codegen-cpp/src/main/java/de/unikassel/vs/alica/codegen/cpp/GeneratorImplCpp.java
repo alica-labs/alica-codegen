@@ -1,9 +1,7 @@
 package de.unikassel.vs.alica.codegen.cpp;
 
 import de.unikassel.vs.alica.codegen.GeneratedSourcesManager;
-import de.unikassel.vs.alica.codegen.IConstraintCodeGenerator;
-import de.unikassel.vs.alica.codegen.IGenerator;
-import de.unikassel.vs.alica.codegen.plugin.PluginManager;
+import de.unikassel.vs.alica.codegen.GeneratorImpl;
 import de.unikassel.vs.alica.planDesigner.alicamodel.*;
 /**
  * IF the following line is not import de.unikassel.vs.alica.codegen.cpp.XtendTemplates;
@@ -11,16 +9,12 @@ import de.unikassel.vs.alica.planDesigner.alicamodel.*;
  * INSERT IT
  */
 import de.unikassel.vs.alica.codegen.cpp.XtendTemplates;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
 import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
@@ -30,21 +24,11 @@ import java.util.Map;
  * After this the created strings are written to disk according to {@link GeneratedSourcesManager}.
  * Every file that is written is formatted by the formatter that is set by setFormatter.
  */
-public class CPPGeneratorImpl implements IGenerator {
-
-    private static final Logger LOG = LogManager.getLogger(CPPGeneratorImpl.class);
+public class GeneratorImplCpp extends GeneratorImpl {
     private XtendTemplates xtendTemplates;
 
-    private GeneratedSourcesManager generatedSourcesManager;
-    private String formatter;
-
-    public CPPGeneratorImpl() {
+    public GeneratorImplCpp() {
         xtendTemplates = new XtendTemplates();
-    }
-
-    @Override
-    public void setGeneratedSourcesManager(GeneratedSourcesManager generatedSourcesManager) {
-        this.generatedSourcesManager = generatedSourcesManager;
     }
 
     /**
@@ -118,27 +102,6 @@ public class CPPGeneratorImpl implements IGenerator {
         formatFile(srcPath);
     }
 
-    /**
-     * Small helper for writing source files
-     *
-     * @param filePath    filePath to write to
-     * @param fileContent the content to write
-     */
-    private void writeSourceFile(String filePath, String fileContent) {
-        try {
-
-            if (Files.notExists(Paths.get(filePath).getParent())) {
-                Files.createDirectories(Paths.get(filePath).getParent());
-            }
-            Files.write(Paths.get(filePath), fileContent.getBytes(StandardCharsets.UTF_8));
-        } catch (IOException e) {
-            LOG.error("Couldn't write source file "
-                    + filePath + " with content size " + fileContent
-                    .getBytes(StandardCharsets.UTF_8).length, e);
-            throw new RuntimeException(e);
-        }
-    }
-
     @Override
     public void createConstraintCreator(List<Plan> plans, List<Behaviour> behaviours, List<Condition> conditions) {
         String headerPath = Paths.get(generatedSourcesManager.getIncludeDir(), "ConstraintCreator.h").toString();
@@ -152,19 +115,6 @@ public class CPPGeneratorImpl implements IGenerator {
         writeSourceFile(srcPath, fileContentSource);
 
         formatFile(srcPath);
-    }
-
-    /**
-     * calls createConstraintsForPlan on each plan
-     *
-     * @param plans
-     */
-    @Override
-    public void createConstraints(List<Plan> plans) {
-        for (Plan plan : plans) {
-            createConstraintsForPlan(plan);
-        }
-
     }
 
     @Override
@@ -236,18 +186,6 @@ public class CPPGeneratorImpl implements IGenerator {
         formatFile(srcPath);
     }
 
-    /**
-     * calls createPlan for each plan
-     *
-     * @param plans list of all plans to generate (usually this should be all plans in workspace)
-     */
-    @Override
-    public void createPlans(List<Plan> plans) {
-        for (Plan plan : plans) {
-            createPlan(plan);
-        }
-    }
-
     @Override
     public void createPlan(Plan plan) {
         String destinationPath = cutDestinationPathToDirectory(plan);
@@ -315,14 +253,6 @@ public class CPPGeneratorImpl implements IGenerator {
         }
     }
 
-    private String cutDestinationPathToDirectory(AbstractPlan plan) {
-        String destinationPath = plan.getRelativeDirectory();
-        if (destinationPath.lastIndexOf('.') > destinationPath.lastIndexOf(File.separator)) {
-            destinationPath = destinationPath.substring(0, destinationPath.lastIndexOf(File.separator) + 1);
-        }
-        return destinationPath;
-    }
-
     @Override
     public void createUtilityFunctionCreator(List<Plan> plans) {
         String headerPath = Paths.get(generatedSourcesManager.getIncludeDir(), "UtilityFunctionCreator.h").toString();
@@ -368,31 +298,16 @@ public class CPPGeneratorImpl implements IGenerator {
         formatFile(srcPath);
     }
 
-    @Override
-    public void setFormatter(String formatter) {
-        this.formatter = formatter;
-    }
-
-    /**
-     * This returns the {@link IConstraintCodeGenerator} of the active newCondition plugin.
-     * TODO This maybe a candidate for a default method.
-     *
-     * @return
-     */
-    @Override
-    public IConstraintCodeGenerator getActiveConstraintCodeGenerator() {
-        return PluginManager.getInstance().getDefaultPlugin().getConstraintCodeGenerator();
-    }
-
     /**
      * Calls the executable found by the formatter attribute on the file found by filename.
      * It is assumed that the executable is clang-format or has the same CLI as clang-format.
      *
      * @param fileName
      */
-    private void formatFile(String fileName) {
+    @Override
+    public void formatFile(String fileName) {
         if (formatter != null && formatter.length() > 0) {
-            URL clangFormatStyle = CPPGeneratorImpl.class.getResource(".clang-format");
+            URL clangFormatStyle = GeneratorImplCpp.class.getResource(".clang-format");
             String command = formatter +
                     " -style=" + clangFormatStyle +
                     " -i " + fileName;

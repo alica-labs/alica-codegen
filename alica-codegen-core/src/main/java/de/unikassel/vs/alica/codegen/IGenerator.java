@@ -31,5 +31,6 @@ public interface IGenerator {
     void createDomainBehaviour();
 
     void setFormatter(String formatter);
+    void formatFile(String fileName);
     IConstraintCodeGenerator getActiveConstraintCodeGenerator();
 }

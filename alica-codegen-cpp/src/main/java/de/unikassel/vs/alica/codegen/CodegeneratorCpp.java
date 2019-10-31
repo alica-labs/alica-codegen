@@ -1,6 +1,6 @@
 package de.unikassel.vs.alica.codegen;
 
-import de.unikassel.vs.alica.codegen.cpp.CPPGeneratorImpl;
+import de.unikassel.vs.alica.codegen.cpp.GeneratorImplCpp;
 import de.unikassel.vs.alica.codegen.cpp.parser.CommentsLexer;
 import de.unikassel.vs.alica.codegen.cpp.parser.CommentsParser;
 import de.unikassel.vs.alica.codegen.cpp.parser.ProtectedRegionsVisitor;
@@ -38,7 +38,7 @@ public class CodegeneratorCpp extends Codegenerator {
             String destination,
             GeneratedSourcesManagerCpp generatedSourcesManager
     ) {
-        super(new CPPGeneratorImpl(),
+        super(new GeneratorImplCpp(),
                 plans,
                 behaviours,
                 conditions,

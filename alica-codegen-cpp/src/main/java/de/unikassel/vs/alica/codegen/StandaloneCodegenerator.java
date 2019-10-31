@@ -37,9 +37,9 @@ public class StandaloneCodegenerator {
         modelManager.setRolesPath(rolesPath);
         modelManager.loadModelFromDisk();
 
-        GeneratedSourcesManager generatedSourcesManager = new GeneratedSourcesManager();
+        GeneratedSourcesManagerCpp generatedSourcesManager = new GeneratedSourcesManagerCpp();
 
-        Codegenerator codegenerator = new Codegenerator(
+        CodegeneratorCpp codegenerator = new CodegeneratorCpp(
                 modelManager.getPlans(),
                 modelManager.getBehaviours(),
                 modelManager.getConditions(),

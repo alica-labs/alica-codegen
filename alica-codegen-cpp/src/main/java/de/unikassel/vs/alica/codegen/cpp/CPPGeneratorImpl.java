@@ -24,7 +24,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Function;
 
 /**
  * Code generator for C++. It uses the XtendTemplates for creating the code.
@@ -39,9 +38,13 @@ public class CPPGeneratorImpl implements IGenerator {
     private GeneratedSourcesManager generatedSourcesManager;
     private String formatter;
 
-    public CPPGeneratorImpl(GeneratedSourcesManager generatedSourcesManager) {
-        this.generatedSourcesManager = generatedSourcesManager;
+    public CPPGeneratorImpl() {
         xtendTemplates = new XtendTemplates();
+    }
+
+    @Override
+    public void setGeneratedSourcesManager(GeneratedSourcesManager generatedSourcesManager) {
+        this.generatedSourcesManager = generatedSourcesManager;
     }
 
     /**
@@ -98,12 +101,6 @@ public class CPPGeneratorImpl implements IGenerator {
         writeSourceFile(srcPath2, fileContentSource2);
 
         formatFile(srcPath2);
-
-//        useTemplateAndSaveResults(Paths.get(generatedSourcesManager.getSrcDir(), destinationPath, behaviour.getName() + ".cpp").toString(),
-//                Paths.get(generatedSourcesManager.getIncludeDir(), destinationPath, behaviour.getName() + ".h").toString(),
-//                behaviour,
-//                xtendTemplates::behaviourHeader,
-//                xtendTemplates::behaviourSource);
     }
 
     @Override
@@ -176,7 +173,7 @@ public class CPPGeneratorImpl implements IGenerator {
         String constraintHeaderPath = Paths.get(generatedSourcesManager.getIncludeDir(),
                 destinationPathWithoutName, "constraints").toString();
         File cstrIncPathOnDisk = new File(constraintHeaderPath);
-        if (cstrIncPathOnDisk.exists() == false) {
+        if (!cstrIncPathOnDisk.exists()) {
             cstrIncPathOnDisk.mkdir();
         }
         String headerPath = Paths.get(constraintHeaderPath, plan.getName() + plan.getId() + "Constraints.h").toString();
@@ -187,7 +184,7 @@ public class CPPGeneratorImpl implements IGenerator {
 
         String constraintSourcePath = Paths.get(generatedSourcesManager.getSrcDir(), destinationPathWithoutName, "constraints").toString();
         File cstrSrcPathOnDisk = new File(constraintSourcePath);
-        if (cstrSrcPathOnDisk.exists() == false) {
+        if (!cstrSrcPathOnDisk.exists()) {
             cstrSrcPathOnDisk.mkdir();
         }
 
@@ -218,7 +215,7 @@ public class CPPGeneratorImpl implements IGenerator {
         String constraintHeaderPath = Paths.get(generatedSourcesManager.getIncludeDir(),
                 destinationPathWithoutName, "constraints").toString();
         File cstrIncPathOnDisk = new File(constraintHeaderPath);
-        if (cstrIncPathOnDisk.exists() == false) {
+        if (!cstrIncPathOnDisk.exists()) {
             cstrIncPathOnDisk.mkdir();
         }
         String headerPath = Paths.get(constraintHeaderPath, behaviour.getName() + behaviour.getId() + "Constraints.h").toString();
@@ -229,7 +226,7 @@ public class CPPGeneratorImpl implements IGenerator {
 
         String constraintSourcePath = Paths.get(generatedSourcesManager.getSrcDir(), destinationPathWithoutName, "constraints").toString();
         File cstrSrcPathOnDisk = new File(constraintSourcePath);
-        if (cstrSrcPathOnDisk.exists() == false) {
+        if (!cstrSrcPathOnDisk.exists()) {
             cstrSrcPathOnDisk.mkdir();
         }
 

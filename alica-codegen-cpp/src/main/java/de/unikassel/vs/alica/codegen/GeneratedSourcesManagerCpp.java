@@ -6,19 +6,9 @@ import de.unikassel.vs.alica.planDesigner.alicamodel.Behaviour;
 import java.io.File;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-public class GeneratedSourcesManager {
-
-    private String genSrcPath;
-    private String editorExecutablePath;
-    private Map<Long, Integer> linesForGeneratedElements;
-
-    public GeneratedSourcesManager() {
-        linesForGeneratedElements = new HashMap<>();
-    }
+public class GeneratedSourcesManagerCpp extends GeneratedSourcesManager {
 
     public String getIncludeDir() {
         return Paths.get(genSrcPath, "include").toString();
@@ -26,14 +16,6 @@ public class GeneratedSourcesManager {
 
     public String getSrcDir() {
         return Paths.get(genSrcPath, "src").toString();
-    }
-
-    public void setGenSrcPath(String genSrcPath) {
-        this.genSrcPath = genSrcPath;
-    }
-
-    public void setEditorExecutablePath(String editorExecutablePath) {
-        this.editorExecutablePath = editorExecutablePath;
     }
 
     public List<File> getGeneratedFilesForBehaviour(Behaviour behaviour) {
@@ -72,33 +54,5 @@ public class GeneratedSourcesManager {
         generatedFiles.add(Paths.get(getIncludeDir(), destinationPath, "constraints", constraintHeaderFileName).toFile());
         generatedFiles.add(Paths.get(getSrcDir(), destinationPath, "constraints", constraintSourceFileName).toFile());
         return generatedFiles;
-    }
-
-    private String trimFileFromPath(String destinationPath) {
-        if (destinationPath.lastIndexOf('.') > destinationPath.lastIndexOf(File.separator)) {
-            return destinationPath.substring(0, destinationPath.lastIndexOf(File.separator) + 1);
-        } else {
-            return destinationPath;
-        }
-    }
-
-    /**
-     * delegate {@link Map#put(Object, Object)}
-     *
-     * @param modelElementId
-     * @param lineNumber
-     */
-    public void putLineForModelElement(long modelElementId, Integer lineNumber) {
-        linesForGeneratedElements.put(modelElementId, lineNumber);
-    }
-
-    /**
-     * if code has not been generated this method returns 0
-     *
-     * @param modelElementId
-     * @return line number of generated code
-     */
-    public int getLineNumberForGeneratedElement(long modelElementId) {
-        return linesForGeneratedElements.getOrDefault(modelElementId, 0);
     }
 }

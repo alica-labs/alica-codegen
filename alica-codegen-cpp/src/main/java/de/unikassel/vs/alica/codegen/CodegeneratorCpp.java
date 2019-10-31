@@ -9,19 +9,14 @@ import de.unikassel.vs.alica.planDesigner.alicamodel.AbstractPlan;
 import de.unikassel.vs.alica.planDesigner.alicamodel.Behaviour;
 import de.unikassel.vs.alica.planDesigner.alicamodel.Condition;
 import de.unikassel.vs.alica.planDesigner.alicamodel.Plan;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -33,36 +28,24 @@ import java.util.List;
  * Do not cache this object.
  * A new instance should be created for every use or at least after creating a new ALICA object.
  */
-public class Codegenerator {
+public class CodegeneratorCpp extends Codegenerator {
 
-    private static final Logger LOG = LogManager.getLogger(Codegenerator.class);
-
-    private final IGenerator languageSpecificGenerator;
-    private final String codeGenerationDestination;
-    private final GeneratedSourcesManager generatedSourcesManager;
-
-    public StringProperty currentFile = new SimpleStringProperty();
-
-    private List<Plan> plans;
-    private List<Behaviour> behaviours;
-    private List<Condition> conditions;
-
-    /**
-     * This constructor initializes a C++ code generator
-     */
-    public Codegenerator(List<Plan> plans, List<Behaviour> behaviours, List<Condition> conditions, String formatter, String destination, GeneratedSourcesManager generatedSourcesManager) {
-        // TODO: Document this! Here can the programming language be changed.
-        languageSpecificGenerator = new CPPGeneratorImpl(generatedSourcesManager);
-        languageSpecificGenerator.setFormatter(formatter);
-        codeGenerationDestination = destination;
-        this.generatedSourcesManager = generatedSourcesManager;
-
-        this.plans = plans;
-        Collections.sort(plans, new PlanElementComparator());
-        this.behaviours = behaviours;
-        Collections.sort(behaviours, new PlanElementComparator());
-        this.conditions = conditions;
-        Collections.sort(conditions, new PlanElementComparator());
+    public CodegeneratorCpp(
+            List<Plan> plans,
+            List<Behaviour> behaviours,
+            List<Condition> conditions,
+            String formatter,
+            String destination,
+            GeneratedSourcesManagerCpp generatedSourcesManager
+    ) {
+        super(new CPPGeneratorImpl(),
+                plans,
+                behaviours,
+                conditions,
+                formatter,
+                destination,
+                generatedSourcesManager
+        );
     }
 
     /**
@@ -121,42 +104,7 @@ public class Codegenerator {
         protectedRegionsVisitor.visit(all_textContext);
     }
 
-    /**
-     * (Re)Generates source files for the given object.
-     * If the given object is an instance of {@link Plan} or {@link Behaviour}.
-     *
-     * @param abstractPlan
-     */
-    public void generate(AbstractPlan abstractPlan) {
-        if (abstractPlan instanceof Plan) {
-            generate((Plan) abstractPlan);
-        } else if (abstractPlan instanceof Behaviour) {
-            generate((Behaviour) abstractPlan);
-        } else {
-            LOG.error("Nothing to generate for something else than a plan or behaviour!");
-        }
-    }
-
-    public void generate(Plan plan) {
-        List<File> generatedFiles = generatedSourcesManager.getGeneratedConditionFilesForPlan(plan);
-        generatedFiles.addAll(generatedSourcesManager.getGeneratedConstraintFilesForPlan(plan));
-        collectProtectedRegions(generatedFiles);
-        languageSpecificGenerator.createConstraintsForPlan(plan);
-        languageSpecificGenerator.createPlan(plan);
-        languageSpecificGenerator.createConditionCreator(plans, behaviours, conditions);
-        languageSpecificGenerator.createUtilityFunctionCreator(plans);
-    }
-
-    public void generate(Behaviour behaviour) {
-        List<File> generatedFiles = generatedSourcesManager.getGeneratedFilesForBehaviour(behaviour);
-        generatedFiles.addAll(generatedSourcesManager.getGeneratedConstraintFilesForBehaviour(behaviour));
-        collectProtectedRegions(generatedFiles);
-        languageSpecificGenerator.createBehaviourCreator(behaviours);
-        languageSpecificGenerator.createConstraintsForBehaviour(behaviour);
-        languageSpecificGenerator.createBehaviour(behaviour);
-    }
-
-    protected void collectProtectedRegions(List<File> filesToParse) {
+    public void collectProtectedRegions(List<File> filesToParse) {
         ProtectedRegionsVisitor protectedRegionsVisitor = new ProtectedRegionsVisitor();
         for (File genFile : filesToParse) {
             try {

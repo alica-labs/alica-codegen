@@ -12,7 +12,7 @@ public class StandaloneCodegenerator {
     private static String rolesPath;
     private static String tasksPath;
 
-    private static void printUsage(){
+    private static void printUsage() {
         System.out.println("Usage: java -jar StandaloneCodegenerator <clangFormat> <sourceGenPath> <plansPath> <rolesPath> <tasksPaths>");
         System.exit(-1);
     }

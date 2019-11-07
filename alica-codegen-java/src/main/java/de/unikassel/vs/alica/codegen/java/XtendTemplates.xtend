@@ -51,18 +51,18 @@ public class BehaviourCreator {
     package de.unikassel.vs.alica.codegen.out.«behaviour.relativeDirectory»;
 «ENDIF»
 
-import de.unikassel.vs.alica.codegen.out.«behaviour.name»Impl;
+// import de.unikassel.vs.alica.codegen.out.«behaviour.name»Impl;
 
 public class «behaviour.name» {
-    private «behaviour.name»Impl «behaviour.name»Impl = new «behaviour.name»Impl();
+    // private «behaviour.name»Impl «behaviour.name»Impl = new «behaviour.name»Impl();
 
-    public Object run() {
-        this.«behaviour.name»Impl.run();
-    }
+    // public Object run() {
+    //     this.«behaviour.name»Impl.run();
+    // }
 
-    public Object initialiseParameters() {
-        this.«behaviour.name»Impl.initialiseParameters();
-    }
+    // public Object initialiseParameters() {
+    //     this.«behaviour.name»Impl.initialiseParameters();
+    // }
 }
 '''
 
@@ -215,46 +215,9 @@ public class «plan.name»«plan.id»Constraints {
 '''
 
     def String domainBehaviour() '''
-#include "DomainBehaviour.h"
-/*PROTECTED REGION ID(domainBehaviourSrcHeaders) ENABLED START*/
-«IF (protectedRegions.containsKey("domainBehaviourSrcHeaders"))»
-«protectedRegions.get("domainBehaviourSrcHeaders")»
-«ELSE»
-//Add additional options here
-«ENDIF»
-/*PROTECTED REGION END*/
+package de.unikassel.vs.alica.codegen.out.DomainBehaviour;
 
-namespace alica
-{
-    DomainBehaviour::DomainBehaviour(std::string name) : BasicBehaviour(name)
-    {
-        /*PROTECTED REGION ID(domainBehaviourConstructor) ENABLED START*/
-«IF (protectedRegions.containsKey("domainBehaviourConstructor"))»
-«protectedRegions.get("domainBehaviourConstructor")»
-«ELSE»
-        //Add additional options here
-«ENDIF»
-        /*PROTECTED REGION END*/
-    }
-
-    DomainBehaviour::~DomainBehaviour()
-    {
-        /*PROTECTED REGION ID(domainBehaviourDestructor) ENABLED START*/
-«IF (protectedRegions.containsKey("domainBehaviourDestructor"))»
-«protectedRegions.get("domainBehaviourDestructor")»
-«ELSE»
-        //Add additional options here
-«ENDIF»
-        /*PROTECTED REGION END*/
-    }
-
-    /*PROTECTED REGION ID(domainBehaviourMethods) ENABLED START*/
-«IF (protectedRegions.containsKey("domainBehaviourMethods"))»
-«protectedRegions.get("domainBehaviourMethods")»
-«ELSE»
-    //Add additional options here
-«ENDIF»
-    /*PROTECTED REGION END*/
+public class DomainBehaviour {
 }
 '''
 

@@ -206,6 +206,17 @@ public class «behaviour.name»«behaviour.id»Constraints {
 
 public class «plan.name»«plan.id»Constraints {
     public «plan.name»«plan.id»Constraints() {
+        //Plan:«plan.name»
+        /*
+        * Tasks: «var List<EntryPoint> entryPoints = plan.entryPoints» «FOR  planEntryPoint : entryPoints»
+        * - EP:«planEntryPoint.id» : «planEntryPoint.task.name» («planEntryPoint.task.id»)«ENDFOR»
+        *
+        * States:«var List<State> states = plan.states» «FOR state : states»
+        * - «state.name» («state.id»)«ENDFOR»
+        *
+        * Vars:«var List<Variable> variables = plan.variables» «FOR variable : variables»
+        * - «variable.name» («variable.id») «ENDFOR»
+        */
         «constraintCodeGenerator.constraintPlanCheckingMethods(plan)»
         «FOR state: states»
             «constraintCodeGenerator.constraintStateCheckingMethods(state)»

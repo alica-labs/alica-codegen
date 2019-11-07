@@ -7,8 +7,6 @@ import java.io.File;
 import java.util.List;
 
 public interface IGeneratedSourcesManager {
-    String getIncludeDir();
-    String getSrcDir();
     List<File> getGeneratedFilesForBehaviour(Behaviour behaviour);
     List<File> getGeneratedConditionFilesForPlan(AbstractPlan abstractPlan);
     List<File> getGeneratedConstraintFilesForPlan(AbstractPlan abstractPlan);

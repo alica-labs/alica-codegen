@@ -54,16 +54,6 @@ public class GeneratedSourcesManager implements IGeneratedSourcesManager {
     }
 
     @Override
-    public String getIncludeDir() {
-        return null;
-    }
-
-    @Override
-    public String getSrcDir() {
-        return null;
-    }
-
-    @Override
     public List<File> getGeneratedFilesForBehaviour(Behaviour behaviour) {
         return null;
     }

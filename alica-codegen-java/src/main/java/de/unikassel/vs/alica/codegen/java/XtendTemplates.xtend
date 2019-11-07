@@ -222,46 +222,9 @@ public class DomainBehaviour {
 '''
 
     def String domainCondition() '''
-#include "DomainCondition.h"
-/*PROTECTED REGION ID(domainSourceHeaders) ENABLED START*/
-«IF (protectedRegions.containsKey("domainSourceHeaders"))»
-«protectedRegions.get("domainSourceHeaders")»
-«ELSE»
-        //Add additional options here
-«ENDIF»
-/*PROTECTED REGION END*/
+package de.unikassel.vs.alica.codegen.out.DomainCondition;
 
-namespace alica
-{
-    DomainCondition::DomainCondition() : BasicCondition()
-    {
-        /*PROTECTED REGION ID(domainSourceConstructor) ENABLED START*/
-«IF (protectedRegions.containsKey("domainSourceConstructor"))»
-«protectedRegions.get("domainSourceConstructor")»
-«ELSE»
-        //Add additional options here
-«ENDIF»
-        /*PROTECTED REGION END*/
-    }
-
-    DomainCondition::~DomainCondition()
-    {
-        /*PROTECTED REGION ID(domainSourceDestructor) ENABLED START*/
-«IF (protectedRegions.containsKey("domainSourceDestructor"))»
-«protectedRegions.get("domainSourceDestructor")»
-«ELSE»
-        //Add additional options here
-«ENDIF»
-        /*PROTECTED REGION END*/
-    }
-
-    /*PROTECTED REGION ID(additionalMethodsDomainCondition) ENABLED START*/
-«IF (protectedRegions.containsKey("additionalMethodsDomainCondition"))»
-«protectedRegions.get("additionalMethodsDomainCondition")»
-«ELSE»
-        //Add additional methods here
-«ENDIF»
-    /*PROTECTED REGION END*/
+public class DomainCondition {
 }
 '''
 

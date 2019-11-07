@@ -48,83 +48,22 @@ public class BehaviourCreator {
 
     def String behaviour(Behaviour behaviour) '''
 «IF (behaviour.relativeDirectory.isEmpty)»
-#include "«behaviour.name».h"
+    import de.unikassel.vs.alica.codegen.out.«behaviour.name»
 «ELSE»
-#include  "«behaviour.relativeDirectory»/«behaviour.name».h"
+    import de.unikassel.vs.alica.codegen.out.«behaviour.relativeDirectory».«behaviour.name»
 «ENDIF»
-#include <memory>
+import de.unikassel.vs.alica.codegen.out.«behaviour.name»Impl
 
-/*PROTECTED REGION ID(inccpp«behaviour.id») ENABLED START*/
-    «IF (protectedRegions.containsKey("inccpp" + behaviour.id))»
-«protectedRegions.get("inccpp" + behaviour.id)»
-    «ELSE»
-        //Add additional includes here
-    «ENDIF»
-/*PROTECTED REGION END*/
+public class Behaviour {
+    private «behaviour.name»Impl «behaviour.name»Impl = new «behaviour.name»Impl();
 
-namespace alica
-{
-    /*PROTECTED REGION ID(staticVars«behaviour.id») ENABLED START*/
-    «IF (protectedRegions.containsKey("staticVars" + behaviour.id))»
-«protectedRegions.get("staticVars" + behaviour.id)»
-    «ELSE»
-        //initialise static variables here
-    «ENDIF»
-    /*PROTECTED REGION END*/
-
-    «behaviour.name»::«behaviour.name»() : DomainBehaviour("«behaviour.name»")
-    {
-        /*PROTECTED REGION ID(con«behaviour.id») ENABLED START*/
-        «IF (protectedRegions.containsKey("con" + behaviour.id))»
-«protectedRegions.get("con" + behaviour.id)»
-        «ELSE»
-            //Add additional options here
-        «ENDIF»
-        /*PROTECTED REGION END*/
-
+    public Object run() {
+        this.«behaviour.name»Impl.run();
     }
-    «behaviour.name»::~«behaviour.name»()
-    {
-        /*PROTECTED REGION ID(dcon«behaviour.id») ENABLED START*/
-        «IF (protectedRegions.containsKey("dcon" + behaviour.id))»
-«protectedRegions.get("dcon" + behaviour.id)»
-        «ELSE»
-            //Add additional options here
-        «ENDIF»
-        /*PROTECTED REGION END*/
 
+    public Object initialiseParameters() {
+        this.«behaviour.name»Impl.initialiseParameters();
     }
-    void «behaviour.name»::run(void* msg)
-    {
-        /*PROTECTED REGION ID(run«behaviour.id») ENABLED START*/
-        «IF (protectedRegions.containsKey("run" + behaviour.id))»
-«protectedRegions.get("run" + behaviour.id)»
-        «ELSE»
-            //Add additional options here
-        «ENDIF»
-        /*PROTECTED REGION END*/
-
-    }
-    void «behaviour.name»::initialiseParameters()
-    {
-        /*PROTECTED REGION ID(initialiseParameters«behaviour.id») ENABLED START*/
-        «IF (protectedRegions.containsKey("initialiseParameters" + behaviour.id))»
-«protectedRegions.get("initialiseParameters" + behaviour.id)»
-        «ELSE»
-            //Add additional options here
-        «ENDIF»
-
-        /*PROTECTED REGION END*/
-
-    }
-    /*PROTECTED REGION ID(methods«behaviour.id») ENABLED START*/
-        «IF (protectedRegions.containsKey("methods" + behaviour.id))»
-«protectedRegions.get("methods" + behaviour.id)»
-        «ELSE»
-            //Add additional options here
-        «ENDIF»
-    /*PROTECTED REGION END*/
-
 }
 '''
 

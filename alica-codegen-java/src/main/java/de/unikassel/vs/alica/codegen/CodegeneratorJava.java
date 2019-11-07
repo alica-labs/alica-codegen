@@ -26,7 +26,6 @@ public class CodegeneratorJava extends Codegenerator {
             List<Plan> plans,
             List<Behaviour> behaviours,
             List<Condition> conditions,
-            String formatter,
             String destination,
             GeneratedSourcesManagerJava generatedSourcesManager
     ) {
@@ -34,7 +33,7 @@ public class CodegeneratorJava extends Codegenerator {
                 plans,
                 behaviours,
                 conditions,
-                formatter,
+                null,
                 destination,
                 generatedSourcesManager
         );

@@ -1,5 +1,7 @@
 package de.unikassel.vs.alica.codegen.java;
 
+import com.google.googlejavaformat.java.Formatter;
+import com.google.googlejavaformat.java.FormatterException;
 import de.unikassel.vs.alica.codegen.GeneratedSourcesManagerJava;
 import de.unikassel.vs.alica.codegen.GeneratorImpl;
 import de.unikassel.vs.alica.planDesigner.alicamodel.*;
@@ -10,12 +12,13 @@ import de.unikassel.vs.alica.planDesigner.alicamodel.*;
  */
 import de.unikassel.vs.alica.codegen.java.XtendTemplates;
 
-import java.io.File;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.LineNumberReader;
+import java.io.*;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.stream.Stream;
 
 
 /**
@@ -163,6 +166,29 @@ public class GeneratorImplJava extends GeneratorImpl {
         formatFile(srcPath);
     }
 
+    private String readFile(String path) {
+        StringBuilder stringBuilder = new StringBuilder();
+        try (Stream stream = Files.lines(Paths.get(path), StandardCharsets.UTF_8)) {
+            stream.forEach(s -> stringBuilder.append(s).append("\n"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return stringBuilder.toString();
+    }
+
+    private void writeFile(String path, String content) {
+        try (
+                Writer writer = new BufferedWriter(new OutputStreamWriter(
+                        new FileOutputStream(path),
+                        StandardCharsets.UTF_8
+                ))
+        ) {
+            writer.write(content);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     /**
      * Calls the executable found by the formatter attribute on the file found by filename.
      * It is assumed that the executable is clang-format or has the same CLI as clang-format.
@@ -171,19 +197,13 @@ public class GeneratorImplJava extends GeneratorImpl {
      */
     @Override
     public void formatFile(String fileName) {
-//        if (formatter != null && formatter.length() > 0) {
-//            URL clangFormatStyle = GeneratorImplJava.class.getResource(".clang-format");
-//            String command = formatter +
-//                    " -style=" + clangFormatStyle +
-//                    " -i " + fileName;
-//            try {
-//                Runtime.getRuntime().exec(command).waitFor();
-//            } catch (IOException | InterruptedException e) {
-//                LOG.error("An error occurred while formatting generated sources", e);
-//                throw new RuntimeException(e);
-//            }
-//        } else {
-//            LOG.warn("Generated files are not formatted because no formatter is configured");
-//        }
+        String sourceString = readFile(fileName);
+        try {
+            String formattedSource = new Formatter().formatSource(sourceString);
+            writeFile(fileName, formattedSource);
+        } catch (FormatterException e) {
+            LOG.error("An error occurred while formatting generated sources", e);
+            e.printStackTrace();
+        }
     }
 }

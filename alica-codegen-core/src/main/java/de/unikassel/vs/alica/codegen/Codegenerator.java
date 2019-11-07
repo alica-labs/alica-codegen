@@ -47,7 +47,6 @@ public class Codegenerator implements ICodegenerator {
         Collections.sort(conditions, new PlanElementComparator());
     }
 
-
     @Override
     public void generate() {
 

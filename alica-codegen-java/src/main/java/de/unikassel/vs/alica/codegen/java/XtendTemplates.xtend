@@ -1,4 +1,4 @@
-package de.unikassel.vs.alica.codegen.cpp
+package de.unikassel.vs.alica.codegen.java
 
 import de.unikassel.vs.alica.codegen.IConstraintCodeGenerator
 import de.unikassel.vs.alica.planDesigner.alicamodel.Behaviour

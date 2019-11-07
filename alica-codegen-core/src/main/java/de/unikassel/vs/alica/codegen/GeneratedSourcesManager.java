@@ -72,4 +72,12 @@ public class GeneratedSourcesManager implements IGeneratedSourcesManager {
     public List<File> getGeneratedConstraintFilesForBehaviour(Behaviour behaviour) {
         return null;
     }
+
+    public String getIncludeDir() {
+        return null;
+    }
+
+    public String getSrcDir() {
+        return null;
+    }
 }

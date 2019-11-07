@@ -10,7 +10,7 @@ import java.util.List;
 
 public class GeneratedSourcesManagerJava extends GeneratedSourcesManager {
 
-    private String getBaseDir() {
+    public String getBaseDir() {
         return Paths.get(genSrcPath).toString();
     }
 

@@ -23,9 +23,9 @@ import de.unikassel.vs.alica.codegen.out.BehaviourCreator;
 import de.unikassel.vs.alica.codegen.out.engine.BasicBehaviour;
 «FOR beh : behaviours»
     «IF (beh.relativeDirectory.isEmpty)»
-        import de.unikassel.vs.alica.codegen.out.«beh.name»
+        import de.unikassel.vs.alica.codegen.out.«beh.name»;
     «ELSE»
-        import de.unikassel.vs.alica.codegen.out.«beh.relativeDirectory».«beh.name»
+        import de.unikassel.vs.alica.codegen.out.«beh.relativeDirectory».«beh.name»;
     «ENDIF»
 «ENDFOR»
 
@@ -46,14 +46,14 @@ public class BehaviourCreator {
 
     def String behaviour(Behaviour behaviour) '''
 «IF (behaviour.relativeDirectory.isEmpty)»
-    package de.unikassel.vs.alica.codegen.out.«behaviour.name»
+    package de.unikassel.vs.alica.codegen.out;
 «ELSE»
-    package de.unikassel.vs.alica.codegen.out.«behaviour.relativeDirectory».«behaviour.name»
+    package de.unikassel.vs.alica.codegen.out.«behaviour.relativeDirectory»;
 «ENDIF»
 
-import de.unikassel.vs.alica.codegen.out.«behaviour.name»Impl
+import de.unikassel.vs.alica.codegen.out.«behaviour.name»Impl;
 
-public class Behaviour {
+public class «behaviour.name» {
     private «behaviour.name»Impl «behaviour.name»Impl = new «behaviour.name»Impl();
 
     public Object run() {
@@ -67,13 +67,13 @@ public class Behaviour {
 '''
 
     def String utilityFunctionCreator(List<Plan> plans)'''
-package de.unikassel.vs.alica.codegen.out.UtilityFunctionCreator
+package de.unikassel.vs.alica.codegen.out;
 
 «FOR p: plans»
     «IF (p.relativeDirectory.isEmpty)»
-        import de.unikassel.vs.alica.codegen.out.«p.name»«p.id»
+        import de.unikassel.vs.alica.codegen.out.«p.name»«p.id»;
     «ELSE»
-        import de.unikassel.vs.alica.codegen.out.«p.relativeDirectory».«p.name»«p.id»
+        import de.unikassel.vs.alica.codegen.out.«p.relativeDirectory».«p.name»«p.id»;
     «ENDIF»
 «ENDFOR»
 
@@ -93,19 +93,20 @@ public class UtilityFunctionCreator {
 '''
 
     def String conditionCreator(List<Plan> plans, List<Behaviour> behaviours, List<Condition> conditions) '''
-package de.unikassel.vs.alica.codegen.out.ConditionCreator
+package de.unikassel.vs.alica.codegen.out;
+
 «FOR p: plans»
     «IF (p.relativeDirectory.isEmpty)»
-        import de.unikassel.vs.alica.codegen.out.«p.name»«p.id»
+        import de.unikassel.vs.alica.codegen.out.«p.name»«p.id»;
     «ELSE»
-        import de.unikassel.vs.alica.codegen.out.«p.relativeDirectory».«p.name»«p.id»
+        import de.unikassel.vs.alica.codegen.out.«p.relativeDirectory».«p.name»«p.id»;
     «ENDIF»
 «ENDFOR»
 «FOR b: behaviours»
     «IF (b.relativeDirectory.isEmpty)»
-        import de.unikassel.vs.alica.codegen.out.«b.name»«b.id»
+        import de.unikassel.vs.alica.codegen.out.«b.name»«b.id»;
     «ELSE»
-        import de.unikassel.vs.alica.codegen.out.«b.relativeDirectory».«b.name»«b.id»
+        import de.unikassel.vs.alica.codegen.out.«b.relativeDirectory».«b.name»«b.id»;
     «ENDIF»
 «ENDFOR»
 
@@ -134,20 +135,20 @@ public class ConditionCreator {
 '''
 
     def String constraintCreator(List<Plan> plans, List<Behaviour> behaviours, List<Condition> conditions)'''
-package de.unikassel.vs.alica.codegen.out.ConstraintCreator
+package de.unikassel.vs.alica.codegen.out;
 
 «FOR plan: plans»
     «IF (plan.relativeDirectory.isEmpty)»
-        import de.unikassel.vs.alica.codegen.out.constraints.«plan.name»«plan.id»Constraints
+        import de.unikassel.vs.alica.codegen.out.constraints.«plan.name»«plan.id»Constraints;
     «ELSE»
-        import de.unikassel.vs.alica.codegen.out.«plan.relativeDirectory».constraints.«plan.name»«plan.id»Constraints
+        import de.unikassel.vs.alica.codegen.out.«plan.relativeDirectory».constraints.«plan.name»«plan.id»Constraints;
     «ENDIF»
 «ENDFOR»
 «FOR behaviour: behaviours»
     «IF (behaviour.relativeDirectory.isEmpty)»
-        import de.unikassel.vs.alica.codegen.out.constraints.«behaviour.name»«behaviour.id»Constraints
+        import de.unikassel.vs.alica.codegen.out.constraints.«behaviour.name»«behaviour.id»Constraints;
     «ELSE»
-        import de.unikassel.vs.alica.codegen.out.«behaviour.relativeDirectory».constraints.«behaviour.name»«behaviour.id»Constraints
+        import de.unikassel.vs.alica.codegen.out.«behaviour.relativeDirectory».constraints.«behaviour.name»«behaviour.id»Constraints;
     «ENDIF»
 «ENDFOR»
 
@@ -170,27 +171,15 @@ public class ConditionCreator {
 
     def String behaviourCondition(Behaviour behaviour, IConstraintCodeGenerator constraintCodeGenerator) '''
 «IF (behaviour.relativeDirectory.isEmpty)»
-#include "«behaviour.name»«behaviour.id».h"
+    package de.unikassel.vs.alica.codegen.out;
 «ELSE»
-#include  "«behaviour.relativeDirectory»/«behaviour.name»«behaviour.id».h"
+    package de.unikassel.vs.alica.codegen.out.«behaviour.relativeDirectory»;
 «ENDIF»
-#include <memory>
 
-/*PROTECTED REGION ID(inccppBC«behaviour.id») ENABLED START*/
-    «IF (protectedRegions.containsKey("inccppBC" + behaviour.id))»
-«protectedRegions.get("inccppBC" + behaviour.id)»
-    «ELSE»
-        //Add additional includes here
-    «ENDIF»
-/*PROTECTED REGION END*/
-
-using namespace alica;
-
-namespace alicaAutogenerated
-{
-    //Behaviour:«behaviour.name»
-    «constraintCodeGenerator.expressionsBehaviourCheckingMethods(behaviour)»
-
+public class «behaviour.name»«behaviour.id» {
+    public «behaviour.name»«behaviour.id»() {
+        «constraintCodeGenerator.expressionsBehaviourCheckingMethods(behaviour)»
+    }
 }
 '''
 

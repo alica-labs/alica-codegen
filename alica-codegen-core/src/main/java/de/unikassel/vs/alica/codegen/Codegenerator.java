@@ -20,7 +20,7 @@ public class Codegenerator implements ICodegenerator {
     final String codeGenerationDestination;
     final GeneratedSourcesManager generatedSourcesManager;
 
-    StringProperty currentFile = new SimpleStringProperty();
+    public StringProperty currentFile = new SimpleStringProperty();
     List<Plan> plans;
     List<Behaviour> behaviours;
     List<Condition> conditions;

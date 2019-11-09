@@ -27,3 +27,7 @@ hs_err_pid*
 # IntelliJ config
 .idea/*
 *.iml
+
+alica-codegen-cpp/src/main/xtend-gen/
+alica-codegen-java/src/main/xtend-gen/
+alica-codegen-python/src/main/xtend-gen/

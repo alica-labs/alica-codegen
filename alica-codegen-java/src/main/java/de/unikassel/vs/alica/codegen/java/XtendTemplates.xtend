@@ -33,7 +33,7 @@ public class BehaviourCreator {
     public Object createBehaviour(long behaviourId) {
         switch (behaviourId) {
             «FOR beh : behaviours»
-                case «beh.id»:
+                case «beh.id»L:
                     return «beh.name»();
             «ENDFOR»
             default:
@@ -81,7 +81,7 @@ public class UtilityFunctionCreator {
     public Object createUtility(long utilityfunctionConfId) {
         switch(utilityfunctionConfId) {
             «FOR p: plans»
-                case «p.id»:
+                case «p.id»L:
                     return UtilityFunction«p.id»();
             «ENDFOR»
             default:
@@ -114,7 +114,7 @@ public class ConditionCreator {
     public Object createConditions(long conditionConfId) {
         switch (conditionConfId) {
             «FOR con: conditions»
-                case «con.id»:
+                case «con.id»L:
                     «IF (con instanceof PreCondition)»
                         return PreCondition«con.id»();
                     «ENDIF»
@@ -157,7 +157,7 @@ public class ConditionCreator {
         switch(constraintConfId) {
             «FOR c: conditions»
                 «IF (c.variables.size > 0) || (c.quantifiers.size > 0)»
-                    case «c.id»:
+                    case «c.id»L:
                         return Constraint«c.id»();
                 «ENDIF»
             «ENDFOR»

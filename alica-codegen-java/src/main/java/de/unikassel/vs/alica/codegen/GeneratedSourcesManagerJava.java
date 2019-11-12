@@ -11,7 +11,7 @@ import java.util.List;
 public class GeneratedSourcesManagerJava extends GeneratedSourcesManager {
 
     public String getBaseDir() {
-        return Paths.get(genSrcPath).toString();
+        return Paths.get(genSrcPath, "de", "unikassel", "vs", "alica", "codegen", "out").toString();
     }
 
     public List<File> getGeneratedFilesForBehaviour(Behaviour behaviour) {

@@ -226,14 +226,14 @@ public class «plan.name»«plan.id»Constraints {
 '''
 
     def String domainBehaviour() '''
-package de.unikassel.vs.alica.codegen.out.DomainBehaviour;
+package de.unikassel.vs.alica.codegen.out;
 
 public class DomainBehaviour {
 }
 '''
 
     def String domainCondition() '''
-package de.unikassel.vs.alica.codegen.out.DomainCondition;
+package de.unikassel.vs.alica.codegen.out;
 
 public class DomainCondition {
 }

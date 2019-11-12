@@ -1,7 +1,9 @@
 package de.unikassel.vs.alica.codegen.cpp;
 
 import de.unikassel.vs.alica.codegen.GeneratedSourcesManager;
+import de.unikassel.vs.alica.codegen.GeneratedSourcesManagerCpp;
 import de.unikassel.vs.alica.codegen.GeneratorImpl;
+import de.unikassel.vs.alica.codegen.IGenerator;
 import de.unikassel.vs.alica.planDesigner.alicamodel.*;
 /**
  * IF the following line is not import de.unikassel.vs.alica.codegen.cpp.XtendTemplates;
@@ -24,11 +26,17 @@ import java.util.Map;
  * After this the created strings are written to disk according to {@link GeneratedSourcesManager}.
  * Every file that is written is formatted by the formatter that is set by setFormatter.
  */
-public class GeneratorImplCpp extends GeneratorImpl {
+public class GeneratorImplCpp extends GeneratorImpl implements IGenerator<GeneratedSourcesManagerCpp> {
     private XtendTemplates xtendTemplates;
+    private GeneratedSourcesManagerCpp generatedSourcesManager;
 
     public GeneratorImplCpp() {
         xtendTemplates = new XtendTemplates();
+    }
+
+    @Override
+    public void setGeneratedSourcesManager(GeneratedSourcesManagerCpp generatedSourcesManager) {
+        this.generatedSourcesManager = generatedSourcesManager;
     }
 
     /**

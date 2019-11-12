@@ -4,6 +4,7 @@ import com.google.googlejavaformat.java.Formatter;
 import com.google.googlejavaformat.java.FormatterException;
 import de.unikassel.vs.alica.codegen.GeneratedSourcesManagerJava;
 import de.unikassel.vs.alica.codegen.GeneratorImpl;
+import de.unikassel.vs.alica.codegen.IGenerator;
 import de.unikassel.vs.alica.planDesigner.alicamodel.*;
 /**
  * IF the following line is not import de.unikassel.vs.alica.codegen.java.XtendTemplates;
@@ -13,11 +14,11 @@ import de.unikassel.vs.alica.planDesigner.alicamodel.*;
 import de.unikassel.vs.alica.codegen.java.XtendTemplates;
 
 import java.io.*;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Stream;
 
 
@@ -26,12 +27,21 @@ import java.util.stream.Stream;
  * After this the created strings are written to disk according to {@link GeneratedSourcesManagerJava}.
  * Every file that is written is formatted by the formatter that is set by setFormatter.
  */
-public class GeneratorImplJava extends GeneratorImpl {
+public class GeneratorImplJava extends GeneratorImpl implements IGenerator<GeneratedSourcesManagerJava> {
     private XtendTemplates xtendTemplates;
     private GeneratedSourcesManagerJava generatedSourcesManager;
 
     public GeneratorImplJava() {
         xtendTemplates = new XtendTemplates();
+    }
+
+    public void setGeneratedSourcesManager(GeneratedSourcesManagerJava generatedSourcesManager) {
+        this.generatedSourcesManager = generatedSourcesManager;
+    }
+
+    @Override
+    public void setProtectedRegions(Map<String, String> protectedRegions) {
+
     }
 
     @Override
@@ -46,12 +56,12 @@ public class GeneratorImplJava extends GeneratorImpl {
     public void createBehaviour(Behaviour behaviour) {
         String destinationPath = cutDestinationPathToDirectory(behaviour);
 
-        String srcPath = Paths.get(generatedSourcesManager.getSrcDir(), destinationPath, behaviour.getName() + behaviour.getId() + ".java").toString();
+        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), destinationPath, behaviour.getName() + behaviour.getId() + ".java").toString();
         String fileContentSource = xtendTemplates.behaviourCondition(behaviour, getActiveConstraintCodeGenerator());
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
 
-        String srcPath2 = Paths.get(generatedSourcesManager.getSrcDir(), destinationPath, behaviour.getName()+ ".java").toString();
+        String srcPath2 = Paths.get(generatedSourcesManager.getBaseDir(), destinationPath, behaviour.getName()+ ".java").toString();
         String fileContentSource2 = xtendTemplates.behaviour(behaviour);
         writeSourceFile(srcPath2, fileContentSource2);
         formatFile(srcPath2);
@@ -59,7 +69,7 @@ public class GeneratorImplJava extends GeneratorImpl {
 
     @Override
     public void createConditionCreator(List<Plan> plans, List<Behaviour> behaviours, List<Condition> conditions) {
-        String srcPath = Paths.get(generatedSourcesManager.getSrcDir(), "ConditionCreator.java").toString();
+        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "ConditionCreator.java").toString();
         String fileContentSource = xtendTemplates.conditionCreator(plans, behaviours, conditions);
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
@@ -67,7 +77,7 @@ public class GeneratorImplJava extends GeneratorImpl {
 
     @Override
     public void createConstraintCreator(List<Plan> plans, List<Behaviour> behaviours, List<Condition> conditions) {
-        String srcPath = Paths.get(generatedSourcesManager.getSrcDir(), "ConstraintCreator.java").toString();
+        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "ConstraintCreator.java").toString();
         String fileContentSource = xtendTemplates.constraintCreator(plans, behaviours, conditions);
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
@@ -83,7 +93,7 @@ public class GeneratorImplJava extends GeneratorImpl {
             cstrIncPathOnDisk.mkdir();
         }
 
-        String constraintSourcePath = Paths.get(generatedSourcesManager.getSrcDir(), destinationPathWithoutName, "constraints").toString();
+        String constraintSourcePath = Paths.get(generatedSourcesManager.getBaseDir(), destinationPathWithoutName, "constraints").toString();
         File cstrSrcPathOnDisk = new File(constraintSourcePath);
         if (!cstrSrcPathOnDisk.exists()) {
             cstrSrcPathOnDisk.mkdir();
@@ -120,7 +130,7 @@ public class GeneratorImplJava extends GeneratorImpl {
             cstrIncPathOnDisk.mkdir();
         }
 
-        String constraintSourcePath = Paths.get(generatedSourcesManager.getSrcDir(), destinationPathWithoutName, "constraints").toString();
+        String constraintSourcePath = Paths.get(generatedSourcesManager.getBaseDir(), destinationPathWithoutName, "constraints").toString();
         File cstrSrcPathOnDisk = new File(constraintSourcePath);
         if (!cstrSrcPathOnDisk.exists()) {
             cstrSrcPathOnDisk.mkdir();
@@ -136,7 +146,7 @@ public class GeneratorImplJava extends GeneratorImpl {
     public void createPlan(Plan plan) {
         String destinationPath = cutDestinationPathToDirectory(plan);
 
-        String srcPath = Paths.get(generatedSourcesManager.getSrcDir(), destinationPath, plan.getName() + plan.getId() + ".java").toString();
+        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), destinationPath, plan.getName() + plan.getId() + ".java").toString();
         String fileContentSource = xtendTemplates.plan(plan, getActiveConstraintCodeGenerator());
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
@@ -144,7 +154,7 @@ public class GeneratorImplJava extends GeneratorImpl {
 
     @Override
     public void createUtilityFunctionCreator(List<Plan> plans) {
-        String srcPath = Paths.get(generatedSourcesManager.getSrcDir(), "UtilityFunctionCreator.java").toString();
+        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "UtilityFunctionCreator.java").toString();
         String fileContentSource = xtendTemplates.utilityFunctionCreator(plans);
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
@@ -152,7 +162,7 @@ public class GeneratorImplJava extends GeneratorImpl {
 
     @Override
     public void createDomainCondition() {
-        String srcPath = Paths.get(generatedSourcesManager.getSrcDir(), "DomainCondition.java").toString();
+        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "DomainCondition.java").toString();
         String fileContentSource = xtendTemplates.domainCondition();
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
@@ -160,7 +170,7 @@ public class GeneratorImplJava extends GeneratorImpl {
 
     @Override
     public void createDomainBehaviour() {
-        String srcPath = Paths.get(generatedSourcesManager.getSrcDir(), "DomainBehaviour.java").toString();
+        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "DomainBehaviour.java").toString();
         String fileContentSource = xtendTemplates.domainBehaviour();
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);

@@ -1,2 +1,2 @@
 # alica-codegen
-Java and Python code generation
+C++, Java and Python code generation

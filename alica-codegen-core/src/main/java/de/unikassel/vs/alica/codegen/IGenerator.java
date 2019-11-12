@@ -12,9 +12,9 @@ import java.util.Map;
  * An example for an implementation for C++ as target language
  * can be found at de.unikassel.vs.alica.codegen.cpp.CPPGeneratorImpl
  */
-public interface IGenerator {
+public interface IGenerator<T> {
 
-    void setGeneratedSourcesManager(GeneratedSourcesManager generatedSourcesManager);
+    void setGeneratedSourcesManager(T generatedSourcesManager);
     void setProtectedRegions(Map<String, String> protectedRegions);
     void createBehaviourCreator(List<Behaviour> behaviours);
     void createBehaviour(Behaviour behaviour);

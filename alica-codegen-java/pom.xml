@@ -45,6 +45,12 @@
         </dependency>
 
         <dependency>
+            <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.9</version>
+        </dependency>
+        <dependency>
             <!-- https://mvnrepository.com/artifact/com.google.googlejavaformat/google-java-format -->
             <!-- https://github.com/google/google-java-format -->
             <groupId>com.google.googlejavaformat</groupId>

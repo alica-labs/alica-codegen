@@ -13,28 +13,30 @@ import de.unikassel.vs.alica.planDesigner.alicamodel.Transition
 import de.unikassel.vs.alica.planDesigner.alicamodel.EntryPoint
 import de.unikassel.vs.alica.planDesigner.alicamodel.State
 import de.unikassel.vs.alica.planDesigner.alicamodel.Variable
+import org.apache.commons.lang3.StringUtils;
+
 
 class XtendTemplates {
 
     def String behaviourCreator(List<Behaviour> behaviours)'''
 package de.unikassel.vs.alica.codegen.out;
 
+import de.unikassel.vs.alica.engine.BasicBehaviour;
 import de.unikassel.vs.alica.codegen.out.BehaviourCreator;
-import de.unikassel.vs.alica.codegen.out.engine.BasicBehaviour;
 «FOR beh : behaviours»
     «IF (beh.relativeDirectory.isEmpty)»
-        import de.unikassel.vs.alica.codegen.out.«beh.name»;
+        import de.unikassel.vs.alica.codegen.out.«StringUtils.capitalize(beh.name)»;
     «ELSE»
-        import de.unikassel.vs.alica.codegen.out.«beh.relativeDirectory».«beh.name»;
+        import de.unikassel.vs.alica.codegen.out.«beh.relativeDirectory».«StringUtils.capitalize(beh.name)»;
     «ENDIF»
 «ENDFOR»
 
 public class BehaviourCreator {
-    public Object createBehaviour(long behaviourId) {
+    public BasicBehaviour createBehaviour(long behaviourId) throws Exception {
         switch (behaviourId) {
             «FOR beh : behaviours»
                 case «beh.id»L:
-                    return «beh.name»();
+                    return new «StringUtils.capitalize(beh.name)»();
             «ENDFOR»
             default:
                 System.err.println("BehaviourCreator: Unknown behaviour requested: " + behaviourId);
@@ -51,17 +53,17 @@ public class BehaviourCreator {
     package de.unikassel.vs.alica.codegen.out.«behaviour.relativeDirectory»;
 «ENDIF»
 
-// import de.unikassel.vs.alica.codegen.out.«behaviour.name»Impl;
+// import de.unikassel.vs.alica.codegen.out.impl.«StringUtils.capitalize(behaviour.name)»Impl;
 
-public class «behaviour.name» {
-    // private «behaviour.name»Impl «behaviour.name»Impl = new «behaviour.name»Impl();
+public class «StringUtils.capitalize(behaviour.name)» {
+    // private «StringUtils.capitalize(behaviour.name)»Impl «StringUtils.capitalize(behaviour.name)»Impl = new «StringUtils.capitalize(behaviour.name)»Impl();
 
     // public Object run() {
-    //     this.«behaviour.name»Impl.run();
+    //     this.«StringUtils.capitalize(behaviour.name)»Impl.run();
     // }
 
     // public Object initialiseParameters() {
-    //     this.«behaviour.name»Impl.initialiseParameters();
+    //     this.«StringUtils.capitalize(behaviour.name)»Impl.initialiseParameters();
     // }
 }
 '''
@@ -69,20 +71,21 @@ public class «behaviour.name» {
     def String utilityFunctionCreator(List<Plan> plans)'''
 package de.unikassel.vs.alica.codegen.out;
 
+import de.unikassel.vs.alica.engine.BasicUtilityFunction;
 «FOR p: plans»
     «IF (p.relativeDirectory.isEmpty)»
-        import de.unikassel.vs.alica.codegen.out.«p.name»«p.id»;
+        import de.unikassel.vs.alica.codegen.out.«StringUtils.capitalize(p.name)»«p.id»;
     «ELSE»
-        import de.unikassel.vs.alica.codegen.out.«p.relativeDirectory».«p.name»«p.id»;
+        import de.unikassel.vs.alica.codegen.out.«p.relativeDirectory».«StringUtils.capitalize(p.name)»«p.id»;
     «ENDIF»
 «ENDFOR»
 
 public class UtilityFunctionCreator {
-    public Object createUtility(long utilityfunctionConfId) {
+    public BasicUtilityFunction createUtility(long utilityfunctionConfId) throws Exception {
         switch(utilityfunctionConfId) {
             «FOR p: plans»
                 case «p.id»L:
-                    return UtilityFunction«p.id»();
+                    return new UtilityFunction«p.id»();
             «ENDFOR»
             default:
                 System.err.println("UtilityFunctionCreator: Unknown utility requested: " + utilityfunctionConfId);
@@ -95,34 +98,35 @@ public class UtilityFunctionCreator {
     def String conditionCreator(List<Plan> plans, List<Behaviour> behaviours, List<Condition> conditions) '''
 package de.unikassel.vs.alica.codegen.out;
 
+import de.unikassel.vs.alica.engine.BasicCondition;
 «FOR p: plans»
     «IF (p.relativeDirectory.isEmpty)»
-        import de.unikassel.vs.alica.codegen.out.«p.name»«p.id»;
+        import de.unikassel.vs.alica.codegen.out.«StringUtils.capitalize(p.name)»«p.id»;
     «ELSE»
-        import de.unikassel.vs.alica.codegen.out.«p.relativeDirectory».«p.name»«p.id»;
+        import de.unikassel.vs.alica.codegen.out.«p.relativeDirectory».«StringUtils.capitalize(p.name)»«p.id»;
     «ENDIF»
 «ENDFOR»
 «FOR b: behaviours»
     «IF (b.relativeDirectory.isEmpty)»
-        import de.unikassel.vs.alica.codegen.out.«b.name»«b.id»;
+        import de.unikassel.vs.alica.codegen.out.«StringUtils.capitalize(b.name)»«b.id»;
     «ELSE»
-        import de.unikassel.vs.alica.codegen.out.«b.relativeDirectory».«b.name»«b.id»;
+        import de.unikassel.vs.alica.codegen.out.«b.relativeDirectory».«StringUtils.capitalize(b.name)»«b.id»;
     «ENDIF»
 «ENDFOR»
 
 public class ConditionCreator {
-    public Object createConditions(long conditionConfId) {
+    public BasicCondition createConditions(long conditionConfId) throws Exception {
         switch (conditionConfId) {
             «FOR con: conditions»
                 case «con.id»L:
                     «IF (con instanceof PreCondition)»
-                        return PreCondition«con.id»();
+                        return new PreCondition«con.id»();
                     «ENDIF»
                     «IF (con instanceof PostCondition)»
-                        return PostCondition«con.id»();
+                        return new PostCondition«con.id»();
                     «ENDIF»
                     «IF (con instanceof RuntimeCondition)»
-                        return RunTimeCondition«con.id»();
+                        return new RunTimeCondition«con.id»();
                     «ENDIF»
                     break;
             «ENDFOR»
@@ -137,28 +141,29 @@ public class ConditionCreator {
     def String constraintCreator(List<Plan> plans, List<Behaviour> behaviours, List<Condition> conditions)'''
 package de.unikassel.vs.alica.codegen.out;
 
+import de.unikassel.vs.alica.engine.BasicCondition;
 «FOR plan: plans»
     «IF (plan.relativeDirectory.isEmpty)»
-        import de.unikassel.vs.alica.codegen.out.constraints.«plan.name»«plan.id»Constraints;
+        import de.unikassel.vs.alica.codegen.out.constraints.«StringUtils.capitalize(plan.name)»«plan.id»Constraints;
     «ELSE»
-        import de.unikassel.vs.alica.codegen.out.«plan.relativeDirectory».constraints.«plan.name»«plan.id»Constraints;
+        import de.unikassel.vs.alica.codegen.out.«plan.relativeDirectory».constraints.«StringUtils.capitalize(plan.name)»«plan.id»Constraints;
     «ENDIF»
 «ENDFOR»
 «FOR behaviour: behaviours»
     «IF (behaviour.relativeDirectory.isEmpty)»
-        import de.unikassel.vs.alica.codegen.out.constraints.«behaviour.name»«behaviour.id»Constraints;
+        import de.unikassel.vs.alica.codegen.out.constraints.«StringUtils.capitalize(behaviour.name)»«behaviour.id»Constraints;
     «ELSE»
-        import de.unikassel.vs.alica.codegen.out.«behaviour.relativeDirectory».constraints.«behaviour.name»«behaviour.id»Constraints;
+        import de.unikassel.vs.alica.codegen.out.«behaviour.relativeDirectory».constraints.«StringUtils.capitalize(behaviour.name)»«behaviour.id»Constraints;
     «ENDIF»
 «ENDFOR»
 
-public class ConditionCreator {
-    public Object createConstraint(long constraintConfId) {
-        switch(constraintConfId) {
+public class ConstraintCreator {
+    public BasicCondition createConstraint(long constraintConfId) throws Exception {
+        switch (constraintConfId) {
             «FOR c: conditions»
                 «IF (c.variables.size > 0) || (c.quantifiers.size > 0)»
                     case «c.id»L:
-                        return Constraint«c.id»();
+                        return new Constraint«c.id»();
                 «ENDIF»
             «ENDFOR»
             default:
@@ -176,8 +181,8 @@ public class ConditionCreator {
     package de.unikassel.vs.alica.codegen.out.«behaviour.relativeDirectory»;
 «ENDIF»
 
-public class «behaviour.name»«behaviour.id» {
-    public «behaviour.name»«behaviour.id»() {
+public class «StringUtils.capitalize(behaviour.name)»«behaviour.id» {
+    public «StringUtils.capitalize(behaviour.name)»«behaviour.id»() {
         «constraintCodeGenerator.expressionsBehaviourCheckingMethods(behaviour)»
     }
 }
@@ -190,7 +195,7 @@ public class «behaviour.name»«behaviour.id» {
     package de.unikassel.vs.alica.codegen.out.«behaviour.relativeDirectory».constraints;
 «ENDIF»
 
-public class «behaviour.name»«behaviour.id»Constraints {
+public class «StringUtils.capitalize(behaviour.name)»«behaviour.id»Constraints {
     public «behaviour.name»«behaviour.id»Constraints() {
         «constraintCodeGenerator.constraintBehaviourCheckingMethods(behaviour)»
     }
@@ -204,23 +209,9 @@ public class «behaviour.name»«behaviour.id»Constraints {
     package de.unikassel.vs.alica.codegen.out.«plan.relativeDirectory».constraints;
 «ENDIF»
 
-public class «plan.name»«plan.id»Constraints {
-    public «plan.name»«plan.id»Constraints() {
-        //Plan:«plan.name»
-        /*
-        * Tasks: «var List<EntryPoint> entryPoints = plan.entryPoints» «FOR  planEntryPoint : entryPoints»
-        * - EP:«planEntryPoint.id» : «planEntryPoint.task.name» («planEntryPoint.task.id»)«ENDFOR»
-        *
-        * States:«var List<State> states = plan.states» «FOR state : states»
-        * - «state.name» («state.id»)«ENDFOR»
-        *
-        * Vars:«var List<Variable> variables = plan.variables» «FOR variable : variables»
-        * - «variable.name» («variable.id») «ENDFOR»
-        */
-        «constraintCodeGenerator.constraintPlanCheckingMethods(plan)»
-        «FOR state: states»
-            «constraintCodeGenerator.constraintStateCheckingMethods(state)»
-        «ENDFOR»
+public class «StringUtils.capitalize(plan.name)»«plan.id»Constraints {
+    public «StringUtils.capitalize(plan.name)»«plan.id»Constraints() {
+
     }
 }
 '''
@@ -245,14 +236,15 @@ public class DomainCondition {
 «ELSE»
     package de.unikassel.vs.alica.codegen.out.«plan.relativeDirectory»;
 «ENDIF»
+import de.unikassel.vs.alica.engine.BasePlan;
 
-public class «plan.name»«plan.id» {
-    public «plan.name»«plan.id»() {
+public class «StringUtils.capitalize(plan.name)»«plan.id» extends BasePlan {
+    public «StringUtils.capitalize(plan.name)»«plan.id»() {
         «constraintCodeGenerator.expressionsPlanCheckingMethods(plan)»
     }
 
-    public Object getUtilityFunction(Plan plan) {
-        // TODO: add Impl call here
+    public BasicUtilityFunction getUtilityFunction(Plan plan) {
+
     }
 
     «var List<State> states = plan.states»

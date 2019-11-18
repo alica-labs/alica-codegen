@@ -12,6 +12,7 @@ import de.unikassel.vs.alica.planDesigner.alicamodel.*;
  * INSERT IT
  */
 import de.unikassel.vs.alica.codegen.java.XtendTemplates;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -56,12 +57,14 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
     public void createBehaviour(Behaviour behaviour) {
         String destinationPath = cutDestinationPathToDirectory(behaviour);
 
-        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), destinationPath, behaviour.getName() + behaviour.getId() + ".java").toString();
+        String filename = StringUtils.capitalize(behaviour.getName()) + behaviour.getId() + ".java";
+        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), destinationPath, filename).toString();
         String fileContentSource = xtendTemplates.behaviourCondition(behaviour, getActiveConstraintCodeGenerator());
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
 
-        String srcPath2 = Paths.get(generatedSourcesManager.getBaseDir(), destinationPath, behaviour.getName()+ ".java").toString();
+        String filename2 = StringUtils.capitalize(behaviour.getName()) + ".java";
+        String srcPath2 = Paths.get(generatedSourcesManager.getBaseDir(), destinationPath, filename2).toString();
         String fileContentSource2 = xtendTemplates.behaviour(behaviour);
         writeSourceFile(srcPath2, fileContentSource2);
         formatFile(srcPath2);
@@ -99,7 +102,8 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
             cstrSrcPathOnDisk.mkdir();
         }
 
-        String srcPath = Paths.get(constraintSourcePath, plan.getName() + plan.getId() + "Constraints.java").toString();
+        String filename = StringUtils.capitalize(plan.getName()) + plan.getId() + "Constraints.java";
+        String srcPath = Paths.get(constraintSourcePath, filename).toString();
         String fileContentSource = xtendTemplates.constraints(plan, getActiveConstraintCodeGenerator());
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
@@ -136,7 +140,8 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
             cstrSrcPathOnDisk.mkdir();
         }
 
-        String srcPath = Paths.get(constraintSourcePath, behaviour.getName() + behaviour.getId() + "Constraints.java").toString();
+        String filename = StringUtils.capitalize(behaviour.getName()) + behaviour.getId() + "Constraints.java";
+        String srcPath = Paths.get(constraintSourcePath, filename).toString();
         String fileContentSource = xtendTemplates.constraints(behaviour, getActiveConstraintCodeGenerator());
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
@@ -146,7 +151,8 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
     public void createPlan(Plan plan) {
         String destinationPath = cutDestinationPathToDirectory(plan);
 
-        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), destinationPath, plan.getName() + plan.getId() + ".java").toString();
+        String filename = StringUtils.capitalize(plan.getName()) + plan.getId() + ".java";
+        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), destinationPath, filename).toString();
         String fileContentSource = xtendTemplates.plan(plan, getActiveConstraintCodeGenerator());
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);

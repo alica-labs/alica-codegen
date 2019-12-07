@@ -32,9 +32,9 @@ import de.unikassel.vs.alica.engine.BasicBehaviour;
 
 public class BehaviourCreator {
     public BasicBehaviour createBehaviour(long behaviourId) throws Exception {
-        switch (behaviourId) {
+        switch (String.valueOf(behaviourId)) {
             «FOR beh : behaviours»
-                case «beh.id»L:
+                case "«beh.id»":
                     return new «StringUtils.capitalize(beh.name)»();
             «ENDFOR»
             default:
@@ -105,9 +105,9 @@ import de.unikassel.vs.alica.engine.BasicUtilityFunction;
 
 public class UtilityFunctionCreator {
     public BasicUtilityFunction createUtility(long utilityfunctionConfId) throws Exception {
-        switch(utilityfunctionConfId) {
+        switch(String.valueOf(utilityfunctionConfId)) {
             «FOR p: plans»
-                case «p.id»L:
+                case "«p.id»":
                     return new UtilityFunction«p.id»();
             «ENDFOR»
             default:
@@ -139,9 +139,9 @@ import de.unikassel.vs.alica.engine.BasicCondition;
 
 public class ConditionCreator {
     public BasicCondition createConditions(long conditionConfId) throws Exception {
-        switch (conditionConfId) {
+        switch (String.valueOf(conditionConfId)) {
             «FOR con: conditions»
-                case «con.id»L:
+                case "«con.id»":
                     «IF (con instanceof PreCondition)»
                         return new PreCondition«con.id»();
                     «ENDIF»
@@ -151,7 +151,6 @@ public class ConditionCreator {
                     «IF (con instanceof RuntimeCondition)»
                         return new RunTimeCondition«con.id»();
                     «ENDIF»
-                    break;
             «ENDFOR»
             default:
                 System.err.println("ConditionCreator: Unknown condition id requested: " + conditionConfId);
@@ -182,10 +181,10 @@ import de.unikassel.vs.alica.engine.BasicCondition;
 
 public class ConstraintCreator {
     public BasicCondition createConstraint(long constraintConfId) throws Exception {
-        switch (constraintConfId) {
+        switch (String.valueOf(constraintConfId)) {
             «FOR c: conditions»
                 «IF (c.variables.size > 0) || (c.quantifiers.size > 0)»
-                    case «c.id»L:
+                    case "«c.id»":
                         return new Constraint«c.id»();
                 «ENDIF»
             «ENDFOR»

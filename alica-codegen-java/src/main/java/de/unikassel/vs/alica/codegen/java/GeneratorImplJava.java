@@ -67,9 +67,39 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
         formatFile(srcPath);
     }
 
+    private void preConditionCreator(Behaviour behaviour) {
+        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "PreCondition" + behaviour.getId() + ".java").toString();
+        String fileContentSource = xtendTemplates.preConditionBehaviour(behaviour);
+        writeSourceFile(srcPath, fileContentSource);
+        formatFile(srcPath);
+    }
+
+    private void runtimeConditionCreator(Behaviour behaviour) {
+        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "RunTimeCondition" + behaviour.getId() + ".java").toString();
+        String fileContentSource = xtendTemplates.runtimeConditionBehaviour(behaviour);
+        writeSourceFile(srcPath, fileContentSource);
+        formatFile(srcPath);
+    }
+
+    private void postConditionCreator(Behaviour behaviour) {
+        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "PostCondition" + behaviour.getId() + ".java").toString();
+        String fileContentSource = xtendTemplates.postConditionBehaviour(behaviour);
+        writeSourceFile(srcPath, fileContentSource);
+        formatFile(srcPath);
+    }
+
     @Override
     public void createBehaviour(Behaviour behaviour) {
         this.createBehaviourImpl(behaviour);
+        if (behaviour.getPreCondition() != null) {
+            this.preConditionCreator(behaviour);
+        }
+        if (behaviour.getRuntimeCondition() != null) {
+            this.runtimeConditionCreator(behaviour);
+        }
+        if (behaviour.getPostCondition() != null) {
+            this.postConditionCreator(behaviour);
+        }
 
         String destinationPath = cutDestinationPathToDirectory(behaviour);
         String filename = StringUtils.capitalize(behaviour.getName()) + behaviour.getId() + ".java";
@@ -101,8 +131,111 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
         formatFile(srcPath);
     }
 
+    private void constraintPreCondition(Behaviour behaviour) {
+        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "Constraint" + behaviour.getPreCondition().getId() + ".java").toString();
+        String fileContentSource = xtendTemplates.constraintPreCondition(behaviour);
+        writeSourceFile(srcPath, fileContentSource);
+        formatFile(srcPath);
+    }
+
+    private void constraintRuntimeCondition(Behaviour behaviour) {
+        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "Constraint" + behaviour.getRuntimeCondition().getId() + ".java").toString();
+        String fileContentSource = xtendTemplates.constraintRuntimeCondition(behaviour);
+        writeSourceFile(srcPath, fileContentSource);
+        formatFile(srcPath);
+    }
+
+    private void constraintPostCondition(Behaviour behaviour) {
+        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "Constraint" + behaviour.getPostCondition().getId() + ".java").toString();
+        String fileContentSource = xtendTemplates.constraintPostCondition(behaviour);
+        writeSourceFile(srcPath, fileContentSource);
+        formatFile(srcPath);
+    }
+
+    @Override
+    public void createConstraintsForBehaviour(Behaviour behaviour) {
+        PreCondition preCondition = behaviour.getPreCondition();
+        if (preCondition != null) {
+            if (preCondition.getVariables().size() > 0 || preCondition.getQuantifiers().size() > 0) {
+                this.constraintPreCondition(behaviour);
+            }
+        }
+        RuntimeCondition runtimeCondition = behaviour.getRuntimeCondition();
+        if (runtimeCondition != null) {
+            if (runtimeCondition.getVariables().size() > 0 || runtimeCondition.getQuantifiers().size() > 0) {
+                this.constraintRuntimeCondition(behaviour);
+            }
+        }
+        PostCondition postCondition = behaviour.getPostCondition();
+        if (postCondition != null) {
+            if (postCondition.getVariables().size() > 0 || postCondition.getQuantifiers().size() > 0) {
+                this.constraintPostCondition(behaviour);
+            }
+        }
+
+        String destinationPathWithoutName = cutDestinationPathToDirectory(behaviour);
+        String constraintHeaderPath = Paths.get(generatedSourcesManager.getIncludeDir(),
+                destinationPathWithoutName, "constraints").toString();
+        File cstrIncPathOnDisk = new File(constraintHeaderPath);
+        if (!cstrIncPathOnDisk.exists()) {
+            cstrIncPathOnDisk.mkdir();
+        }
+
+        String constraintSourcePath = Paths.get(generatedSourcesManager.getBaseDir(), destinationPathWithoutName, "constraints").toString();
+        File cstrSrcPathOnDisk = new File(constraintSourcePath);
+        if (!cstrSrcPathOnDisk.exists()) {
+            cstrSrcPathOnDisk.mkdir();
+        }
+
+        String filename = StringUtils.capitalize(behaviour.getName()) + behaviour.getId() + "Constraints.java";
+        String srcPath = Paths.get(constraintSourcePath, filename).toString();
+        String fileContentSource = xtendTemplates.constraints(behaviour, getActiveConstraintCodeGenerator());
+        writeSourceFile(srcPath, fileContentSource);
+        formatFile(srcPath);
+    }
+
+    private void constraintPlanPreCondition(Plan plan) {
+        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "Constraint" + plan.getPreCondition().getId() + ".java").toString();
+        String fileContentSource = xtendTemplates.constraintPlanPreCondition(plan);
+        writeSourceFile(srcPath, fileContentSource);
+        formatFile(srcPath);
+    }
+
+    private void constraintPlanRuntimeCondition(Plan plan) {
+        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "Constraint" + plan.getRuntimeCondition().getId() + ".java").toString();
+        String fileContentSource = xtendTemplates.constraintPlanRuntimeCondition(plan);
+        writeSourceFile(srcPath, fileContentSource);
+        formatFile(srcPath);
+    }
+
+    private void constraintPlanTransitionPreCondition(Transition transition) {
+        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "Constraint" + transition.getPreCondition().getId() + ".java").toString();
+        String fileContentSource = xtendTemplates.constraintPlanTransitionPreCondition(transition);
+        writeSourceFile(srcPath, fileContentSource);
+        formatFile(srcPath);
+    }
+
     @Override
     public void createConstraintsForPlan(Plan plan) {
+        if (plan.getPreCondition() != null) {
+            this.constraintPlanPreCondition(plan);
+        }
+        RuntimeCondition runtimeCondition = plan.getRuntimeCondition();
+        if (runtimeCondition != null) {
+            if (runtimeCondition.getVariables().size() > 0 || runtimeCondition.getQuantifiers().size() > 0) {
+                this.constraintPlanRuntimeCondition(plan);
+            }
+        }
+        List<Transition> transitions = plan.getTransitions();
+        for (Transition transition: transitions) {
+            PreCondition preCondition = transition.getPreCondition();
+            if (preCondition != null) {
+                if (preCondition.getVariables().size() > 0 || preCondition.getQuantifiers().size() > 0) {
+                    this.constraintPlanTransitionPreCondition(transition);
+                }
+            }
+        }
+
         String destinationPathWithoutName = cutDestinationPathToDirectory(plan);
         String constraintHeaderPath = Paths.get(generatedSourcesManager.getIncludeDir(),
                 destinationPathWithoutName, "constraints").toString();
@@ -139,33 +272,9 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
         }
     }
 
-    @Override
-    public void createConstraintsForBehaviour(Behaviour behaviour) {
-        String destinationPathWithoutName = cutDestinationPathToDirectory(behaviour);
-        String constraintHeaderPath = Paths.get(generatedSourcesManager.getIncludeDir(),
-                destinationPathWithoutName, "constraints").toString();
-        File cstrIncPathOnDisk = new File(constraintHeaderPath);
-        if (!cstrIncPathOnDisk.exists()) {
-            cstrIncPathOnDisk.mkdir();
-        }
-
-        String constraintSourcePath = Paths.get(generatedSourcesManager.getBaseDir(), destinationPathWithoutName, "constraints").toString();
-        File cstrSrcPathOnDisk = new File(constraintSourcePath);
-        if (!cstrSrcPathOnDisk.exists()) {
-            cstrSrcPathOnDisk.mkdir();
-        }
-
-        String filename = StringUtils.capitalize(behaviour.getName()) + behaviour.getId() + "Constraints.java";
-        String srcPath = Paths.get(constraintSourcePath, filename).toString();
-        String fileContentSource = xtendTemplates.constraints(behaviour, getActiveConstraintCodeGenerator());
-        writeSourceFile(srcPath, fileContentSource);
-        formatFile(srcPath);
-    }
-
-    private void createPlanImpl(Plan plan) {
-        String filename = StringUtils.capitalize(plan.getName()) + plan.getId() + "Impl.java";
-        String srcPath = Paths.get(implPath, filename).toString();
-        String fileContentSource = xtendTemplates.planImpl(plan);
+    private void createDomainBehaviourImpl() {
+        String srcPath = Paths.get(implPath, "DomainBehaviourImpl.java").toString();
+        String fileContentSource = xtendTemplates.domainBehaviourImpl();
         if (new File(srcPath).exists()) {
             LOG.debug("File \"" + srcPath + "\" already exists and is not overwritten");
             return;
@@ -175,21 +284,11 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
     }
 
     @Override
-    public void createPlan(Plan plan) {
-        this.createPlanImpl(plan);
+    public void createDomainBehaviour() {
+        this.createDomainBehaviourImpl();
 
-        String destinationPath = cutDestinationPathToDirectory(plan);
-        String filename = StringUtils.capitalize(plan.getName()) + plan.getId() + ".java";
-        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), destinationPath, filename).toString();
-        String fileContentSource = xtendTemplates.plan(plan, getActiveConstraintCodeGenerator());
-        writeSourceFile(srcPath, fileContentSource);
-        formatFile(srcPath);
-    }
-
-    @Override
-    public void createUtilityFunctionCreator(List<Plan> plans) {
-        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "UtilityFunctionCreator.java").toString();
-        String fileContentSource = xtendTemplates.utilityFunctionCreator(plans);
+        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "DomainBehaviour.java").toString();
+        String fileContentSource = xtendTemplates.domainBehaviour();
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
     }
@@ -215,9 +314,10 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
         formatFile(srcPath);
     }
 
-    private void createDomainBehaviourImpl() {
-        String srcPath = Paths.get(implPath, "DomainBehaviourImpl.java").toString();
-        String fileContentSource = xtendTemplates.domainBehaviourImpl();
+    private void createPlanImpl(Plan plan) {
+        String filename = StringUtils.capitalize(plan.getName()) + plan.getId() + "Impl.java";
+        String srcPath = Paths.get(implPath, filename).toString();
+        String fileContentSource = xtendTemplates.planImpl(plan);
         if (new File(srcPath).exists()) {
             LOG.debug("File \"" + srcPath + "\" already exists and is not overwritten");
             return;
@@ -226,12 +326,80 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
         formatFile(srcPath);
     }
 
-    @Override
-    public void createDomainBehaviour() {
-        this.createDomainBehaviourImpl();
+    private void utilityFunctionPlan(Plan plan) {
+        this.utilityFunctionPlanImpl(plan);
 
-        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "DomainBehaviour.java").toString();
-        String fileContentSource = xtendTemplates.domainBehaviour();
+        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "UtilityFunction" + plan.getId() + ".java").toString();
+        String fileContentSource = xtendTemplates.utilityFunctionPlan(plan);
+        writeSourceFile(srcPath, fileContentSource);
+        formatFile(srcPath);
+    }
+
+    private void utilityFunctionPlanImpl(Plan plan) {
+        String filename = "UtilityFunction" + plan.getId() + "Impl.java";
+        String srcPath = Paths.get(implPath, filename).toString();
+        String fileContentSource = xtendTemplates.utilityFunctionPlanImpl(plan);
+        if (new File(srcPath).exists()) {
+            LOG.debug("File \"" + srcPath + "\" already exists and is not overwritten");
+            return;
+        }
+        writeSourceFile(srcPath, fileContentSource);
+        formatFile(srcPath);
+    }
+
+    private void preConditionPlan(Plan plan) {
+        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "PreCondition" + plan.getPreCondition().getId() + ".java").toString();
+        String fileContentSource = xtendTemplates.preConditionPlan(plan);
+        writeSourceFile(srcPath, fileContentSource);
+        formatFile(srcPath);
+    }
+
+    private void runtimeConditionPlan(Plan plan) {
+        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "RunTimeCondition" + plan.getRuntimeCondition().getId() + ".java").toString();
+        String fileContentSource = xtendTemplates.runtimeConditionPlan(plan);
+        writeSourceFile(srcPath, fileContentSource);
+        formatFile(srcPath);
+    }
+
+    private void transitionPreConditionPlan(Transition transition) {
+        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "PreCondition" + transition.getPreCondition().getId() + ".java").toString();
+        String fileContentSource = xtendTemplates.transitionPreConditionPlan(transition);
+        writeSourceFile(srcPath, fileContentSource);
+        formatFile(srcPath);
+    }
+
+    @Override
+    public void createPlan(Plan plan) {
+        this.createPlanImpl(plan);
+        this.utilityFunctionPlan(plan);
+        if (plan.getPreCondition() != null) {
+            this.preConditionPlan(plan);
+        }
+        if (plan.getRuntimeCondition() != null) {
+            this.runtimeConditionPlan(plan);
+        }
+        List<State> states = plan.getStates();
+        for (State state: states) {
+            List<Transition> transitions = state.getOutTransitions();
+            for (Transition transition: transitions) {
+                if (transition.getPreCondition() != null) {
+                    this.transitionPreConditionPlan(transition);
+                }
+            }
+        }
+
+        String destinationPath = cutDestinationPathToDirectory(plan);
+        String filename = StringUtils.capitalize(plan.getName()) + plan.getId() + ".java";
+        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), destinationPath, filename).toString();
+        String fileContentSource = xtendTemplates.plan(plan, getActiveConstraintCodeGenerator());
+        writeSourceFile(srcPath, fileContentSource);
+        formatFile(srcPath);
+    }
+
+    @Override
+    public void createUtilityFunctionCreator(List<Plan> plans) {
+        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "UtilityFunctionCreator.java").toString();
+        String fileContentSource = xtendTemplates.utilityFunctionCreator(plans);
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
     }

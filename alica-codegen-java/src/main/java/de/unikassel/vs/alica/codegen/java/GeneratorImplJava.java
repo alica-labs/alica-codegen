@@ -55,10 +55,23 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
         formatFile(srcPath);
     }
 
+    private void createBehaviourImpl(Behaviour behaviour) {
+        String filename = StringUtils.capitalize(behaviour.getName()) + "Impl.java";
+        String srcPath = Paths.get(implPath, filename).toString();
+        String fileContentSource = xtendTemplates.behaviourImpl(behaviour);
+        if (new File(srcPath).exists()) {
+            LOG.debug("File \"" + srcPath + "\" already exists and is not overwritten");
+            return;
+        }
+        writeSourceFile(srcPath, fileContentSource);
+        formatFile(srcPath);
+    }
+
     @Override
     public void createBehaviour(Behaviour behaviour) {
-        String destinationPath = cutDestinationPathToDirectory(behaviour);
+        this.createBehaviourImpl(behaviour);
 
+        String destinationPath = cutDestinationPathToDirectory(behaviour);
         String filename = StringUtils.capitalize(behaviour.getName()) + behaviour.getId() + ".java";
         String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), destinationPath, filename).toString();
         String fileContentSource = xtendTemplates.behaviourCondition(behaviour, getActiveConstraintCodeGenerator());
@@ -153,6 +166,10 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
         String filename = StringUtils.capitalize(plan.getName()) + plan.getId() + "Impl.java";
         String srcPath = Paths.get(implPath, filename).toString();
         String fileContentSource = xtendTemplates.planImpl(plan);
+        if (new File(srcPath).exists()) {
+            LOG.debug("File \"" + srcPath + "\" already exists and is not overwritten");
+            return;
+        }
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
     }
@@ -177,16 +194,42 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
         formatFile(srcPath);
     }
 
+    private void createDomainConditionImpl() {
+        String srcPath = Paths.get(implPath, "DomainConditionImpl.java").toString();
+        String fileContentSource = xtendTemplates.domainConditionImpl();
+        if (new File(srcPath).exists()) {
+            LOG.debug("File \"" + srcPath + "\" already exists and is not overwritten");
+            return;
+        }
+        writeSourceFile(srcPath, fileContentSource);
+        formatFile(srcPath);
+    }
+
     @Override
     public void createDomainCondition() {
+        this.createDomainConditionImpl();
+
         String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "DomainCondition.java").toString();
         String fileContentSource = xtendTemplates.domainCondition();
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
     }
 
+    private void createDomainBehaviourImpl() {
+        String srcPath = Paths.get(implPath, "DomainBehaviourImpl.java").toString();
+        String fileContentSource = xtendTemplates.domainBehaviourImpl();
+        if (new File(srcPath).exists()) {
+            LOG.debug("File \"" + srcPath + "\" already exists and is not overwritten");
+            return;
+        }
+        writeSourceFile(srcPath, fileContentSource);
+        formatFile(srcPath);
+    }
+
     @Override
     public void createDomainBehaviour() {
+        this.createDomainBehaviourImpl();
+
         String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "DomainBehaviour.java").toString();
         String fileContentSource = xtendTemplates.domainBehaviour();
         writeSourceFile(srcPath, fileContentSource);

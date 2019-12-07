@@ -22,7 +22,6 @@ class XtendTemplates {
 package de.unikassel.vs.alica.codegen.out;
 
 import de.unikassel.vs.alica.engine.BasicBehaviour;
-import de.unikassel.vs.alica.codegen.out.BehaviourCreator;
 «FOR beh : behaviours»
     «IF (beh.relativeDirectory.isEmpty)»
         import de.unikassel.vs.alica.codegen.out.«StringUtils.capitalize(beh.name)»;
@@ -53,18 +52,41 @@ public class BehaviourCreator {
     package de.unikassel.vs.alica.codegen.out.«behaviour.relativeDirectory»;
 «ENDIF»
 
-// import de.unikassel.vs.alica.codegen.out.impl.«StringUtils.capitalize(behaviour.name)»Impl;
+import de.unikassel.vs.alica.engine.BasicBehaviour;
+import de.unikassel.vs.alica.codegen.out.impl.«StringUtils.capitalize(behaviour.name)»Impl;
 
-public class «StringUtils.capitalize(behaviour.name)» {
-    // private «StringUtils.capitalize(behaviour.name)»Impl «StringUtils.capitalize(behaviour.name)»Impl = new «StringUtils.capitalize(behaviour.name)»Impl();
+public class «StringUtils.capitalize(behaviour.name)» extends BasicBehaviour {
+    private «StringUtils.capitalize(behaviour.name)»Impl impl;
 
-    // public Object run() {
-    //     this.«StringUtils.capitalize(behaviour.name)»Impl.run();
-    // }
+    public «StringUtils.capitalize(behaviour.name)»() {
+        impl = new «StringUtils.capitalize(behaviour.name)»Impl();
+    }
 
-    // public Object initialiseParameters() {
-    //     this.«StringUtils.capitalize(behaviour.name)»Impl.initialiseParameters();
-    // }
+    public void run() {
+        impl.run();
+    }
+
+    public void initialiseParameters() {
+        impl.initialiseParameters();
+    }
+}
+'''
+
+    def String behaviourImpl(Behaviour behaviour) '''
+package de.unikassel.vs.alica.codegen.out.impl;
+
+public class «StringUtils.capitalize(behaviour.name)»Impl {
+    public «StringUtils.capitalize(behaviour.name)»Impl() {
+
+    }
+
+    public void run() {
+
+    }
+
+    public void initialiseParameters() {
+
+    }
 }
 '''
 
@@ -219,14 +241,48 @@ public class «StringUtils.capitalize(plan.name)»«plan.id»Constraints {
     def String domainBehaviour() '''
 package de.unikassel.vs.alica.codegen.out;
 
+import de.unikassel.vs.alica.codegen.out.impl.DomainBehaviourImpl;
+
 public class DomainBehaviour {
+    private DomainBehaviourImpl impl;
+
+    public DomainBehaviour() {
+        impl = new DomainBehaviourImpl();
+    }
+}
+'''
+
+    def String domainBehaviourImpl() '''
+package de.unikassel.vs.alica.codegen.out.impl;
+
+public class DomainBehaviourImpl {
+    public DomainBehaviourImpl() {
+
+    }
 }
 '''
 
     def String domainCondition() '''
 package de.unikassel.vs.alica.codegen.out;
 
+import de.unikassel.vs.alica.codegen.out.impl.DomainConditionImpl;
+
 public class DomainCondition {
+    private DomainConditionImpl impl;
+
+    public DomainCondition() {
+        impl = new DomainConditionImpl();
+    }
+}
+'''
+
+    def String domainConditionImpl() '''
+package de.unikassel.vs.alica.codegen.out.impl;
+
+public class DomainConditionImpl {
+    public DomainConditionImpl() {
+
+    }
 }
 '''
 
@@ -236,37 +292,35 @@ public class DomainCondition {
 «ELSE»
     package de.unikassel.vs.alica.codegen.out.«plan.relativeDirectory»;
 «ENDIF»
-import de.unikassel.vs.alica.engine.BasePlan;
+import de.unikassel.vs.alica.engine.BasicPlan;
 import de.unikassel.vs.alica.engine.BasicUtilityFunction;
 import de.unikassel.vs.alica.codegen.out.impl.«StringUtils.capitalize(plan.name)»«plan.id»Impl;
 
-public class «StringUtils.capitalize(plan.name)»«plan.id» extends BasePlan {
-    private «StringUtils.capitalize(plan.name)»«plan.id»Impl planImpl = new «StringUtils.capitalize(plan.name)»«plan.id»Impl();
+public class «StringUtils.capitalize(plan.name)»«plan.id» extends BasicPlan {
+    private «StringUtils.capitalize(plan.name)»«plan.id»Impl impl;
 
     public «StringUtils.capitalize(plan.name)»«plan.id»() {
+        impl = new «StringUtils.capitalize(plan.name)»«plan.id»Impl();
         «constraintCodeGenerator.expressionsPlanCheckingMethods(plan)»
     }
 
-    public BasicUtilityFunction getUtilityFunction(Plan plan) {
-        return planImpl.getUtilityFunction(plan);
+    public BasicUtilityFunction getUtilityFunction(BasicPlan plan) {
+        return impl.getUtilityFunction(plan);
     }
 
-    «var List<State> states = plan.states»
-    «FOR state: states»
-        «constraintCodeGenerator.expressionsStateCheckingMethods(state)»
-    «ENDFOR»
+    // TODO: removed constraintCodeGenerator.expressionsStateCheckingMethods(state) that generates c++ code
 }
 '''
 
     def String planImpl(Plan plan) '''
 package de.unikassel.vs.alica.codegen.out.impl;
 
-import de.unikassel.vs.alica.engine.BasePlan;
+import de.unikassel.vs.alica.engine.BasicPlan;
 import de.unikassel.vs.alica.engine.BasicUtilityFunction;
 import de.unikassel.vs.alica.engine.DefaultUtilityFunction;
 
 public class «StringUtils.capitalize(plan.name)»«plan.id»Impl {
-    public BasicUtilityFunction getUtilityFunction(BasePlan plan) {
+    public BasicUtilityFunction getUtilityFunction(BasicPlan plan) {
         return new DefaultUtilityFunction();
     }
 }

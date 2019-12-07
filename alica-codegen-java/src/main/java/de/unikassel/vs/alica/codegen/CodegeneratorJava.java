@@ -1,6 +1,7 @@
 package de.unikassel.vs.alica.codegen;
 
 import de.unikassel.vs.alica.codegen.java.GeneratorImplJava;
+import de.unikassel.vs.alica.codegen.plugin.PluginManager;
 import de.unikassel.vs.alica.planDesigner.alicamodel.AbstractPlan;
 import de.unikassel.vs.alica.planDesigner.alicamodel.Behaviour;
 import de.unikassel.vs.alica.planDesigner.alicamodel.Condition;
@@ -9,6 +10,7 @@ import de.unikassel.vs.alica.planDesigner.alicamodel.Plan;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -53,6 +55,8 @@ public class CodegeneratorJava extends Codegenerator {
             LOG.error("Could not find expression validator path! ", e);
             throw new RuntimeException(e);
         }
+
+        PluginManager.getInstance().getDefaultPlugin().setProtectedRegions(new HashMap<>());
 
         languageSpecificGenerator.createDomainBehaviour();
         languageSpecificGenerator.createDomainCondition();

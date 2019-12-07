@@ -31,6 +31,7 @@ import java.util.stream.Stream;
 public class GeneratorImplJava extends GeneratorImpl implements IGenerator<GeneratedSourcesManagerJava> {
     private XtendTemplates xtendTemplates;
     private GeneratedSourcesManagerJava generatedSourcesManager;
+    private String implPath;
 
     public GeneratorImplJava() {
         xtendTemplates = new XtendTemplates();
@@ -38,6 +39,7 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
 
     public void setGeneratedSourcesManager(GeneratedSourcesManagerJava generatedSourcesManager) {
         this.generatedSourcesManager = generatedSourcesManager;
+        implPath = generatedSourcesManager.getBaseDir() + File.separator + "impl";
     }
 
     @Override
@@ -147,10 +149,19 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
         formatFile(srcPath);
     }
 
+    private void createPlanImpl(Plan plan) {
+        String filename = StringUtils.capitalize(plan.getName()) + plan.getId() + "Impl.java";
+        String srcPath = Paths.get(implPath, filename).toString();
+        String fileContentSource = xtendTemplates.planImpl(plan);
+        writeSourceFile(srcPath, fileContentSource);
+        formatFile(srcPath);
+    }
+
     @Override
     public void createPlan(Plan plan) {
-        String destinationPath = cutDestinationPathToDirectory(plan);
+        this.createPlanImpl(plan);
 
+        String destinationPath = cutDestinationPathToDirectory(plan);
         String filename = StringUtils.capitalize(plan.getName()) + plan.getId() + ".java";
         String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), destinationPath, filename).toString();
         String fileContentSource = xtendTemplates.plan(plan, getActiveConstraintCodeGenerator());

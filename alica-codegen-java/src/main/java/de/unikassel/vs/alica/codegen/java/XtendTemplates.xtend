@@ -237,20 +237,38 @@ public class DomainCondition {
     package de.unikassel.vs.alica.codegen.out.«plan.relativeDirectory»;
 «ENDIF»
 import de.unikassel.vs.alica.engine.BasePlan;
+import de.unikassel.vs.alica.engine.BasicUtilityFunction;
+import de.unikassel.vs.alica.codegen.out.impl.«StringUtils.capitalize(plan.name)»«plan.id»Impl;
 
 public class «StringUtils.capitalize(plan.name)»«plan.id» extends BasePlan {
+    private «StringUtils.capitalize(plan.name)»«plan.id»Impl planImpl = new «StringUtils.capitalize(plan.name)»«plan.id»Impl();
+
     public «StringUtils.capitalize(plan.name)»«plan.id»() {
         «constraintCodeGenerator.expressionsPlanCheckingMethods(plan)»
     }
 
     public BasicUtilityFunction getUtilityFunction(Plan plan) {
-
+        return planImpl.getUtilityFunction(plan);
     }
 
     «var List<State> states = plan.states»
     «FOR state: states»
         «constraintCodeGenerator.expressionsStateCheckingMethods(state)»
     «ENDFOR»
+}
+'''
+
+    def String planImpl(Plan plan) '''
+package de.unikassel.vs.alica.codegen.out.impl;
+
+import de.unikassel.vs.alica.engine.BasePlan;
+import de.unikassel.vs.alica.engine.BasicUtilityFunction;
+import de.unikassel.vs.alica.engine.DefaultUtilityFunction;
+
+public class «StringUtils.capitalize(plan.name)»«plan.id»Impl {
+    public BasicUtilityFunction getUtilityFunction(BasePlan plan) {
+        return new DefaultUtilityFunction();
+    }
 }
 '''
 }

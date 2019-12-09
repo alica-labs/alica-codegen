@@ -3,10 +3,15 @@ package de.unikassel.vs.alica.codegen.java;
 import de.unikassel.vs.alica.codegen.CodegeneratorJava;
 import de.unikassel.vs.alica.codegen.GeneratedSourcesManagerJava;
 import de.unikassel.vs.alica.planDesigner.alicamodel.*;
-import org.junit.*;
+import org.apache.commons.io.FileUtils;
+import org.junit.BeforeClass;
+import org.junit.ClassRule;
+import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
+import java.io.File;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,6 +74,14 @@ public class CodegenJavaTest {
                 tmpPath,
                 generatedSourcesManager);
         codegenerator.generate();
+
+        // copy engine folder from resources to destination
+        URL url = CodegenJavaTest.class.getResource("engine");
+        String path = url.getPath();
+        File engineFolderSrc = new File(path);
+        File engineFolderDst = new File(tmpPath + File.separator + "de" + File.separator + "unikassel" +
+                File.separator + "vs" + File.separator + "alica" + File.separator + "engine");
+        FileUtils.copyDirectory(engineFolderSrc, engineFolderDst);
     }
 
     private static void compileCode() {

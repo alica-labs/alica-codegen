@@ -79,11 +79,11 @@ public class «StringUtils.capitalize(behaviour.name)»Impl {
     }
 
     public void run(Object msg) {
-
+        throw new UnsupportedOperationException("Not implemented");
     }
 
     public void initialiseParameters() {
-
+        throw new UnsupportedOperationException("Not implemented");
     }
 }
 '''
@@ -403,8 +403,7 @@ public class UtilityFunction«plan.id»Impl {
     }
 
     public UtilityFunction getUtilityFunction(BasicPlan plan) {
-        UtilityFunction defaultFunction = new DefaultUtilityFunction(plan);
-        return defaultFunction;
+        return new DefaultUtilityFunction(plan);
     }
 }
 '''

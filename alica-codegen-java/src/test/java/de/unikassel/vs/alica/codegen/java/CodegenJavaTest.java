@@ -4,6 +4,7 @@ import de.unikassel.vs.alica.codegen.CodegeneratorJava;
 import de.unikassel.vs.alica.codegen.GeneratedSourcesManagerJava;
 import de.unikassel.vs.alica.planDesigner.alicamodel.*;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
@@ -12,15 +13,22 @@ import org.junit.rules.TemporaryFolder;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CodegenJavaTest {
+    private static String tmpPath;
+
     @ClassRule
     public static TemporaryFolder tmpFolder = new TemporaryFolder();
 
     @BeforeClass
-    public static void beforeClass() throws IOException {
+    public static void beforeClass() throws IOException, InterruptedException {
+        tmpPath = tmpFolder.getRoot().getAbsolutePath();
+
         generateCode();
         compileCode();
     }
@@ -65,7 +73,6 @@ public class CodegenJavaTest {
         conditions.add(preCondition);
 
         GeneratedSourcesManagerJava generatedSourcesManager = new GeneratedSourcesManagerJava();
-        String tmpPath = tmpFolder.getRoot().getAbsolutePath();
         generatedSourcesManager.setGenSrcPath(tmpPath);
         CodegeneratorJava codegenerator = new CodegeneratorJava(
                 plans,
@@ -84,9 +91,26 @@ public class CodegenJavaTest {
         FileUtils.copyDirectory(engineFolderSrc, engineFolderDst);
     }
 
-    private static void compileCode() {
+    private static void compileCode() throws IOException, InterruptedException {
         // Compiles already generated source code
 
+        List<Path> paths = new ArrayList<>();
+        Files.walk(Paths.get(tmpPath))
+                .filter(Files::isRegularFile)
+                .filter(p -> FilenameUtils.getExtension(p.getFileName().toString()).equals("java"))
+                .forEach(paths::add);
+
+        StringBuilder stringBuilder = new StringBuilder();
+        for (Path path: paths) {
+            if (stringBuilder.length() > 0) {
+                stringBuilder.append(" ");
+            }
+            stringBuilder.append(path.toAbsolutePath().toString());
+        }
+        String filesStr = stringBuilder.toString();
+
+        String command = "javac " + filesStr;
+        Runtime.getRuntime().exec(command).waitFor();
     }
 
     @Test

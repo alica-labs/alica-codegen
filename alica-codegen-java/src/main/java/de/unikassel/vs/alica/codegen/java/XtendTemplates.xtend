@@ -23,9 +23,7 @@ package de.unikassel.vs.alica.codegen.out;
 
 import de.unikassel.vs.alica.engine.BasicBehaviour;
 «FOR beh : behaviours»
-    «IF (beh.relativeDirectory.isEmpty)»
-        import de.unikassel.vs.alica.codegen.out.«StringUtils.capitalize(beh.name)»;
-    «ELSE»
+    «IF (!beh.relativeDirectory.isEmpty)»
         import de.unikassel.vs.alica.codegen.out.«beh.relativeDirectory».«StringUtils.capitalize(beh.name)»;
     «ENDIF»
 «ENDFOR»
@@ -52,7 +50,6 @@ public class BehaviourCreator {
     package de.unikassel.vs.alica.codegen.out.«behaviour.relativeDirectory»;
 «ENDIF»
 
-import de.unikassel.vs.alica.codegen.out.DomainBehaviour;
 import de.unikassel.vs.alica.codegen.out.impl.«StringUtils.capitalize(behaviour.name)»Impl;
 
 public class «StringUtils.capitalize(behaviour.name)» extends DomainBehaviour {
@@ -96,9 +93,7 @@ package de.unikassel.vs.alica.codegen.out;
 
 import de.unikassel.vs.alica.engine.BasicUtilityFunction;
 «FOR p: plans»
-    «IF (p.relativeDirectory.isEmpty)»
-        import de.unikassel.vs.alica.codegen.out.«StringUtils.capitalize(p.name)»«p.id»;
-    «ELSE»
+    «IF (!p.relativeDirectory.isEmpty)»
         import de.unikassel.vs.alica.codegen.out.«p.relativeDirectory».«StringUtils.capitalize(p.name)»«p.id»;
     «ENDIF»
 «ENDFOR»
@@ -122,20 +117,6 @@ public class UtilityFunctionCreator {
 package de.unikassel.vs.alica.codegen.out;
 
 import de.unikassel.vs.alica.engine.BasicCondition;
-«FOR p: plans»
-    «IF (p.relativeDirectory.isEmpty)»
-        import de.unikassel.vs.alica.codegen.out.«StringUtils.capitalize(p.name)»«p.id»;
-    «ELSE»
-        import de.unikassel.vs.alica.codegen.out.«p.relativeDirectory».«StringUtils.capitalize(p.name)»«p.id»;
-    «ENDIF»
-«ENDFOR»
-«FOR b: behaviours»
-    «IF (b.relativeDirectory.isEmpty)»
-        import de.unikassel.vs.alica.codegen.out.«StringUtils.capitalize(b.name)»«b.id»;
-    «ELSE»
-        import de.unikassel.vs.alica.codegen.out.«b.relativeDirectory».«StringUtils.capitalize(b.name)»«b.id»;
-    «ENDIF»
-«ENDFOR»
 
 public class ConditionCreator {
     public BasicCondition createConditions(long conditionConfId) throws Exception {
@@ -164,20 +145,6 @@ public class ConditionCreator {
 package de.unikassel.vs.alica.codegen.out;
 
 import de.unikassel.vs.alica.engine.BasicCondition;
-«FOR plan: plans»
-    «IF (plan.relativeDirectory.isEmpty)»
-        import de.unikassel.vs.alica.codegen.out.constraints.«StringUtils.capitalize(plan.name)»«plan.id»Constraints;
-    «ELSE»
-        import de.unikassel.vs.alica.codegen.out.«plan.relativeDirectory».constraints.«StringUtils.capitalize(plan.name)»«plan.id»Constraints;
-    «ENDIF»
-«ENDFOR»
-«FOR behaviour: behaviours»
-    «IF (behaviour.relativeDirectory.isEmpty)»
-        import de.unikassel.vs.alica.codegen.out.constraints.«StringUtils.capitalize(behaviour.name)»«behaviour.id»Constraints;
-    «ELSE»
-        import de.unikassel.vs.alica.codegen.out.«behaviour.relativeDirectory».constraints.«StringUtils.capitalize(behaviour.name)»«behaviour.id»Constraints;
-    «ENDIF»
-«ENDFOR»
 
 public class ConstraintCreator {
     public BasicCondition createConstraint(long constraintConfId) throws Exception {
@@ -353,7 +320,6 @@ public class DomainBehaviourImpl {
 package de.unikassel.vs.alica.codegen.out;
 
 import de.unikassel.vs.alica.engine.BasicCondition;
-import de.unikassel.vs.alica.engine.RunningPlan;
 import de.unikassel.vs.alica.codegen.out.impl.DomainConditionImpl;
 
 public class DomainCondition extends BasicCondition {

@@ -57,6 +57,14 @@
             <artifactId>google-java-format</artifactId>
             <version>1.7</version>
         </dependency>
+
+        <dependency>
+            <!-- https://mvnrepository.com/artifact/junit/junit -->
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
 </project>

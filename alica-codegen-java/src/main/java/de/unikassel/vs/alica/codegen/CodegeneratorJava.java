@@ -1,6 +1,7 @@
 package de.unikassel.vs.alica.codegen;
 
 import de.unikassel.vs.alica.codegen.java.GeneratorImplJava;
+import de.unikassel.vs.alica.codegen.plugin.IPlugin;
 import de.unikassel.vs.alica.codegen.plugin.PluginManager;
 import de.unikassel.vs.alica.planDesigner.alicamodel.AbstractPlan;
 import de.unikassel.vs.alica.planDesigner.alicamodel.Behaviour;
@@ -56,7 +57,10 @@ public class CodegeneratorJava extends Codegenerator {
             throw new RuntimeException(e);
         }
 
-        PluginManager.getInstance().getDefaultPlugin().setProtectedRegions(new HashMap<>());
+        IPlugin<?> defaultPlugin = PluginManager.getInstance().getDefaultPlugin();
+        if (defaultPlugin != null) {
+            defaultPlugin.setProtectedRegions(new HashMap<>());
+        }
 
         languageSpecificGenerator.createDomainBehaviour();
         languageSpecificGenerator.createDomainCondition();

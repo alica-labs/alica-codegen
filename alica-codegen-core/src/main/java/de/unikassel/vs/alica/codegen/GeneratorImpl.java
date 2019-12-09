@@ -1,5 +1,6 @@
 package de.unikassel.vs.alica.codegen;
 
+import de.unikassel.vs.alica.codegen.plugin.IPlugin;
 import de.unikassel.vs.alica.codegen.plugin.PluginManager;
 import de.unikassel.vs.alica.planDesigner.alicamodel.AbstractPlan;
 import de.unikassel.vs.alica.planDesigner.alicamodel.Plan;
@@ -85,6 +86,10 @@ public abstract class GeneratorImpl {
      * @return
      */
     public IConstraintCodeGenerator getActiveConstraintCodeGenerator() {
+        IPlugin<?> defaultPlugin = PluginManager.getInstance().getDefaultPlugin();
+        if (defaultPlugin == null) {
+            return null;
+        }
         return PluginManager.getInstance().getDefaultPlugin().getConstraintCodeGenerator();
     }
 }

@@ -5,14 +5,16 @@ import de.unikassel.vs.alica.codegen.GeneratedSourcesManagerJava;
 import de.unikassel.vs.alica.planDesigner.alicamodel.*;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.junit.BeforeClass;
-import org.junit.ClassRule;
-import org.junit.Test;
+import org.junit.*;
 import org.junit.rules.TemporaryFolder;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.lang.reflect.Method;
 import java.net.URL;
+import java.net.URLClassLoader;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -68,6 +70,7 @@ public class CodegenJavaTest {
         preCondition.setPluginName("DefaultPlugin");
         preCondition.setId(1575724578855L);
         preCondition.setName("Precondition1");
+        plan.setPreCondition(preCondition);
 
         List<Condition> conditions = new ArrayList<>();
         conditions.add(preCondition);
@@ -94,12 +97,12 @@ public class CodegenJavaTest {
     private static void compileCode() throws IOException, InterruptedException {
         // Compiles already generated source code
 
+        // get all java files to compile
         List<Path> paths = new ArrayList<>();
         Files.walk(Paths.get(tmpPath))
                 .filter(Files::isRegularFile)
                 .filter(p -> FilenameUtils.getExtension(p.getFileName().toString()).equals("java"))
                 .forEach(paths::add);
-
         StringBuilder stringBuilder = new StringBuilder();
         for (Path path: paths) {
             if (stringBuilder.length() > 0) {
@@ -109,8 +112,24 @@ public class CodegenJavaTest {
         }
         String filesStr = stringBuilder.toString();
 
+        // run compilation
         String command = "javac " + filesStr;
-        Runtime.getRuntime().exec(command).waitFor();
+        Process process = Runtime.getRuntime().exec(command);
+
+        // output stdout and stderr
+        BufferedReader stdout = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        BufferedReader stderr = new BufferedReader(new InputStreamReader(process.getErrorStream()));
+        String s;
+        while ((s = stdout.readLine()) != null) {
+            System.out.println(s);
+        }
+        while ((s = stderr.readLine()) != null) {
+            System.out.println(s);
+        }
+
+        // output exit code
+        int exitCode = process.waitFor();
+        System.out.println("Exit code: " + exitCode);
     }
 
     @Test

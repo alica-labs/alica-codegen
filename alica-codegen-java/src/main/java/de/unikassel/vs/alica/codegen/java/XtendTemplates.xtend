@@ -218,6 +218,10 @@ public class «StringUtils.capitalize(behaviour.name)»«behaviour.id»Constrain
     def String constraintPreCondition(Behaviour behaviour) '''
 package de.unikassel.vs.alica.codegen.out;
 
+import de.unikassel.vs.alica.engine.BasicConstraint;
+import de.unikassel.vs.alica.engine.ProblemDescriptor;
+import de.unikassel.vs.alica.engine.RunningPlan;
+
 public class Constraint«behaviour.preCondition.id» extends BasicConstraint {
     public void getConstraint(ProblemDescriptor c, RunningPlan rp) {
 
@@ -228,6 +232,10 @@ public class Constraint«behaviour.preCondition.id» extends BasicConstraint {
     def String constraintRuntimeCondition(Behaviour behaviour) '''
 package de.unikassel.vs.alica.codegen.out;
 
+import de.unikassel.vs.alica.engine.BasicConstraint;
+import de.unikassel.vs.alica.engine.ProblemDescriptor;
+import de.unikassel.vs.alica.engine.RunningPlan;
+
 public class Constraint«behaviour.runtimeCondition.id» extends BasicConstraint {
     public void getConstraint(ProblemDescriptor c, RunningPlan rp) {
 
@@ -237,6 +245,10 @@ public class Constraint«behaviour.runtimeCondition.id» extends BasicConstraint
 
     def String constraintPostCondition(Behaviour behaviour) '''
 package de.unikassel.vs.alica.codegen.out;
+
+import de.unikassel.vs.alica.engine.BasicConstraint;
+import de.unikassel.vs.alica.engine.ProblemDescriptor;
+import de.unikassel.vs.alica.engine.RunningPlan;
 
 public class Constraint«behaviour.postCondition.id» extends BasicConstraint {
     public void getConstraint(ProblemDescriptor c, RunningPlan rp) {
@@ -263,6 +275,10 @@ public class «StringUtils.capitalize(plan.name)»«plan.id»Constraints {
     def String constraintPlanPreCondition(Plan plan) '''
 package de.unikassel.vs.alica.codegen.out;
 
+import de.unikassel.vs.alica.engine.BasicConstraint;
+import de.unikassel.vs.alica.engine.ProblemDescriptor;
+import de.unikassel.vs.alica.engine.RunningPlan;
+
 public class Constraint«plan.preCondition.id» extends BasicConstraint {
     public void getConstraint(ProblemDescriptor c, RunningPlan rp) {
 
@@ -273,6 +289,10 @@ public class Constraint«plan.preCondition.id» extends BasicConstraint {
     def String constraintPlanRuntimeCondition(Plan plan) '''
 package de.unikassel.vs.alica.codegen.out;
 
+import de.unikassel.vs.alica.engine.BasicConstraint;
+import de.unikassel.vs.alica.engine.ProblemDescriptor;
+import de.unikassel.vs.alica.engine.RunningPlan;
+
 public class Constraint«plan.runtimeCondition.id» extends BasicConstraint {
     public void getConstraint(ProblemDescriptor c, RunningPlan rp) {
 
@@ -282,6 +302,10 @@ public class Constraint«plan.runtimeCondition.id» extends BasicConstraint {
 
     def String constraintPlanTransitionPreCondition(Transition transition) '''
 package de.unikassel.vs.alica.codegen.out;
+
+import de.unikassel.vs.alica.engine.BasicConstraint;
+import de.unikassel.vs.alica.engine.ProblemDescriptor;
+import de.unikassel.vs.alica.engine.RunningPlan;
 
 public class Constraint«transition.preCondition.id» extends BasicConstraint {
     public void getConstraint(ProblemDescriptor c, RunningPlan rp) {

@@ -81,5 +81,6 @@ public class CodegenCppTest {
         generateCode();
 
         // TODO: NullPointerException at CodegeneratorCpp.java:78 - DefaultPlugin not set
+        // TODO: Use test framework https://github.com/catchorg/Catch2 ?
     }
 }

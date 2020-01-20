@@ -1,18 +1,18 @@
 package de.unikassel.vs.alica.codegen.java
 
-import de.unikassel.vs.alica.codegen.IConstraintCodeGenerator
-import de.unikassel.vs.alica.planDesigner.alicamodel.Behaviour
-import de.unikassel.vs.alica.planDesigner.alicamodel.Condition
-import de.unikassel.vs.alica.planDesigner.alicamodel.Plan
-import de.unikassel.vs.alica.planDesigner.alicamodel.PostCondition
-import de.unikassel.vs.alica.planDesigner.alicamodel.PreCondition
-import de.unikassel.vs.alica.planDesigner.alicamodel.RuntimeCondition
-import java.util.List
-import java.util.Map
-import de.unikassel.vs.alica.planDesigner.alicamodel.Transition
-import de.unikassel.vs.alica.planDesigner.alicamodel.EntryPoint
-import de.unikassel.vs.alica.planDesigner.alicamodel.State
-import de.unikassel.vs.alica.planDesigner.alicamodel.Variable
+import de.unikassel.vs.alica.codegen.IConstraintCodeGenerator;
+import de.unikassel.vs.alica.planDesigner.alicamodel.Behaviour;
+import de.unikassel.vs.alica.planDesigner.alicamodel.Condition;
+import de.unikassel.vs.alica.planDesigner.alicamodel.Plan;
+import de.unikassel.vs.alica.planDesigner.alicamodel.PostCondition;
+import de.unikassel.vs.alica.planDesigner.alicamodel.PreCondition;
+import de.unikassel.vs.alica.planDesigner.alicamodel.RuntimeCondition;
+import java.util.List;
+import java.util.Map;
+import de.unikassel.vs.alica.planDesigner.alicamodel.Transition;
+import de.unikassel.vs.alica.planDesigner.alicamodel.EntryPoint;
+import de.unikassel.vs.alica.planDesigner.alicamodel.State;
+import de.unikassel.vs.alica.planDesigner.alicamodel.Variable;
 import org.apache.commons.lang3.StringUtils;
 
 
@@ -209,7 +209,7 @@ public class PreCondition«behaviour.preCondition.id»Impl {
     }
 
     public boolean evaluate(RunningPlan rp) {
-
+        return true;
     }
 }
 '''
@@ -248,7 +248,7 @@ public class RunTimeCondition«behaviour.runtimeCondition.id»Impl {
     }
 
     public boolean evaluate(RunningPlan rp) {
-
+        return true;
     }
 }
 '''
@@ -287,7 +287,7 @@ public class PostCondition«behaviour.postCondition.id»Impl {
     }
 
     public boolean evaluate(RunningPlan rp) {
-
+        return true;
     }
 }
 '''
@@ -310,6 +310,7 @@ package de.unikassel.vs.alica.codegen.out;
 import de.unikassel.vs.alica.engine.BasicConstraint;
 import de.unikassel.vs.alica.engine.ProblemDescriptor;
 import de.unikassel.vs.alica.engine.RunningPlan;
+import de.unikassel.vs.alica.codegen.out.impl.Constraint«behaviour.preCondition.id»Impl;
 
 public class Constraint«behaviour.preCondition.id» extends BasicConstraint {
     private Constraint«behaviour.preCondition.id»Impl impl;
@@ -352,6 +353,7 @@ package de.unikassel.vs.alica.codegen.out;
 import de.unikassel.vs.alica.engine.BasicConstraint;
 import de.unikassel.vs.alica.engine.ProblemDescriptor;
 import de.unikassel.vs.alica.engine.RunningPlan;
+import de.unikassel.vs.alica.codegen.out.impl.Constraint«behaviour.runtimeCondition.id»Impl;
 
 public class Constraint«behaviour.runtimeCondition.id» extends BasicConstraint {
     private Constraint«behaviour.runtimeCondition.id»Impl impl;
@@ -394,6 +396,7 @@ package de.unikassel.vs.alica.codegen.out;
 import de.unikassel.vs.alica.engine.BasicConstraint;
 import de.unikassel.vs.alica.engine.ProblemDescriptor;
 import de.unikassel.vs.alica.engine.RunningPlan;
+import de.unikassel.vs.alica.codegen.out.impl.Constraint«behaviour.postCondition.id»Impl;
 
 public class Constraint«behaviour.postCondition.id» extends BasicConstraint {
     private Constraint«behaviour.postCondition.id»Impl impl;
@@ -448,6 +451,7 @@ package de.unikassel.vs.alica.codegen.out;
 import de.unikassel.vs.alica.engine.BasicConstraint;
 import de.unikassel.vs.alica.engine.ProblemDescriptor;
 import de.unikassel.vs.alica.engine.RunningPlan;
+import de.unikassel.vs.alica.codegen.out.impl.Constraint«plan.preCondition.id»Impl;
 
 public class Constraint«plan.preCondition.id» extends BasicConstraint {
     private Constraint«plan.preCondition.id»Impl impl;
@@ -488,6 +492,7 @@ package de.unikassel.vs.alica.codegen.out;
 import de.unikassel.vs.alica.engine.BasicConstraint;
 import de.unikassel.vs.alica.engine.ProblemDescriptor;
 import de.unikassel.vs.alica.engine.RunningPlan;
+import de.unikassel.vs.alica.codegen.out.impl.Constraint«plan.runtimeCondition.id»;
 
 public class Constraint«plan.runtimeCondition.id» extends BasicConstraint {
     private Constraint«plan.runtimeCondition.id»Impl impl;
@@ -528,6 +533,7 @@ package de.unikassel.vs.alica.codegen.out;
 import de.unikassel.vs.alica.engine.BasicConstraint;
 import de.unikassel.vs.alica.engine.ProblemDescriptor;
 import de.unikassel.vs.alica.engine.RunningPlan;
+import de.unikassel.vs.alica.codegen.out.impl.Constraint«transition.preCondition.id»Impl;
 
 public class Constraint«transition.preCondition.id» extends BasicConstraint {
     private Constraint«transition.preCondition.id»Impl impl;
@@ -690,6 +696,7 @@ package de.unikassel.vs.alica.codegen.out;
 
 import de.unikassel.vs.alica.engine.RunningPlan;
 import de.unikassel.vs.alica.codegen.out.DomainCondition;
+import de.unikassel.vs.alica.codegen.out.impl.PreCondition«plan.preCondition.id»Impl;
 
 public class PreCondition«plan.preCondition.id» extends DomainCondition {
     private PreCondition«plan.preCondition.id»Impl impl;
@@ -701,7 +708,9 @@ public class PreCondition«plan.preCondition.id» extends DomainCondition {
 
     public boolean evaluate(RunningPlan rp) {
         «IF (plan.preCondition !== null && plan.preCondition.pluginName == "DefaultPlugin")»
-            impl.evaluate(rp)
+            return impl.evaluate(rp);
+        «ELSE»
+            return true;
         «ENDIF»
     }
 }
@@ -718,7 +727,7 @@ public class PreCondition«plan.preCondition.id»Impl {
     }
 
     public boolean evaluate(RunningPlan rp) {
-
+        return true;
     }
 }
 '''
@@ -728,6 +737,7 @@ package de.unikassel.vs.alica.codegen.out;
 
 import de.unikassel.vs.alica.engine.RunningPlan;
 import de.unikassel.vs.alica.codegen.out.DomainCondition;
+import de.unikassel.vs.alica.codegen.out.impl.RunTimeCondition«plan.runtimeCondition.id»Impl;
 
 public class RunTimeCondition«plan.runtimeCondition.id» extends DomainCondition {
     private RunTimeCondition«plan.runtimeCondition.id»Impl impl;
@@ -739,7 +749,9 @@ public class RunTimeCondition«plan.runtimeCondition.id» extends DomainConditio
 
     public boolean evaluate(RunningPlan rp) {
         «IF (plan.runtimeCondition !== null && plan.runtimeCondition.pluginName == "DefaultPlugin")»
-            impl.evaluate(rp)
+            impl.evaluate(rp);
+        «ELSE»
+            return true;
         «ENDIF»
     }
 }
@@ -756,7 +768,7 @@ public class RunTimeCondition«plan.runtimeCondition.id»Impl {
     }
 
     public boolean evaluate(RunningPlan rp) {
-
+        return true;
     }
 }
 '''
@@ -766,6 +778,7 @@ package de.unikassel.vs.alica.codegen.out;
 
 import de.unikassel.vs.alica.engine.RunningPlan;
 import de.unikassel.vs.alica.codegen.out.DomainCondition;
+import de.unikassel.vs.alica.codegen.out.impl.PreCondition«transition.preCondition.id»Impl;
 
 public class PreCondition«transition.preCondition.id» extends DomainCondition {
     private PreCondition«transition.preCondition.id»Impl impl;
@@ -776,12 +789,16 @@ public class PreCondition«transition.preCondition.id» extends DomainCondition 
     }
 
     public boolean evaluate(RunningPlan rp) {
+        boolean result = true;
         «var List<Transition> outTransitions = state.outTransitions»
         «FOR outTransition: outTransitions»
             «IF (outTransition.preCondition !== null && outTransition.preCondition.pluginName == "DefaultPlugin")»
-                impl.evaluate(rp)
+                if (!impl.evaluate(rp)) {
+                    result = false;
+                }
             «ENDIF»
         «ENDFOR»
+        return result;
     }
 }
 '''
@@ -797,7 +814,7 @@ public class PreCondition«transition.preCondition.id»Impl {
     }
 
     public boolean evaluate(RunningPlan rp) {
-
+        return true;
     }
 }
 '''

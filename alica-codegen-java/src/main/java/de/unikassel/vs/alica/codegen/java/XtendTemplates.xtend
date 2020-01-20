@@ -413,7 +413,7 @@ public class Constraint«behaviour.postCondition.id» extends BasicConstraint {
 }
 '''
 
-def String constraintRuntimeConditionImpl(Behaviour behaviour) '''
+def String constraintPostConditionImpl(Behaviour behaviour) '''
 package de.unikassel.vs.alica.codegen.out.impl;
 
 import de.unikassel.vs.alica.engine.ProblemDescriptor;
@@ -465,7 +465,7 @@ public class Constraint«plan.preCondition.id» extends BasicConstraint {
 }
 '''
 
-def String constraintPlanPreConditionImpl(Behaviour behaviour) '''
+def String constraintPlanPreConditionImpl(Plan plan) '''
 package de.unikassel.vs.alica.codegen.out.impl;
 
 import de.unikassel.vs.alica.engine.ProblemDescriptor;
@@ -505,7 +505,7 @@ public class Constraint«plan.runtimeCondition.id» extends BasicConstraint {
 }
 '''
 
-def String constraintPlanRuntimeConditionImpl(Behaviour behaviour) '''
+def String constraintPlanRuntimeConditionImpl(Plan plan) '''
 package de.unikassel.vs.alica.codegen.out.impl;
 
 import de.unikassel.vs.alica.engine.ProblemDescriptor;
@@ -522,7 +522,7 @@ public class Constraint«plan.runtimeCondition.id»Impl {
 }
 '''
 
-    def String constraintPlanTransitionPreCondition(Transition transition) '''
+    def String constraintPlanTransitionPreCondition(Plan plan, Transition transition) '''
 package de.unikassel.vs.alica.codegen.out;
 
 import de.unikassel.vs.alica.engine.BasicConstraint;
@@ -538,12 +538,13 @@ public class Constraint«transition.preCondition.id» extends BasicConstraint {
     }
 
     public void getConstraint(ProblemDescriptor c, RunningPlan rp) {
+        «var List<State> states = plan.states»
         «FOR state: states»
             «var List<Transition> outTransitions = state.outTransitions»
-            «FOR transition: outTransitions»
-                «IF transition.preCondition != null»
-                    «var List<Variable> variables = transition.preCondition.variables»
-                    «IF (transition.preCondition !== null && transition.preCondition.pluginName == "DefaultPlugin" && variables.size > 0)»
+            «FOR outTransition: outTransitions»
+                «IF outTransition.preCondition != null»
+                    «var List<Variable> variables = outTransition.preCondition.variables»
+                    «IF (outTransition.preCondition !== null && outTransition.preCondition.pluginName == "DefaultPlugin" && variables.size > 0)»
                         impl.getConstraint(c, rp);
                     «ENDIF»
                 «ENDIF»
@@ -553,7 +554,7 @@ public class Constraint«transition.preCondition.id» extends BasicConstraint {
 }
 '''
 
-def String constraintPlanTransitionPreConditionImpl(Behaviour behaviour) '''
+def String constraintPlanTransitionPreConditionImpl(Transition transition) '''
 package de.unikassel.vs.alica.codegen.out.impl;
 
 import de.unikassel.vs.alica.engine.ProblemDescriptor;
@@ -760,7 +761,7 @@ public class RunTimeCondition«plan.runtimeCondition.id»Impl {
 }
 '''
 
-    def String transitionPreConditionPlan(Transition transition) '''
+    def String transitionPreConditionPlan(State state, Transition transition) '''
 package de.unikassel.vs.alica.codegen.out;
 
 import de.unikassel.vs.alica.engine.RunningPlan;
@@ -776,8 +777,8 @@ public class PreCondition«transition.preCondition.id» extends DomainCondition 
 
     public boolean evaluate(RunningPlan rp) {
         «var List<Transition> outTransitions = state.outTransitions»
-        «FOR transition: outTransitions»
-            «IF (transition.preCondition !== null && transition.preCondition.pluginName == "DefaultPlugin")»
+        «FOR outTransition: outTransitions»
+            «IF (outTransition.preCondition !== null && outTransition.preCondition.pluginName == "DefaultPlugin")»
                 impl.evaluate(rp)
             «ENDIF»
         «ENDFOR»
@@ -785,7 +786,7 @@ public class PreCondition«transition.preCondition.id» extends DomainCondition 
 }
 '''
 
-def String transitionPreConditionPlanImpl(Plan plan) '''
+def String transitionPreConditionPlanImpl(Transition transition) '''
 package de.unikassel.vs.alica.codegen.out.impl;
 
 import de.unikassel.vs.alica.engine.RunningPlan;

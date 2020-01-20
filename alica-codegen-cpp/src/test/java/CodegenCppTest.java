@@ -1,22 +1,16 @@
-import de.unikassel.vs.alica.codegen.CodegeneratorJava;
-import de.unikassel.vs.alica.codegen.GeneratedSourcesManagerJava;
+import de.unikassel.vs.alica.codegen.CodegeneratorCpp;
+import de.unikassel.vs.alica.codegen.GeneratedSourcesManagerCpp;
 import de.unikassel.vs.alica.planDesigner.alicamodel.*;
-import org.apache.commons.io.FileUtils;
-import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-public class CodegenJavaTest {
+public class CodegenCppTest {
     private static String tmpPath;
 
     @ClassRule
@@ -27,7 +21,7 @@ public class CodegenJavaTest {
         tmpPath = tmpFolder.getRoot().getAbsolutePath();
     }
 
-    private void generateCode() throws IOException {
+    private void generateCode() {
         // Generates java source code
 
         Plan plan = new Plan();
@@ -69,57 +63,23 @@ public class CodegenJavaTest {
 
         // generate code
         String genPath = tmpPath + File.separator + "src" + File.separator + "main" + File.separator + "java";
-        GeneratedSourcesManagerJava generatedSourcesManager = new GeneratedSourcesManagerJava();
+        GeneratedSourcesManagerCpp generatedSourcesManager = new GeneratedSourcesManagerCpp();
         generatedSourcesManager.setGenSrcPath(genPath);
-        CodegeneratorJava codegenerator = new CodegeneratorJava(
+        String clangFormatPath = "clang-format";
+        CodegeneratorCpp codegenerator = new CodegeneratorCpp(
                 plans,
                 behaviours,
                 conditions,
+                clangFormatPath,
                 genPath,
                 generatedSourcesManager);
         codegenerator.generate();
-
-        // copy engine folder from resources to destination
-        URL url = CodegenJavaTest.class.getResource("testProject");
-        String path = url.getPath();
-        File engineFolderSrc = new File(path);
-        File engineFolderDst = new File(tmpPath);
-        FileUtils.copyDirectory(engineFolderSrc, engineFolderDst);
-    }
-
-    private int cleanInstallProject() throws IOException, InterruptedException {
-        // run compilation
-        ProcessBuilder builder = new ProcessBuilder("mvn", "clean", "install");
-        builder.directory(new File(tmpPath).getAbsoluteFile());  // set current working directory for process
-        builder.redirectErrorStream(true);
-        Process process = builder.start();
-
-        // output stdout and stderr
-        BufferedReader stdout = new BufferedReader(new InputStreamReader(process.getInputStream()));
-        BufferedReader stderr = new BufferedReader(new InputStreamReader(process.getErrorStream()));
-        String s;
-        while ((s = stdout.readLine()) != null) {
-            System.out.println(s);
-        }
-        while ((s = stderr.readLine()) != null) {
-            System.out.println(s);
-        }
-
-        // output exit code
-        int exitCode = process.waitFor();
-        System.out.println("Exit code: " + exitCode);
-
-        return exitCode;
     }
 
     @Test
-    public void testGeneratedCode() throws Exception {
+    public void testGeneratedCode() {
         generateCode();
 
-        // mvn clean install:
-        // success -> exit code 0
-        // fail -> exit code 1
-        int exitCode = cleanInstallProject();
-        Assert.assertEquals(0, exitCode);
+        // TODO: NullPointerException at CodegeneratorCpp.java:78 - DefaultPlugin not set
     }
 }

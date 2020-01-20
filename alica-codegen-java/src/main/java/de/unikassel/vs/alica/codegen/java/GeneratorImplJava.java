@@ -67,21 +67,60 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
         formatFile(srcPath);
     }
 
+    private void preConditionBehaviourImpl(Behaviour behaviour) {
+        String srcPath = Paths.get(implPath, "PreCondition" + behaviour.getPreCondition().getId() + "Impl.java").toString();
+        String fileContentSource = xtendTemplates.preConditionBehaviourImpl(behaviour);
+        if (new File(srcPath).exists()) {
+            LOG.debug("File \"" + srcPath + "\" already exists and is not overwritten");
+            return;
+        }
+        writeSourceFile(srcPath, fileContentSource);
+        formatFile(srcPath);
+    }
+
     private void preConditionCreator(Behaviour behaviour) {
+        this.preConditionBehaviourImpl(behaviour);
+
         String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "PreCondition" + behaviour.getId() + ".java").toString();
         String fileContentSource = xtendTemplates.preConditionBehaviour(behaviour);
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
     }
 
+    private void runtimeConditionBehaviourImpl(Behaviour behaviour) {
+        String srcPath = Paths.get(implPath, "RunTimeCondition" + behaviour.getRuntimeCondition().getId() + "Impl.java").toString();
+        String fileContentSource = xtendTemplates.runtimeConditionBehaviourImpl(behaviour);
+        if (new File(srcPath).exists()) {
+            LOG.debug("File \"" + srcPath + "\" already exists and is not overwritten");
+            return;
+        }
+        writeSourceFile(srcPath, fileContentSource);
+        formatFile(srcPath);
+    }
+
     private void runtimeConditionCreator(Behaviour behaviour) {
+        this.runtimeConditionBehaviourImpl(behaviour);
+
         String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "RunTimeCondition" + behaviour.getId() + ".java").toString();
         String fileContentSource = xtendTemplates.runtimeConditionBehaviour(behaviour);
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
     }
 
+    private void postConditionBehaviourImpl(Behaviour behaviour) {
+        String srcPath = Paths.get(implPath, "PostCondition" + behaviour.getPostCondition().getId() + "Impl.java").toString();
+        String fileContentSource = xtendTemplates.postConditionBehaviourImpl(behaviour);
+        if (new File(srcPath).exists()) {
+            LOG.debug("File \"" + srcPath + "\" already exists and is not overwritten");
+            return;
+        }
+        writeSourceFile(srcPath, fileContentSource);
+        formatFile(srcPath);
+    }
+
     private void postConditionCreator(Behaviour behaviour) {
+        this.postConditionBehaviourImpl(behaviour);
+
         String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "PostCondition" + behaviour.getId() + ".java").toString();
         String fileContentSource = xtendTemplates.postConditionBehaviour(behaviour);
         writeSourceFile(srcPath, fileContentSource);
@@ -131,21 +170,60 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
         formatFile(srcPath);
     }
 
+    private void constraintPreConditionImpl(Behaviour behaviour) {
+        String srcPath = Paths.get(implPath, "Constraint" + behaviour.getPreCondition().getId() + "Impl.java").toString();
+        String fileContentSource = xtendTemplates.constraintPreConditionImpl(behaviour);
+        if (new File(srcPath).exists()) {
+            LOG.debug("File \"" + srcPath + "\" already exists and is not overwritten");
+            return;
+        }
+        writeSourceFile(srcPath, fileContentSource);
+        formatFile(srcPath);
+    }
+
     private void constraintPreCondition(Behaviour behaviour) {
+        this.constraintPreConditionImpl(behaviour);
+
         String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "Constraint" + behaviour.getPreCondition().getId() + ".java").toString();
         String fileContentSource = xtendTemplates.constraintPreCondition(behaviour);
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
     }
 
+    private void constraintRuntimeConditionImpl(Behaviour behaviour) {
+        String srcPath = Paths.get(implPath, "Constraint" + behaviour.getRuntimeCondition().getId() + "Impl.java").toString();
+        String fileContentSource = xtendTemplates.constraintRuntimeConditionImpl(behaviour);
+        if (new File(srcPath).exists()) {
+            LOG.debug("File \"" + srcPath + "\" already exists and is not overwritten");
+            return;
+        }
+        writeSourceFile(srcPath, fileContentSource);
+        formatFile(srcPath);
+    }
+
     private void constraintRuntimeCondition(Behaviour behaviour) {
+        this.constraintRuntimeConditionImpl(behaviour);
+
         String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "Constraint" + behaviour.getRuntimeCondition().getId() + ".java").toString();
         String fileContentSource = xtendTemplates.constraintRuntimeCondition(behaviour);
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
     }
 
+    private void constraintPostConditionImpl(Behaviour behaviour) {
+        String srcPath = Paths.get(implPath, "Constraint" + behaviour.getPostCondition().getId() + "Impl.java").toString();
+        String fileContentSource = xtendTemplates.constraintPostConditionImpl(behaviour);
+        if (new File(srcPath).exists()) {
+            LOG.debug("File \"" + srcPath + "\" already exists and is not overwritten");
+            return;
+        }
+        writeSourceFile(srcPath, fileContentSource);
+        formatFile(srcPath);
+    }
+
     private void constraintPostCondition(Behaviour behaviour) {
+        this.constraintPostConditionImpl(behaviour);
+
         String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "Constraint" + behaviour.getPostCondition().getId() + ".java").toString();
         String fileContentSource = xtendTemplates.constraintPostCondition(behaviour);
         writeSourceFile(srcPath, fileContentSource);
@@ -194,23 +272,62 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
         formatFile(srcPath);
     }
 
+    private void constraintPlanPreConditionImpl(Plan plan) {
+        String srcPath = Paths.get(implPath, "Constraint" + plan.getPreCondition().getId() + "Impl.java").toString();
+        String fileContentSource = xtendTemplates.constraintPlanPreConditionImpl(plan);
+        if (new File(srcPath).exists()) {
+            LOG.debug("File \"" + srcPath + "\" already exists and is not overwritten");
+            return;
+        }
+        writeSourceFile(srcPath, fileContentSource);
+        formatFile(srcPath);
+    }
+
     private void constraintPlanPreCondition(Plan plan) {
+        this.constraintPlanPreConditionImpl(plan);
+
         String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "Constraint" + plan.getPreCondition().getId() + ".java").toString();
         String fileContentSource = xtendTemplates.constraintPlanPreCondition(plan);
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
     }
 
+    private void constraintPlanRuntimeConditionImpl(Plan plan) {
+        String srcPath = Paths.get(implPath, "Constraint" + plan.getRuntimeCondition().getId() + "Impl.java").toString();
+        String fileContentSource = xtendTemplates.constraintPlanRuntimeConditionImpl(plan);
+        if (new File(srcPath).exists()) {
+            LOG.debug("File \"" + srcPath + "\" already exists and is not overwritten");
+            return;
+        }
+        writeSourceFile(srcPath, fileContentSource);
+        formatFile(srcPath);
+    }
+
     private void constraintPlanRuntimeCondition(Plan plan) {
+        this.constraintPlanRuntimeConditionImpl(plan);
+
         String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "Constraint" + plan.getRuntimeCondition().getId() + ".java").toString();
         String fileContentSource = xtendTemplates.constraintPlanRuntimeCondition(plan);
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
     }
 
-    private void constraintPlanTransitionPreCondition(Transition transition) {
+    private void constraintPlanTransitionPreConditionImpl(Transition transition) {
+        String srcPath = Paths.get(implPath, "Constraint" + transition.getPreCondition().getId() + "Impl.java").toString();
+        String fileContentSource = xtendTemplates.constraintPlanTransitionPreConditionImpl(transition);
+        if (new File(srcPath).exists()) {
+            LOG.debug("File \"" + srcPath + "\" already exists and is not overwritten");
+            return;
+        }
+        writeSourceFile(srcPath, fileContentSource);
+        formatFile(srcPath);
+    }
+
+    private void constraintPlanTransitionPreCondition(Plan plan, Transition transition) {
+        this.constraintPlanTransitionPreConditionImpl(transition);
+
         String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "Constraint" + transition.getPreCondition().getId() + ".java").toString();
-        String fileContentSource = xtendTemplates.constraintPlanTransitionPreCondition(transition);
+        String fileContentSource = xtendTemplates.constraintPlanTransitionPreCondition(plan, transition);
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
     }
@@ -231,7 +348,7 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
             PreCondition preCondition = transition.getPreCondition();
             if (preCondition != null) {
                 if (preCondition.getVariables().size() > 0 || preCondition.getQuantifiers().size() > 0) {
-                    this.constraintPlanTransitionPreCondition(transition);
+                    this.constraintPlanTransitionPreCondition(plan, transition);
                 }
             }
         }
@@ -347,23 +464,62 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
         formatFile(srcPath);
     }
 
+    private void preConditionPlanImpl(Plan plan) {
+        String srcPath = Paths.get(implPath, "PreCondition" + plan.getPreCondition().getId() + "Impl.java").toString();
+        String fileContentSource = xtendTemplates.preConditionPlanImpl(plan);
+        if (new File(srcPath).exists()) {
+            LOG.debug("File \"" + srcPath + "\" already exists and is not overwritten");
+            return;
+        }
+        writeSourceFile(srcPath, fileContentSource);
+        formatFile(srcPath);
+    }
+
     private void preConditionPlan(Plan plan) {
+        this.preConditionPlanImpl(plan);
+
         String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "PreCondition" + plan.getPreCondition().getId() + ".java").toString();
         String fileContentSource = xtendTemplates.preConditionPlan(plan);
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
     }
 
+    private void runtimeConditionPlanImpl(Plan plan) {
+        String srcPath = Paths.get(implPath, "RunTimeCondition" + plan.getRuntimeCondition().getId() + "Impl.java").toString();
+        String fileContentSource = xtendTemplates.runtimeConditionPlanImpl(plan);
+        if (new File(srcPath).exists()) {
+            LOG.debug("File \"" + srcPath + "\" already exists and is not overwritten");
+            return;
+        }
+        writeSourceFile(srcPath, fileContentSource);
+        formatFile(srcPath);
+    }
+
     private void runtimeConditionPlan(Plan plan) {
+        this.runtimeConditionPlanImpl(plan);
+
         String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "RunTimeCondition" + plan.getRuntimeCondition().getId() + ".java").toString();
         String fileContentSource = xtendTemplates.runtimeConditionPlan(plan);
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
     }
 
-    private void transitionPreConditionPlan(Transition transition) {
+    private void transitionPreConditionPlanImpl(Transition transition) {
+        String srcPath = Paths.get(implPath, "PreCondition" + transition.getPreCondition().getId() + "Impl.java").toString();
+        String fileContentSource = xtendTemplates.transitionPreConditionPlanImpl(transition);
+        if (new File(srcPath).exists()) {
+            LOG.debug("File \"" + srcPath + "\" already exists and is not overwritten");
+            return;
+        }
+        writeSourceFile(srcPath, fileContentSource);
+        formatFile(srcPath);
+    }
+
+    private void transitionPreConditionPlan(State state, Transition transition) {
+        this.transitionPreConditionPlanImpl(transition);
+
         String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "PreCondition" + transition.getPreCondition().getId() + ".java").toString();
-        String fileContentSource = xtendTemplates.transitionPreConditionPlan(transition);
+        String fileContentSource = xtendTemplates.transitionPreConditionPlan(state, transition);
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
     }
@@ -383,7 +539,7 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
             List<Transition> transitions = state.getOutTransitions();
             for (Transition transition: transitions) {
                 if (transition.getPreCondition() != null) {
-                    this.transitionPreConditionPlan(transition);
+                    this.transitionPreConditionPlan(state, transition);
                 }
             }
         }

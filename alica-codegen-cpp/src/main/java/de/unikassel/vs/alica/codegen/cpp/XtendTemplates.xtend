@@ -1,18 +1,18 @@
-package de.unikassel.vs.alica.codegen.cpp
+package de.unikassel.vs.alica.codegen.cpp;
 
-import de.unikassel.vs.alica.codegen.IConstraintCodeGenerator
-import de.unikassel.vs.alica.planDesigner.alicamodel.Behaviour
-import de.unikassel.vs.alica.planDesigner.alicamodel.Condition
-import de.unikassel.vs.alica.planDesigner.alicamodel.Plan
-import de.unikassel.vs.alica.planDesigner.alicamodel.PostCondition
-import de.unikassel.vs.alica.planDesigner.alicamodel.PreCondition
-import de.unikassel.vs.alica.planDesigner.alicamodel.RuntimeCondition
-import java.util.List
-import java.util.Map
-import de.unikassel.vs.alica.planDesigner.alicamodel.Transition
-import de.unikassel.vs.alica.planDesigner.alicamodel.EntryPoint
-import de.unikassel.vs.alica.planDesigner.alicamodel.State
-import de.unikassel.vs.alica.planDesigner.alicamodel.Variable
+import de.unikassel.vs.alica.codegen.IConstraintCodeGenerator;
+import de.unikassel.vs.alica.planDesigner.alicamodel.Behaviour;
+import de.unikassel.vs.alica.planDesigner.alicamodel.Condition;
+import de.unikassel.vs.alica.planDesigner.alicamodel.Plan;
+import de.unikassel.vs.alica.planDesigner.alicamodel.PostCondition;
+import de.unikassel.vs.alica.planDesigner.alicamodel.PreCondition;
+import de.unikassel.vs.alica.planDesigner.alicamodel.RuntimeCondition;
+import java.util.List;
+import java.util.Map;
+import de.unikassel.vs.alica.planDesigner.alicamodel.Transition;
+import de.unikassel.vs.alica.planDesigner.alicamodel.EntryPoint;
+import de.unikassel.vs.alica.planDesigner.alicamodel.State;
+import de.unikassel.vs.alica.planDesigner.alicamodel.Variable;
 
 class XtendTemplates {
 
@@ -29,57 +29,48 @@ class XtendTemplates {
 #include <memory>
 #include <iostream>
 
-namespace alica
-{
-
+namespace alica {
     class BasicBehaviour;
 
-    class BehaviourCreator : public IBehaviourCreator
-    {
+    class BehaviourCreator: public IBehaviourCreator {
         public:
             BehaviourCreator();
             virtual ~BehaviourCreator();
             virtual std::shared_ptr<BasicBehaviour> createBehaviour(long behaviourId);
     };
-
-} /* namespace alica */
+}
 '''
 
     def String behaviourCreatorSource(List<Behaviour> behaviours)'''
 #include "BehaviourCreator.h"
 #include "engine/BasicBehaviour.h"
-«FOR beh : behaviours»
-«IF (beh.relativeDirectory.isEmpty)»
-#include "«beh.name».h"
-«ELSE»
-#include  "«beh.relativeDirectory»/«beh.name».h"
-«ENDIF»
+
+«FOR beh: behaviours»
+    «IF (beh.relativeDirectory.isEmpty)»
+        #include "«beh.name».h"
+    «ELSE»
+        #include "«beh.relativeDirectory»/«beh.name».h"
+    «ENDIF»
 «ENDFOR»
 
-namespace alica
-{
-
-    BehaviourCreator::BehaviourCreator()
-    {
+namespace alica {
+    BehaviourCreator::BehaviourCreator() {
     }
 
-    BehaviourCreator::~BehaviourCreator()
-    {
+    BehaviourCreator::~BehaviourCreator() {
     }
 
-    std::shared_ptr<BasicBehaviour> BehaviourCreator::createBehaviour(long behaviourId)
-    {
-        switch(behaviourId)
-        {
-            «FOR beh : behaviours»
+    std::shared_ptr<BasicBehaviour> BehaviourCreator::createBehaviour(long behaviourId) {
+        switch(behaviourId) {
+            «FOR beh: behaviours»
                 case «beh.id»:
-                return std::make_shared<«beh.name»>();
-                break;
+                    return std::make_shared<«beh.name»>();
+                    break;
             «ENDFOR»
             default:
-            std::cerr << "BehaviourCreator: Unknown behaviour requested: " << behaviourId << std::endl;
-            throw new std::exception();
-            break;
+                std::cerr << "BehaviourCreator: Unknown behaviour requested: " << behaviourId << std::endl;
+                throw new std::exception();
+                break;
         }
     }
 }
@@ -89,130 +80,125 @@ namespace alica
 #pragma once
 
 #include "DomainBehaviour.h"
+
 /*PROTECTED REGION ID(inc«behaviour.id») ENABLED START*/
 «IF (protectedRegions.containsKey("inc" + behaviour.id))»
-«protectedRegions.get("inc" + behaviour.id)»
+    «protectedRegions.get("inc" + behaviour.id)»
 «ELSE»
-//Add additional includes here
+    // Add additional includes here
 «ENDIF»
 /*PROTECTED REGION END*/
 
-namespace alica
-{
-    class «behaviour.name» : public DomainBehaviour
-    {
+namespace alica {
+    class «behaviour.name»: public DomainBehaviour {
         public:
             «behaviour.name»();
             virtual ~«behaviour.name»();
             virtual void run(void* msg);
+
             /*PROTECTED REGION ID(pub«behaviour.id») ENABLED START*/
             «IF (protectedRegions.containsKey("pub" + behaviour.id))»
-«protectedRegions.get("pub" + behaviour.id)»
+                «protectedRegions.get("pub" + behaviour.id)»
             «ELSE»
-            //Add additional protected methods here
+                // Add additional protected methods here
             «ENDIF»
             /*PROTECTED REGION END*/
+
         protected:
             virtual void initialiseParameters();
             /*PROTECTED REGION ID(pro«behaviour.id») ENABLED START*/
             «IF (protectedRegions.containsKey("pro" + behaviour.id))»
-«protectedRegions.get("pro" + behaviour.id)»
+                «protectedRegions.get("pro" + behaviour.id)»
             «ELSE»
-            //Add additional protected methods here
+                // Add additional protected methods here
             «ENDIF»
             /*PROTECTED REGION END*/
+
         private:
-        /*PROTECTED REGION ID(prv«behaviour.id») ENABLED START*/
+            /*PROTECTED REGION ID(prv«behaviour.id») ENABLED START*/
             «IF (protectedRegions.containsKey("prv" + behaviour.id))»
-«protectedRegions.get("prv" + behaviour.id)»
+                «protectedRegions.get("prv" + behaviour.id)»
             «ELSE»
-            //Add additional private methods here
+                // Add additional private methods here
             «ENDIF»
-        /*PROTECTED REGION END*/
+            /*PROTECTED REGION END*/
     };
-} /* namespace alica */
+}
 '''
 
     def String behaviourSource(Behaviour behaviour) '''
 «IF (behaviour.relativeDirectory.isEmpty)»
-#include "«behaviour.name».h"
+    #include "«behaviour.name».h"
 «ELSE»
-#include  "«behaviour.relativeDirectory»/«behaviour.name».h"
+    #include "«behaviour.relativeDirectory»/«behaviour.name».h"
 «ENDIF»
 #include <memory>
 
 /*PROTECTED REGION ID(inccpp«behaviour.id») ENABLED START*/
-    «IF (protectedRegions.containsKey("inccpp" + behaviour.id))»
-«protectedRegions.get("inccpp" + behaviour.id)»
-    «ELSE»
-        //Add additional includes here
-    «ENDIF»
+«IF (protectedRegions.containsKey("inccpp" + behaviour.id))»
+    «protectedRegions.get("inccpp" + behaviour.id)»
+«ELSE»
+    // Add additional includes here
+«ENDIF»
 /*PROTECTED REGION END*/
 
-namespace alica
-{
+namespace alica {
     /*PROTECTED REGION ID(staticVars«behaviour.id») ENABLED START*/
     «IF (protectedRegions.containsKey("staticVars" + behaviour.id))»
-«protectedRegions.get("staticVars" + behaviour.id)»
+        «protectedRegions.get("staticVars" + behaviour.id)»
     «ELSE»
-        //initialise static variables here
+        // initialise static variables here
     «ENDIF»
     /*PROTECTED REGION END*/
 
-    «behaviour.name»::«behaviour.name»() : DomainBehaviour("«behaviour.name»")
-    {
+    «behaviour.name»::«behaviour.name»(): DomainBehaviour("«behaviour.name»") {
         /*PROTECTED REGION ID(con«behaviour.id») ENABLED START*/
         «IF (protectedRegions.containsKey("con" + behaviour.id))»
-«protectedRegions.get("con" + behaviour.id)»
+            «protectedRegions.get("con" + behaviour.id)»
         «ELSE»
-            //Add additional options here
+            // Add additional options here
         «ENDIF»
         /*PROTECTED REGION END*/
-
     }
-    «behaviour.name»::~«behaviour.name»()
-    {
+
+    «behaviour.name»::~«behaviour.name»() {
         /*PROTECTED REGION ID(dcon«behaviour.id») ENABLED START*/
         «IF (protectedRegions.containsKey("dcon" + behaviour.id))»
-«protectedRegions.get("dcon" + behaviour.id)»
+            «protectedRegions.get("dcon" + behaviour.id)»
         «ELSE»
-            //Add additional options here
+            // Add additional options here
         «ENDIF»
         /*PROTECTED REGION END*/
-
     }
-    void «behaviour.name»::run(void* msg)
-    {
+
+    void «behaviour.name»::run(void* msg) {
         /*PROTECTED REGION ID(run«behaviour.id») ENABLED START*/
         «IF (protectedRegions.containsKey("run" + behaviour.id))»
-«protectedRegions.get("run" + behaviour.id)»
+            «protectedRegions.get("run" + behaviour.id)»
         «ELSE»
-            //Add additional options here
+            // Add additional options here
         «ENDIF»
         /*PROTECTED REGION END*/
-
     }
-    void «behaviour.name»::initialiseParameters()
-    {
+
+    void «behaviour.name»::initialiseParameters() {
         /*PROTECTED REGION ID(initialiseParameters«behaviour.id») ENABLED START*/
         «IF (protectedRegions.containsKey("initialiseParameters" + behaviour.id))»
-«protectedRegions.get("initialiseParameters" + behaviour.id)»
+            «protectedRegions.get("initialiseParameters" + behaviour.id)»
         «ELSE»
-            //Add additional options here
+            // Add additional options here
         «ENDIF»
-
         /*PROTECTED REGION END*/
-
     }
-    /*PROTECTED REGION ID(methods«behaviour.id») ENABLED START*/
-        «IF (protectedRegions.containsKey("methods" + behaviour.id))»
-«protectedRegions.get("methods" + behaviour.id)»
-        «ELSE»
-            //Add additional options here
-        «ENDIF»
-    /*PROTECTED REGION END*/
 
-} /* namespace alica */
+    /*PROTECTED REGION ID(methods«behaviour.id») ENABLED START*/
+    «IF (protectedRegions.containsKey("methods" + behaviour.id))»
+        «protectedRegions.get("methods" + behaviour.id)»
+    «ELSE»
+        // Add additional options here
+    «ENDIF»
+    /*PROTECTED REGION END*/
+}
 '''
 
     def String utilityFunctionCreatorHeader()'''
@@ -221,63 +207,51 @@ namespace alica
 #include <engine/IUtilityCreator.h>
 #include <memory>
 
-namespace alica
-{
-
-    class UtilityFunctionCreator : public IUtilityCreator
-    {
+namespace alica {
+    class UtilityFunctionCreator: public IUtilityCreator {
         public:
-        virtual ~UtilityFunctionCreator();
-        UtilityFunctionCreator();
-        std::shared_ptr<BasicUtilityFunction> createUtility(long utilityfunctionConfId);
+            virtual ~UtilityFunctionCreator();
+            UtilityFunctionCreator();
+            std::shared_ptr<BasicUtilityFunction> createUtility(long utilityfunctionConfId);
     };
-
-} /* namespace alica */
+}
 '''
-
 
     def String utilityFunctionCreatorSource(List<Plan> plans)'''
 #include "UtilityFunctionCreator.h"
-«FOR p : plans»
-«IF (p.relativeDirectory.isEmpty)»
-#include "«p.name»«p.id».h"
-«ELSE»
-#include  "«p.relativeDirectory»/«p.name»«p.id».h"
-«ENDIF»
+
+«FOR p: plans»
+    «IF (p.relativeDirectory.isEmpty)»
+        #include "«p.name»«p.id».h"
+    «ELSE»
+        #include "«p.relativeDirectory»/«p.name»«p.id».h"
+    «ENDIF»
 «ENDFOR»
+
 #include <iostream>
 
 using namespace alicaAutogenerated;
 
-namespace alica
-{
-
-    UtilityFunctionCreator::~UtilityFunctionCreator()
-    {
+namespace alica {
+    UtilityFunctionCreator::~UtilityFunctionCreator() {
     }
 
-    UtilityFunctionCreator::UtilityFunctionCreator()
-    {
+    UtilityFunctionCreator::UtilityFunctionCreator() {
     }
 
-
-    std::shared_ptr<BasicUtilityFunction> UtilityFunctionCreator::createUtility(long utilityfunctionConfId)
-    {
-        switch(utilityfunctionConfId)
-        {
-            «FOR p : plans»
-            case «p.id»:
-                return std::make_shared<UtilityFunction«p.id»>();
-                break;
+    std::shared_ptr<BasicUtilityFunction> UtilityFunctionCreator::createUtility(long utilityfunctionConfId) {
+        switch(utilityfunctionConfId) {
+            «FOR p: plans»
+                case «p.id»:
+                    return std::make_shared<UtilityFunction«p.id»>();
+                    break;
             «ENDFOR»
             default:
-            std::cerr << "UtilityFunctionCreator: Unknown utility requested: " << utilityfunctionConfId << std::endl;
-            throw new std::exception();
-            break;
+                std::cerr << "UtilityFunctionCreator: Unknown utility requested: " << utilityfunctionConfId << std::endl;
+                throw new std::exception();
+                break;
         }
     }
-
-
 }
 '''
 
@@ -288,69 +262,65 @@ namespace alica
 #include <memory>
 #include <iostream>
 
-namespace alica
-{
+namespace alica {
     class BasicCondition;
 
-    class ConditionCreator : public IConditionCreator
-    {
+    class ConditionCreator: public IConditionCreator {
         public:
-        ConditionCreator();
-        virtual ~ConditionCreator();
-        std::shared_ptr<BasicCondition> createConditions(long conditionConfId);
+            ConditionCreator();
+            virtual ~ConditionCreator();
+            std::shared_ptr<BasicCondition> createConditions(long conditionConfId);
     };
-
-} /* namespace alica */
+}
 '''
+
     def String conditionCreatorSource(List<Plan> plans, List<Behaviour> behaviours, List<Condition> conditions) '''
 #include "ConditionCreator.h"
-«FOR p : plans»
-«IF (p.relativeDirectory.isEmpty)»
-#include "«p.name»«p.id».h"
-«ELSE»
-#include  "«p.relativeDirectory»/«p.name»«p.id».h"
-«ENDIF»
+
+«FOR p: plans»
+    «IF (p.relativeDirectory.isEmpty)»
+        #include "«p.name»«p.id».h"
+    «ELSE»
+        #include "«p.relativeDirectory»/«p.name»«p.id».h"
+    «ENDIF»
 «ENDFOR»
-«FOR b : behaviours»
-«IF (b.relativeDirectory.isEmpty)»
-#include "«b.name»«b.id».h"
-«ELSE»
-#include  "«b.relativeDirectory»/«b.name»«b.id».h"
-«ENDIF»
+
+«FOR b: behaviours»
+    «IF (b.relativeDirectory.isEmpty)»
+        #include "«b.name»«b.id».h"
+    «ELSE»
+        #include "«b.relativeDirectory»/«b.name»«b.id».h"
+    «ENDIF»
 «ENDFOR»
 
 using namespace alicaAutogenerated;
-namespace alica
-{
 
-    ConditionCreator::ConditionCreator()
-    {
-    }
-    ConditionCreator::~ConditionCreator()
-    {
+namespace alica{
+    ConditionCreator::ConditionCreator() {
     }
 
-    std::shared_ptr<BasicCondition> ConditionCreator::createConditions(long conditionConfId)
-    {
-        switch (conditionConfId)
-        {
-            «FOR con : conditions»
-            case «con.id»:
-            «IF (con instanceof PreCondition)»
-                    return std::make_shared<PreCondition«con.id»>();
-            «ENDIF»
-            «IF (con instanceof PostCondition)»
-                return std::make_shared<PostCondition«con.id»>();
-            «ENDIF»
-            «IF (con instanceof RuntimeCondition)»
-                return std::make_shared<RunTimeCondition«con.id»>();
-            «ENDIF»
-                break;
+    ConditionCreator::~ConditionCreator() {
+    }
+
+    std::shared_ptr<BasicCondition> ConditionCreator::createConditions(long conditionConfId) {
+        switch (conditionConfId) {
+            «FOR con: conditions»
+                case «con.id»:
+                    «IF (con instanceof PreCondition)»
+                        return std::make_shared<PreCondition«con.id»>();
+                    «ENDIF»
+                    «IF (con instanceof PostCondition)»
+                        return std::make_shared<PostCondition«con.id»>();
+                    «ENDIF»
+                    «IF (con instanceof RuntimeCondition)»
+                        return std::make_shared<RunTimeCondition«con.id»>();
+                    «ENDIF»
+                    break;
             «ENDFOR»
             default:
-            std::cerr << "ConditionCreator: Unknown condition id requested: " << conditionConfId << std::endl;
-            throw new std::exception();
-            break;
+                std::cerr << "ConditionCreator: Unknown condition id requested: " << conditionConfId << std::endl;
+                throw new std::exception();
+                break;
         }
     }
 }
@@ -362,145 +332,125 @@ namespace alica
 #include <engine/IConstraintCreator.h>
 #include <memory>
 
-namespace alica
-{
-
-    class ConstraintCreator : public IConstraintCreator
-    {
+namespace alica {
+    class ConstraintCreator: public IConstraintCreator {
         public:
-        ConstraintCreator();
-        virtual ~ConstraintCreator();
-        std::shared_ptr<BasicConstraint> createConstraint(long constraintConfId);
+            ConstraintCreator();
+            virtual ~ConstraintCreator();
+            std::shared_ptr<BasicConstraint> createConstraint(long constraintConfId);
     };
-
-} /* namespace alica */
+}
 '''
 
     def String constraintCreatorSource(List<Plan> plans, List<Behaviour> behaviours, List<Condition> conditions)'''
 #include "ConstraintCreator.h"
 
-«FOR plan : plans»
-«IF (plan.relativeDirectory.isEmpty)»
-#include "constraints/«plan.name»«plan.id»Constraints.h"
-«ELSE»
-#include "«plan.relativeDirectory»/constraints/«plan.name»«plan.id»Constraints.h"
-«ENDIF»
+«FOR plan: plans»
+    «IF (plan.relativeDirectory.isEmpty)»
+        #include "constraints/«plan.name»«plan.id»Constraints.h"
+    «ELSE»
+        #include "«plan.relativeDirectory»/constraints/«plan.name»«plan.id»Constraints.h"
+    «ENDIF»
 «ENDFOR»
-«FOR behaviour : behaviours»
-«IF (behaviour.relativeDirectory.isEmpty)»
-#include "constraints/«behaviour.name»«behaviour.id»Constraints.h"
-«ELSE»
-#include "«behaviour.relativeDirectory»/constraints/«behaviour.name»«behaviour.id»Constraints.h"
-«ENDIF»
+
+«FOR behaviour: behaviours»
+    «IF (behaviour.relativeDirectory.isEmpty)»
+        #include "constraints/«behaviour.name»«behaviour.id»Constraints.h"
+    «ELSE»
+        #include "«behaviour.relativeDirectory»/constraints/«behaviour.name»«behaviour.id»Constraints.h"
+    «ENDIF»
 «ENDFOR»
 
 #include <iostream>
 
 using namespace alicaAutogenerated;
 
-namespace alica
-{
-
-    ConstraintCreator::ConstraintCreator()
-    {
+namespace alica {
+    ConstraintCreator::ConstraintCreator() {
     }
 
-    ConstraintCreator::~ConstraintCreator()
-    {
+    ConstraintCreator::~ConstraintCreator() {
     }
 
-
-    shared_ptr<BasicConstraint> ConstraintCreator::createConstraint(long constraintConfId)
-    {
-        switch(constraintConfId)
-        {
-            «FOR c : conditions»
+    shared_ptr<BasicConstraint> ConstraintCreator::createConstraint(long constraintConfId) {
+        switch(constraintConfId) {
+            «FOR c: conditions»
                 «IF (c.variables.size > 0) || (c.quantifiers.size > 0)»
                     case «c.id»:
-                    return std::make_shared<Constraint«c.id»>();
-                    break;
+                        return std::make_shared<Constraint«c.id»>();
+                        break;
                 «ENDIF»
             «ENDFOR»
             default:
-            std::cerr << "ConstraintCreator: Unknown constraint requested: " << constraintConfId << std::endl;
-            throw new std::exception();
-            break;
+                std::cerr << "ConstraintCreator: Unknown constraint requested: " << constraintConfId << std::endl;
+                throw new std::exception();
+                break;
         }
     }
-
-
 }
 '''
 
     def String behaviourConditionHeader(Behaviour behaviour)'''
-
-
 #include "DomainCondition.h"
 /*PROTECTED REGION ID(incBC«behaviour.id») ENABLED START*/
 «IF (protectedRegions.containsKey("incBC" + behaviour.id))»
-«protectedRegions.get("incBC" + behaviour.id)»
+    «protectedRegions.get("incBC" + behaviour.id)»
 «ELSE»
-//Add additional includes here
+    // Add additional includes here
 «ENDIF»
 /*PROTECTED REGION END*/
 
 using namespace alica;
 
-namespace alicaAutogenerated
-{
+namespace alicaAutogenerated {
     /*PROTECTED REGION ID(meth«behaviour.id») ENABLED START*/
     «IF (protectedRegions.containsKey("meth" + behaviour.id))»
-    «protectedRegions.get("meth" + behaviour.id)»
+        «protectedRegions.get("meth" + behaviour.id)»
     «ELSE»
-    //Add additional includes here
+        // Add additional includes here
     «ENDIF»
     /*PROTECTED REGION END*/
 
     «IF (behaviour.preCondition !== null)»
-        class PreCondition«behaviour.preCondition.id» : public DomainCondition
-        {
+        class PreCondition«behaviour.preCondition.id»: public DomainCondition {
             bool evaluate(std::shared_ptr<RunningPlan> rp);
         };
     «ENDIF»
     «IF (behaviour.runtimeCondition !== null)»
-        class RunTimeCondition«behaviour.runtimeCondition.id» : public DomainCondition
-        {
+        class RunTimeCondition«behaviour.runtimeCondition.id»: public DomainCondition {
             bool evaluate(std::shared_ptr<RunningPlan> rp);
         };
     «ENDIF»
     «IF (behaviour.postCondition !== null)»
-        class PostCondition«behaviour.postCondition.id» : public DomainCondition
-        {
+        class PostCondition«behaviour.postCondition.id»: public DomainCondition {
             bool evaluate(std::shared_ptr<RunningPlan> rp);
         };
     «ENDIF»
-} /* namespace alica */
+}
 '''
 
     def String behaviourConditionSource(Behaviour behaviour, IConstraintCodeGenerator constraintCodeGenerator) '''
 «IF (behaviour.relativeDirectory.isEmpty)»
-#include "«behaviour.name»«behaviour.id».h"
+    #include "«behaviour.name»«behaviour.id».h"
 «ELSE»
-#include  "«behaviour.relativeDirectory»/«behaviour.name»«behaviour.id».h"
+    #include "«behaviour.relativeDirectory»/«behaviour.name»«behaviour.id».h"
 «ENDIF»
 #include <memory>
 
 /*PROTECTED REGION ID(inccppBC«behaviour.id») ENABLED START*/
-    «IF (protectedRegions.containsKey("inccppBC" + behaviour.id))»
-«protectedRegions.get("inccppBC" + behaviour.id)»
-    «ELSE»
-        //Add additional includes here
-    «ENDIF»
+«IF (protectedRegions.containsKey("inccppBC" + behaviour.id))»
+    «protectedRegions.get("inccppBC" + behaviour.id)»
+«ELSE»
+    // Add additional includes here
+«ENDIF»
 /*PROTECTED REGION END*/
 
 using namespace alica;
 
-namespace alicaAutogenerated
-{
-    //Behaviour:«behaviour.name»
+namespace alicaAutogenerated {
+    // Behaviour:«behaviour.name»
     «constraintCodeGenerator.expressionsBehaviourCheckingMethods(behaviour)»
-
-} /* namespace alica */
+}
 '''
 
     def String constraintsHeader(Behaviour behaviour)'''
@@ -512,62 +462,54 @@ namespace alicaAutogenerated
 
 using namespace alica;
 
-namespace alica
-{
+namespace alica {
     class ProblemDescriptor;
     class RunningPlan;
 }
 
-namespace alicaAutogenerated
-{
-
+namespace alicaAutogenerated {
     «IF (behaviour.preCondition !== null)»
-    «IF (behaviour.preCondition.variables.size > 0) || (behaviour.preCondition.quantifiers.size > 0)»
-        class Constraint«behaviour.preCondition.id» : public BasicConstraint
-        {
-            void getConstraint(std::shared_ptr<ProblemDescriptor> c, std::shared_ptr<RunningPlan> rp);
-        };
-    «ENDIF»
+        «IF (behaviour.preCondition.variables.size > 0) || (behaviour.preCondition.quantifiers.size > 0)»
+            class Constraint«behaviour.preCondition.id»: public BasicConstraint {
+                void getConstraint(std::shared_ptr<ProblemDescriptor> c, std::shared_ptr<RunningPlan> rp);
+            };
+        «ENDIF»
     «ENDIF»
     «IF (behaviour.runtimeCondition !== null)»
-    «IF (behaviour.runtimeCondition.variables.size > 0) || (behaviour.runtimeCondition.quantifiers.size > 0)»
-        class Constraint«behaviour.runtimeCondition.id» : public BasicConstraint
-        {
-            void getConstraint(std::shared_ptr<ProblemDescriptor> c, std::shared_ptr<RunningPlan> rp);
-        };
-    «ENDIF»
+        «IF (behaviour.runtimeCondition.variables.size > 0) || (behaviour.runtimeCondition.quantifiers.size > 0)»
+            class Constraint«behaviour.runtimeCondition.id»: public BasicConstraint {
+                void getConstraint(std::shared_ptr<ProblemDescriptor> c, std::shared_ptr<RunningPlan> rp);
+            };
+        «ENDIF»
     «ENDIF»
     «IF (behaviour.postCondition !== null)»
-    «IF (behaviour.postCondition.variables.size > 0) || (behaviour.postCondition.quantifiers.size > 0)»
-        class Constraint«behaviour.postCondition.id» : public BasicConstraint
-        {
-            void getConstraint(std::shared_ptr<ProblemDescriptor> c, std::shared_ptr<RunningPlan> rp);
-        };
+        «IF (behaviour.postCondition.variables.size > 0) || (behaviour.postCondition.quantifiers.size > 0)»
+            class Constraint«behaviour.postCondition.id»: public BasicConstraint {
+                void getConstraint(std::shared_ptr<ProblemDescriptor> c, std::shared_ptr<RunningPlan> rp);
+            };
+        «ENDIF»
     «ENDIF»
-    «ENDIF»
-} /* namespace alica */
+}
 '''
 
     def String constraintsSource(Behaviour behaviour, IConstraintCodeGenerator constraintCodeGenerator) '''
 «IF (behaviour.relativeDirectory.isEmpty)»
-#include "constraints/«behaviour.name»«behaviour.id»Constraints.h"
+    #include "constraints/«behaviour.name»«behaviour.id»Constraints.h"
 «ELSE»
-#include "«behaviour.relativeDirectory»/constraints/«behaviour.name»«behaviour.id»Constraints.h"
+    #include "«behaviour.relativeDirectory»/constraints/«behaviour.name»«behaviour.id»Constraints.h"
 «ENDIF»
 /*PROTECTED REGION ID(ch«behaviour.id») ENABLED START*/
-        «IF (protectedRegions.containsKey("ch" + behaviour.id))»
-«protectedRegions.get("ch" + behaviour.id)»
-        «ELSE»
-            //Add additional options here
-        «ENDIF»
+«IF (protectedRegions.containsKey("ch" + behaviour.id))»
+    «protectedRegions.get("ch" + behaviour.id)»
+«ELSE»
+    // Add additional options here
+«ENDIF»
 /*PROTECTED REGION END*/
 
 using namespace alica;
 
-namespace alicaAutogenerated
-{
-
-    //Behaviour:«behaviour.name»
+namespace alicaAutogenerated {
+    // Behaviour:«behaviour.name»
      «constraintCodeGenerator.constraintBehaviourCheckingMethods(behaviour)»
 }
 '''
@@ -581,74 +523,70 @@ namespace alicaAutogenerated
 
 using namespace alica;
 
-namespace alica
-{
+namespace alica {
     class ProblemDescriptor;
     class RunningPlan;
 }
 
-namespace alicaAutogenerated
-{
-
+namespace alicaAutogenerated {
     «IF (plan.preCondition !== null)»
-        class Constraint«plan.preCondition.id» : public BasicConstraint
-        {
+        class Constraint«plan.preCondition.id»: public BasicConstraint {
             void getConstraint(std::shared_ptr<ProblemDescriptor> c, std::shared_ptr<RunningPlan> rp);
         };
     «ENDIF»
+
     «IF (plan.runtimeCondition !== null)»
-    «IF (plan.runtimeCondition.variables.size > 0) || (plan.runtimeCondition.quantifiers.size > 0)»
-        class Constraint«plan.runtimeCondition.id» : public BasicConstraint
-        {
-            void getConstraint(std::shared_ptr<ProblemDescriptor> c, std::shared_ptr<RunningPlan> rp);
-        };
+        «IF (plan.runtimeCondition.variables.size > 0) || (plan.runtimeCondition.quantifiers.size > 0)»
+            class Constraint«plan.runtimeCondition.id»: public BasicConstraint {
+                void getConstraint(std::shared_ptr<ProblemDescriptor> c, std::shared_ptr<RunningPlan> rp);
+            };
+        «ENDIF»
     «ENDIF»
-    «ENDIF»
-    «var  List<Transition> trans = plan.transitions»
-    «FOR transition : trans»
-    «IF (transition.preCondition !== null)»
-    «IF (transition.preCondition.variables.size > 0) || (transition.preCondition.quantifiers.size > 0)»
-    class Constraint«transition.preCondition.id» : public BasicConstraint
-    {
-        void getConstraint(shared_ptr<std::ProblemDescriptor> c, std::shared_ptr<RunningPlan> rp);
-    };
-    «ENDIF»
-    «ENDIF»
+
+    «var List<Transition> trans = plan.transitions»
+    «FOR transition: trans»
+        «IF (transition.preCondition !== null)»
+            «IF (transition.preCondition.variables.size > 0) || (transition.preCondition.quantifiers.size > 0)»
+            class Constraint«transition.preCondition.id»: public BasicConstraint {
+                void getConstraint(shared_ptr<std::ProblemDescriptor> c, std::shared_ptr<RunningPlan> rp);
+            };
+            «ENDIF»
+        «ENDIF»
     «ENDFOR»
-} /* namespace alica */
+}
 '''
 
     def String constraintsSource(Plan plan, IConstraintCodeGenerator constraintCodeGenerator) '''
 «IF (plan.relativeDirectory.isEmpty)»
-#include "constraints/«plan.name»«plan.id»Constraints.h"
+    #include "constraints/«plan.name»«plan.id»Constraints.h"
 «ELSE»
-#include "«plan.relativeDirectory»/constraints/«plan.name»«plan.id»Constraints.h"
+    #include "«plan.relativeDirectory»/constraints/«plan.name»«plan.id»Constraints.h"
 «ENDIF»
+
 /*PROTECTED REGION ID(ch«plan.id») ENABLED START*/
-        «IF (protectedRegions.containsKey("ch" + plan.id))»
-«protectedRegions.get("ch" + plan.id)»
-        «ELSE»
-            //Add additional options here
-        «ENDIF»
+«IF (protectedRegions.containsKey("ch" + plan.id))»
+    «protectedRegions.get("ch" + plan.id)»
+«ELSE»
+    // Add additional options here
+«ENDIF»
 /*PROTECTED REGION END*/
 
 using namespace alica;
 
-namespace alicaAutogenerated
-{
-    //Plan:«plan.name»
+namespace alicaAutogenerated {
+    // Plan:«plan.name»
     /*
-    * Tasks: «var List<EntryPoint> entryPoints = plan.entryPoints» «FOR  planEntryPoint : entryPoints»
-    * - EP:«planEntryPoint.id» : «planEntryPoint.task.name» («planEntryPoint.task.id»)«ENDFOR»
+    * Tasks: «var List<EntryPoint> entryPoints = plan.entryPoints» «FOR planEntryPoint: entryPoints»
+    * - EP:«planEntryPoint.id»: «planEntryPoint.task.name» («planEntryPoint.task.id»)«ENDFOR»
     *
-    * States:«var List<State> states = plan.states» «FOR state : states»
+    * States:«var List<State> states = plan.states» «FOR state: states»
     * - «state.name» («state.id»)«ENDFOR»
     *
-    * Vars:«var List<Variable> variables = plan.variables» «FOR variable : variables»
+    * Vars:«var List<Variable> variables = plan.variables» «FOR variable: variables»
     * - «variable.name» («variable.id») «ENDFOR»
     */
     «constraintCodeGenerator.constraintPlanCheckingMethods(plan)»
-    «FOR state : states»
+    «FOR state: states»
         «constraintCodeGenerator.constraintStateCheckingMethods(state)»
 	«ENDFOR»
 }
@@ -659,75 +597,72 @@ namespace alicaAutogenerated
 
 #include <engine/BasicBehaviour.h>
 #include <string>
+
 /*PROTECTED REGION ID(domainBehaviourHeaderHead) ENABLED START*/
-        «IF (protectedRegions.containsKey("domainBehaviourHeaderHead"))»
-«protectedRegions.get("domainBehaviourHeaderHead")»
-        «ELSE»
-            //Add additional options here
-        «ENDIF»
+«IF (protectedRegions.containsKey("domainBehaviourHeaderHead"))»
+    «protectedRegions.get("domainBehaviourHeaderHead")»
+«ELSE»
+    // Add additional options here
+«ENDIF»
 /*PROTECTED REGION END*/
 
-namespace alica
-{
-    class DomainBehaviour : public BasicBehaviour
-    {
+namespace alica {
+    class DomainBehaviour: public BasicBehaviour {
         public:
-        DomainBehaviour(std::string name);
-        virtual ~DomainBehaviour();
+            DomainBehaviour(std::string name);
+            virtual ~DomainBehaviour();
 
         /*PROTECTED REGION ID(domainBehaviourClassDecl) ENABLED START*/
-«IF (protectedRegions.containsKey("domainBehaviourClassDecl"))»
-«protectedRegions.get("domainBehaviourClassDecl")»
-«ELSE»
-        //Add additional options here
-«ENDIF»
+        «IF (protectedRegions.containsKey("domainBehaviourClassDecl"))»
+            «protectedRegions.get("domainBehaviourClassDecl")»
+        «ELSE»
+            // Add additional options here
+        «ENDIF»
         /*PROTECTED REGION END*/
     };
-} /* namespace alica */
+}
 '''
 
     def String domainBehaviourSource() '''
 #include "DomainBehaviour.h"
+
 /*PROTECTED REGION ID(domainBehaviourSrcHeaders) ENABLED START*/
 «IF (protectedRegions.containsKey("domainBehaviourSrcHeaders"))»
-«protectedRegions.get("domainBehaviourSrcHeaders")»
+    «protectedRegions.get("domainBehaviourSrcHeaders")»
 «ELSE»
-//Add additional options here
+    // Add additional options here
 «ENDIF»
 /*PROTECTED REGION END*/
 
-namespace alica
-{
-    DomainBehaviour::DomainBehaviour(std::string name) : BasicBehaviour(name)
-    {
+namespace alica {
+    DomainBehaviour::DomainBehaviour(std::string name): BasicBehaviour(name) {
         /*PROTECTED REGION ID(domainBehaviourConstructor) ENABLED START*/
-«IF (protectedRegions.containsKey("domainBehaviourConstructor"))»
-«protectedRegions.get("domainBehaviourConstructor")»
-«ELSE»
-        //Add additional options here
-«ENDIF»
+        «IF (protectedRegions.containsKey("domainBehaviourConstructor"))»
+            «protectedRegions.get("domainBehaviourConstructor")»
+        «ELSE»
+            // Add additional options here
+        «ENDIF»
         /*PROTECTED REGION END*/
     }
 
-    DomainBehaviour::~DomainBehaviour()
-    {
+    DomainBehaviour::~DomainBehaviour() {
         /*PROTECTED REGION ID(domainBehaviourDestructor) ENABLED START*/
-«IF (protectedRegions.containsKey("domainBehaviourDestructor"))»
-«protectedRegions.get("domainBehaviourDestructor")»
-«ELSE»
-        //Add additional options here
-«ENDIF»
+        «IF (protectedRegions.containsKey("domainBehaviourDestructor"))»
+            «protectedRegions.get("domainBehaviourDestructor")»
+        «ELSE»
+            // Add additional options here
+        «ENDIF»
         /*PROTECTED REGION END*/
     }
 
     /*PROTECTED REGION ID(domainBehaviourMethods) ENABLED START*/
-«IF (protectedRegions.containsKey("domainBehaviourMethods"))»
-«protectedRegions.get("domainBehaviourMethods")»
-«ELSE»
-    //Add additional options here
-«ENDIF»
+    «IF (protectedRegions.containsKey("domainBehaviourMethods"))»
+        «protectedRegions.get("domainBehaviourMethods")»
+    «ELSE»
+        // Add additional options here
+    «ENDIF»
     /*PROTECTED REGION END*/
-} /* namespace alica */
+}
 '''
 
     def String domainConditionHeader() '''
@@ -736,93 +671,87 @@ namespace alica
 #include <engine/BasicCondition.h>
 /*PROTECTED REGION ID(domainHeaderAdditional) ENABLED START*/
 «IF (protectedRegions.containsKey("domainHeaderAdditional"))»
-«protectedRegions.get("domainHeaderAdditional")»
+    «protectedRegions.get("domainHeaderAdditional")»
 «ELSE»
-        //Add additional options here
+    // Add additional options here
 «ENDIF»
 /*PROTECTED REGION END*/
 
-namespace alica
-{
-    class DomainCondition : public BasicCondition
-    {
+namespace alica {
+    class DomainCondition: public BasicCondition {
         public:
-        DomainCondition();
-        virtual ~DomainCondition();
+            DomainCondition();
+            virtual ~DomainCondition();
 
         /*PROTECTED REGION ID(domainHeader) ENABLED START*/
-«IF (protectedRegions.containsKey("domainHeader"))»
-«protectedRegions.get("domainHeader")»
-«ELSE»
-        //Add additional options here
-«ENDIF»
-
+        «IF (protectedRegions.containsKey("domainHeader"))»
+            «protectedRegions.get("domainHeader")»
+        «ELSE»
+            // Add additional options here
+        «ENDIF»
         /*PROTECTED REGION END*/
 
-protected:
-                /*PROTECTED REGION ID(protectedDomainHeader) ENABLED START*/
-«IF (protectedRegions.containsKey("protectedDomainHeader"))»
-«protectedRegions.get("protectedDomainHeader")»
-«ELSE»
-        //Add additional options here
-«ENDIF»
+        protected:
+            /*PROTECTED REGION ID(protectedDomainHeader) ENABLED START*/
+            «IF (protectedRegions.containsKey("protectedDomainHeader"))»
+                «protectedRegions.get("protectedDomainHeader")»
+            «ELSE»
+                // Add additional options here
+            «ENDIF»
+            /*PROTECTED REGION END*/
 
-        /*PROTECTED REGION END*/
-
-private:
-                /*PROTECTED REGION ID(privateDomainHeader) ENABLED START*/
-«IF (protectedRegions.containsKey("privateDomainHeader"))»
-«protectedRegions.get("privateDomainHeader")»
-«ELSE»
-        //Add additional options here
-«ENDIF»
-        /*PROTECTED REGION END*/
+        private:
+            /*PROTECTED REGION ID(privateDomainHeader) ENABLED START*/
+            «IF (protectedRegions.containsKey("privateDomainHeader"))»
+                «protectedRegions.get("privateDomainHeader")»
+            «ELSE»
+                // Add additional options here
+            «ENDIF»
+            /*PROTECTED REGION END*/
     };
-} /* namespace alica */
+}
 '''
 
     def String domainConditionSource() '''
 #include "DomainCondition.h"
+
 /*PROTECTED REGION ID(domainSourceHeaders) ENABLED START*/
 «IF (protectedRegions.containsKey("domainSourceHeaders"))»
-«protectedRegions.get("domainSourceHeaders")»
+    «protectedRegions.get("domainSourceHeaders")»
 «ELSE»
-        //Add additional options here
+    // Add additional options here
 «ENDIF»
 /*PROTECTED REGION END*/
 
-namespace alica
-{
-    DomainCondition::DomainCondition() : BasicCondition()
-    {
+namespace alica {
+    DomainCondition::DomainCondition(): BasicCondition() {
         /*PROTECTED REGION ID(domainSourceConstructor) ENABLED START*/
-«IF (protectedRegions.containsKey("domainSourceConstructor"))»
-«protectedRegions.get("domainSourceConstructor")»
-«ELSE»
-        //Add additional options here
-«ENDIF»
+        «IF (protectedRegions.containsKey("domainSourceConstructor"))»
+            «protectedRegions.get("domainSourceConstructor")»
+        «ELSE»
+            // Add additional options here
+        «ENDIF»
         /*PROTECTED REGION END*/
     }
 
-    DomainCondition::~DomainCondition()
-    {
+    DomainCondition::~DomainCondition() {
         /*PROTECTED REGION ID(domainSourceDestructor) ENABLED START*/
-«IF (protectedRegions.containsKey("domainSourceDestructor"))»
-«protectedRegions.get("domainSourceDestructor")»
-«ELSE»
-        //Add additional options here
-«ENDIF»
+        «IF (protectedRegions.containsKey("domainSourceDestructor"))»
+            «protectedRegions.get("domainSourceDestructor")»
+        «ELSE»
+            // Add additional options here
+        «ENDIF»
         /*PROTECTED REGION END*/
     }
 
     /*PROTECTED REGION ID(additionalMethodsDomainCondition) ENABLED START*/
-«IF (protectedRegions.containsKey("additionalMethodsDomainCondition"))»
-«protectedRegions.get("additionalMethodsDomainCondition")»
-«ELSE»
-        //Add additional methods here
-«ENDIF»
+    «IF (protectedRegions.containsKey("additionalMethodsDomainCondition"))»
+        «protectedRegions.get("additionalMethodsDomainCondition")»
+    «ELSE»
+        // Add additional methods here
+    «ENDIF»
     /*PROTECTED REGION END*/
-} /* namespace alica */
+}
 '''
 
     def String planHeader(Plan plan) '''
@@ -832,94 +761,96 @@ namespace alica
 #include <engine/BasicUtilityFunction.h>
 #include <engine/UtilityFunction.h>
 #include <engine/DefaultUtilityFunction.h>
+
 /*PROTECTED REGION ID(incl«plan.id») ENABLED START*/
 «IF (protectedRegions.containsKey("incl" + plan.id))»
-«protectedRegions.get("incl" + plan.id)»
+    «protectedRegions.get("incl" + plan.id)»
 «ELSE»
-//Add additional includes here
+    // Add additional includes here
 «ENDIF»
 /*PROTECTED REGION END*/
+
 using namespace alica;
 
-namespace alicaAutogenerated
-{
+namespace alicaAutogenerated {
     /*PROTECTED REGION ID(meth«plan.id») ENABLED START*/
     «IF (protectedRegions.containsKey("meth" + plan.id))»
-«protectedRegions.get("meth" + plan.id)»
+        «protectedRegions.get("meth" + plan.id)»
     «ELSE»
-        //Add additional options here
+        // Add additional options here
     «ENDIF»
     /*PROTECTED REGION END*/
-    class UtilityFunction«plan.id» : public BasicUtilityFunction
-    {
+
+    class UtilityFunction«plan.id»: public BasicUtilityFunction {
         shared_ptr<UtilityFunction> getUtilityFunction(Plan* plan);
     };
+
     «IF (plan.preCondition !== null)»
-        class PreCondition«plan.preCondition.id» : public DomainCondition
-        {
+        class PreCondition«plan.preCondition.id»: public DomainCondition {
             bool evaluate(std::shared_ptr<RunningPlan> rp);
         };
     «ENDIF»
+
     «IF (plan.runtimeCondition !== null)»
-        class RunTimeCondition«plan.runtimeCondition.id» : public DomainCondition
-        {
+        class RunTimeCondition«plan.runtimeCondition.id»: public DomainCondition {
             bool evaluate(std::shared_ptr<RunningPlan> rp);
         };
     «ENDIF»
+
     «var List<State> states = plan.states»
-    «FOR s : states»
+    «FOR s: states»
         «var List<Transition> transitions = s.outTransitions»
-        «FOR transition : transitions»
+        «FOR transition: transitions»
             «IF transition.preCondition !== null»
-                class PreCondition«transition.preCondition.id» : public DomainCondition
-                {
+                class PreCondition«transition.preCondition.id»: public DomainCondition {
                     bool evaluate(std::shared_ptr<RunningPlan> rp);
                 };
             «ENDIF»
         «ENDFOR»
     «ENDFOR»
-} /* namespace alica */
+}
 '''
 
     def String planSource(Plan plan, IConstraintCodeGenerator constraintCodeGenerator) '''
 «IF (plan.relativeDirectory.isEmpty)»
-#include "«plan.name»«plan.id».h"
+    #include "«plan.name»«plan.id».h"
 «ELSE»
-#include "«plan.relativeDirectory»/«plan.name»«plan.id».h"
+    #include "«plan.relativeDirectory»/«plan.name»«plan.id».h"
 «ENDIF»
+
 /*PROTECTED REGION ID(eph«plan.id») ENABLED START*/
 «IF (protectedRegions.containsKey("eph" + plan.id))»
-«protectedRegions.get("eph" + plan.id)»
+    «protectedRegions.get("eph" + plan.id)»
 «ELSE»
-    //Add additional options here
+    // Add additional options here
 «ENDIF»
 /*PROTECTED REGION END*/
 
 using namespace alica;
 
-namespace alicaAutogenerated
-{
-    //Plan:«plan.name»
+namespace alicaAutogenerated {
+    // Plan:«plan.name»
     «constraintCodeGenerator.expressionsPlanCheckingMethods(plan)»
     /* generated comment
         «var List<EntryPoint> entryPoints = plan.entryPoints»
-        «FOR entryPoint : entryPoints»
-        Task: «entryPoint.task.name»  -> EntryPoint-ID: «entryPoint.id»
+        «FOR entryPoint: entryPoints»
+            Task: «entryPoint.task.name» -> EntryPoint-ID: «entryPoint.id»
         «ENDFOR»
     */
-    shared_ptr<UtilityFunction> UtilityFunction«plan.id»::getUtilityFunction(Plan* plan)
-    {
+
+    shared_ptr<UtilityFunction> UtilityFunction«plan.id»::getUtilityFunction(Plan* plan) {
        /*PROTECTED REGION ID(«plan.id») ENABLED START*/
        «IF (protectedRegions.containsKey(plan.id))»
-«protectedRegions.get(plan.id)»
+            «protectedRegions.get(plan.id)»
        «ELSE»
             std::shared_ptr<UtilityFunction> defaultFunction = std::make_shared<DefaultUtilityFunction>(plan);
             return defaultFunction;
        «ENDIF»
         /*PROTECTED REGION END*/
     }
+
     «var List<State> states = plan.states»
-    «FOR state : states»
+    «FOR state: states»
 		«constraintCodeGenerator.expressionsStateCheckingMethods(state)»
 	«ENDFOR»
 }

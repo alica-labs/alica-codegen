@@ -3,6 +3,7 @@ import de.unikassel.vs.alica.codegen.GeneratedSourcesManagerCpp;
 import de.unikassel.vs.alica.planDesigner.alicamodel.*;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
@@ -76,6 +77,7 @@ public class CodegenCppTest {
         codegenerator.generate();
     }
 
+    @Ignore
     @Test
     public void testGeneratedCode() {
         generateCode();

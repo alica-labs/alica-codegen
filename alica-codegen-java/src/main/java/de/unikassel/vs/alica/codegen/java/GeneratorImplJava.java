@@ -143,7 +143,7 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
         String destinationPath = cutDestinationPathToDirectory(behaviour);
         String filename = StringUtils.capitalize(behaviour.getName()) + behaviour.getId() + ".java";
         String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), destinationPath, filename).toString();
-        String fileContentSource = xtendTemplates.behaviourCondition(behaviour, getActiveConstraintCodeGenerator());
+        String fileContentSource = xtendTemplates.behaviourCondition(behaviour);
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
 
@@ -267,7 +267,7 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
 
         String filename = StringUtils.capitalize(behaviour.getName()) + behaviour.getId() + "Constraints.java";
         String srcPath = Paths.get(constraintSourcePath, filename).toString();
-        String fileContentSource = xtendTemplates.constraints(behaviour, getActiveConstraintCodeGenerator());
+        String fileContentSource = xtendTemplates.constraints(behaviour);
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
     }
@@ -369,7 +369,7 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
 
         String filename = StringUtils.capitalize(plan.getName()) + plan.getId() + "Constraints.java";
         String srcPath = Paths.get(constraintSourcePath, filename).toString();
-        String fileContentSource = xtendTemplates.constraints(plan, getActiveConstraintCodeGenerator());
+        String fileContentSource = xtendTemplates.constraints(plan);
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
 
@@ -547,7 +547,7 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
         String destinationPath = cutDestinationPathToDirectory(plan);
         String filename = StringUtils.capitalize(plan.getName()) + plan.getId() + ".java";
         String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), destinationPath, filename).toString();
-        String fileContentSource = xtendTemplates.plan(plan, getActiveConstraintCodeGenerator());
+        String fileContentSource = xtendTemplates.plan(plan);
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
     }

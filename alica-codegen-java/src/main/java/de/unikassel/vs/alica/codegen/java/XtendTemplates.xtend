@@ -1,6 +1,5 @@
 package de.unikassel.vs.alica.codegen.java;
 
-import de.unikassel.vs.alica.codegen.IConstraintCodeGenerator;
 import de.unikassel.vs.alica.planDesigner.alicamodel.Behaviour;
 import de.unikassel.vs.alica.planDesigner.alicamodel.Condition;
 import de.unikassel.vs.alica.planDesigner.alicamodel.Plan;
@@ -163,7 +162,7 @@ public class ConstraintCreator {
 }
 '''
 
-    def String behaviourCondition(Behaviour behaviour, IConstraintCodeGenerator constraintCodeGenerator) '''
+    def String behaviourCondition(Behaviour behaviour) '''
 «IF (behaviour.relativeDirectory.isEmpty)»
     package de.unikassel.vs.alica.codegen.out;
 «ELSE»
@@ -292,7 +291,7 @@ public class PostCondition«behaviour.postCondition.id»Impl {
 }
 '''
 
-    def String constraints(Behaviour behaviour, IConstraintCodeGenerator constraintCodeGenerator) '''
+    def String constraints(Behaviour behaviour) '''
 «IF (behaviour.relativeDirectory.isEmpty)»
     package de.unikassel.vs.alica.codegen.out.constraints;
 «ELSE»
@@ -433,7 +432,7 @@ public class Constraint«behaviour.postCondition.id»Impl {
 }
 '''
 
-    def String constraints(Plan plan, IConstraintCodeGenerator constraintCodeGenerator) '''
+    def String constraints(Plan plan) '''
 «IF (plan.relativeDirectory.isEmpty)»
     package de.unikassel.vs.alica.codegen.out.constraints;
 «ELSE»
@@ -629,7 +628,7 @@ public class DomainConditionImpl {
 }
 '''
 
-    def String plan(Plan plan, IConstraintCodeGenerator constraintCodeGenerator) '''
+    def String plan(Plan plan) '''
 «IF (plan.relativeDirectory.isEmpty)»
     package de.unikassel.vs.alica.codegen.out;
 «ELSE»

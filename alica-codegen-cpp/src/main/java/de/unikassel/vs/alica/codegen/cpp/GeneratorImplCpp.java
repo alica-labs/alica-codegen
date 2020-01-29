@@ -76,7 +76,7 @@ public class GeneratorImplCpp extends GeneratorImpl implements IGenerator<Genera
         formatFile(headerPath);
 
         String srcPath = Paths.get(generatedSourcesManager.getSrcDir(), destinationPath, behaviour.getName() + behaviour.getId() + ".cpp").toString();
-        String fileContentSource = xtendTemplates.behaviourConditionSource(behaviour, getActiveConstraintCodeGenerator());
+        String fileContentSource = xtendTemplates.behaviourConditionSource(behaviour);
         writeSourceFile(srcPath, fileContentSource);
 
         formatFile(srcPath);
@@ -147,7 +147,7 @@ public class GeneratorImplCpp extends GeneratorImpl implements IGenerator<Genera
         }
 
         String srcPath = Paths.get(constraintSourcePath, plan.getName() + plan.getId() + "Constraints.cpp").toString();
-        String fileContentSource = xtendTemplates.constraintsSource(plan, getActiveConstraintCodeGenerator());
+        String fileContentSource = xtendTemplates.constraintsSource(plan);
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
 
@@ -189,7 +189,7 @@ public class GeneratorImplCpp extends GeneratorImpl implements IGenerator<Genera
         }
 
         String srcPath = Paths.get(constraintSourcePath, behaviour.getName() + behaviour.getId() + "Constraints.cpp").toString();
-        String fileContentSource = xtendTemplates.constraintsSource(behaviour, getActiveConstraintCodeGenerator());
+        String fileContentSource = xtendTemplates.constraintsSource(behaviour);
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
     }
@@ -205,7 +205,7 @@ public class GeneratorImplCpp extends GeneratorImpl implements IGenerator<Genera
         formatFile(headerPath);
 
         String srcPath = Paths.get(generatedSourcesManager.getSrcDir(), destinationPath, plan.getName() + plan.getId() + ".cpp").toString();
-        String fileContentSource = xtendTemplates.planSource(plan, getActiveConstraintCodeGenerator());
+        String fileContentSource = xtendTemplates.planSource(plan);
         writeSourceFile(srcPath, fileContentSource);
 
         formatFile(srcPath);

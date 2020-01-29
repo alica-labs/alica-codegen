@@ -75,7 +75,6 @@ public class CodegeneratorCpp extends Codegenerator {
             throw new RuntimeException(e);
         }
 
-        PluginManager.getInstance().getDefaultPlugin().setProtectedRegions(protectedRegionsVisitor.getProtectedRegions());
         languageSpecificGenerator.setProtectedRegions(protectedRegionsVisitor.getProtectedRegions());
 
         languageSpecificGenerator.createDomainBehaviour();

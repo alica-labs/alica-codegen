@@ -7,9 +7,8 @@ import de.unikassel.vs.alica.codegen.GeneratorImpl;
 import de.unikassel.vs.alica.codegen.IGenerator;
 import de.unikassel.vs.alica.planDesigner.alicamodel.*;
 /**
- * IF the following line is not import de.unikassel.vs.alica.codegen.java.XtendTemplates;
- * you messed it up ... great ... you made the plandesigner great again ... huge ...
- * INSERT IT
+ * the following line have to be "import de.unikassel.vs.alica.codegen.java.XtendTemplates;"
+ * otherwise it must be inserted again!
  */
 import de.unikassel.vs.alica.codegen.java.XtendTemplates;
 import org.apache.commons.lang3.StringUtils;
@@ -24,9 +23,8 @@ import java.util.stream.Stream;
 
 
 /**
- * Code generator for C++. It uses the XtendTemplates for creating the code.
+ * Code generator for Java. It uses the XtendTemplates for creating the code.
  * After this the created strings are written to disk according to {@link GeneratedSourcesManagerJava}.
- * Every file that is written is formatted by the formatter that is set by setFormatter.
  */
 public class GeneratorImplJava extends GeneratorImpl implements IGenerator<GeneratedSourcesManagerJava> {
     private XtendTemplates xtendTemplates;

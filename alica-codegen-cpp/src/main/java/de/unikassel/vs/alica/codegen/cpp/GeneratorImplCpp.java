@@ -6,9 +6,8 @@ import de.unikassel.vs.alica.codegen.GeneratorImpl;
 import de.unikassel.vs.alica.codegen.IGenerator;
 import de.unikassel.vs.alica.planDesigner.alicamodel.*;
 /**
- * IF the following line is not import de.unikassel.vs.alica.codegen.cpp.XtendTemplates;
- * you messed it up ... great ... you made the plandesigner great again ... huge ...
- * INSERT IT
+ * the following line have to be "import de.unikassel.vs.alica.codegen.cpp.XtendTemplates;"
+ * otherwise it must be inserted again!
  */
 import de.unikassel.vs.alica.codegen.cpp.XtendTemplates;
 

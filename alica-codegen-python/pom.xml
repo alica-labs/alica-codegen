@@ -11,7 +11,38 @@
 
     <artifactId>codegen-python</artifactId>
 
+    <build>
+        <plugins>
+            <plugin>
+                <!-- https://mvnrepository.com/artifact/org.eclipse.xtend/xtend-maven-plugin -->
+                <groupId>org.eclipse.xtend</groupId>
+                <artifactId>xtend-maven-plugin</artifactId>
+                <version>2.20.0.M1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                            <goal>testCompile</goal>
+                        </goals>
+                        <id>generate-environment-xtend</id>
+                        <phase>generate-sources</phase>
+                        <configuration>
+                            <outputDirectory>${project.build.directory}/xtend-gen/main</outputDirectory>
+                            <testOutputDirectory>${project.build.directory}/xtend-gen/test</testOutputDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
     <dependencies>
+        <dependency>
+            <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.9</version>
+        </dependency>
         <dependency>
             <!-- https://github.com/dasys-lab/alica-codegen -->
             <groupId>de.unikassel.vs.alica</groupId>

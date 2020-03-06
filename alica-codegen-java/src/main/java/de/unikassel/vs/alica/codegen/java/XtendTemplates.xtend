@@ -7,9 +7,7 @@ import de.unikassel.vs.alica.planDesigner.alicamodel.PostCondition;
 import de.unikassel.vs.alica.planDesigner.alicamodel.PreCondition;
 import de.unikassel.vs.alica.planDesigner.alicamodel.RuntimeCondition;
 import java.util.List;
-import java.util.Map;
 import de.unikassel.vs.alica.planDesigner.alicamodel.Transition;
-import de.unikassel.vs.alica.planDesigner.alicamodel.EntryPoint;
 import de.unikassel.vs.alica.planDesigner.alicamodel.State;
 import de.unikassel.vs.alica.planDesigner.alicamodel.Variable;
 import org.apache.commons.lang3.StringUtils;
@@ -98,14 +96,14 @@ import de.unikassel.vs.alica.engine.BasicUtilityFunction;
 «ENDFOR»
 
 public class UtilityFunctionCreator {
-    public BasicUtilityFunction createUtility(long utilityfunctionConfId) throws Exception {
-        switch(String.valueOf(utilityfunctionConfId)) {
+    public BasicUtilityFunction createUtility(long utilityFunctionConfId) throws Exception {
+        switch(String.valueOf(utilityFunctionConfId)) {
             «FOR p: plans»
                 case "«p.id»":
                     return new UtilityFunction«p.id»();
             «ENDFOR»
             default:
-                System.err.println("UtilityFunctionCreator: Unknown utility requested: " + utilityfunctionConfId);
+                System.err.println("UtilityFunctionCreator: Unknown utility requested: " + utilityFunctionConfId);
                 throw new Exception();
         }
     }
@@ -547,7 +545,7 @@ public class Constraint«transition.preCondition.id» extends BasicConstraint {
         «FOR state: states»
             «var List<Transition> outTransitions = state.outTransitions»
             «FOR outTransition: outTransitions»
-                «IF outTransition.preCondition != null»
+                «IF outTransition.preCondition !== null»
                     «var List<Variable> variables = outTransition.preCondition.variables»
                     «IF (outTransition.preCondition !== null && outTransition.preCondition.pluginName == "DefaultPlugin" && variables.size > 0)»
                         impl.getConstraint(c, rp);
@@ -634,6 +632,7 @@ public class DomainConditionImpl {
 «ELSE»
     package de.unikassel.vs.alica.codegen.out.«plan.relativeDirectory»;
 «ENDIF»
+
 import de.unikassel.vs.alica.engine.BasicPlan;
 import de.unikassel.vs.alica.engine.BasicUtilityFunction;
 import de.unikassel.vs.alica.codegen.out.impl.«StringUtils.capitalize(plan.name)»«plan.id»Impl;

@@ -9,12 +9,12 @@ import de.unikassel.vs.alica.planDesigner.alicamodel.*;
  * otherwise it must be inserted again!
  */
 import de.unikassel.vs.alica.codegen.python.XtendTemplates;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
-import java.net.URL;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +26,8 @@ import java.util.Map;
 public class GeneratorImplPython extends GeneratorImpl implements IGenerator<GeneratedSourcesManagerPython>  {
     private XtendTemplates xtendTemplates;
     private GeneratedSourcesManagerPython generatedSourcesManager;
-    private String implPath;
+    private String implDir;
+    private String baseDir;
 
     public GeneratorImplPython() {
         xtendTemplates = new XtendTemplates();
@@ -34,7 +35,8 @@ public class GeneratorImplPython extends GeneratorImpl implements IGenerator<Gen
 
     public void setGeneratedSourcesManager(GeneratedSourcesManagerPython generatedSourcesManager) {
         this.generatedSourcesManager = generatedSourcesManager;
-        implPath = generatedSourcesManager.getBaseDir() + File.separator + "impl";
+        baseDir = generatedSourcesManager.getBaseDir();
+        implDir = baseDir + File.separator + "impl";
     }
 
     @Override
@@ -44,15 +46,15 @@ public class GeneratorImplPython extends GeneratorImpl implements IGenerator<Gen
 
     @Override
     public void createBehaviourCreator(List<Behaviour> behaviours) {
-        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "behaviour_creator.py").toString();
+        String srcPath = Paths.get(baseDir, "behaviour_creator.py").toString();
         String fileContentSource = xtendTemplates.behaviourCreator(behaviours);
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
     }
 
     private void createBehaviourImpl(Behaviour behaviour) {
-        String filename = behaviour.getName() + "_impl.py";
-        String srcPath = Paths.get(implPath, filename).toString();
+        String filename = StringUtils.lowerCase(behaviour.getName()) + "_impl.py";
+        String srcPath = Paths.get(implDir, filename).toString();
         String fileContentSource = xtendTemplates.behaviourImpl(behaviour);
         if (new File(srcPath).exists()) {
             LOG.debug("File \"" + srcPath + "\" already exists and is not overwritten");
@@ -63,7 +65,7 @@ public class GeneratorImplPython extends GeneratorImpl implements IGenerator<Gen
     }
 
     private void preConditionBehaviourImpl(Behaviour behaviour) {
-        String srcPath = Paths.get(implPath, "pre_condition_" + behaviour.getPreCondition().getId() + "_impl.py").toString();
+        String srcPath = Paths.get(implDir, "pre_condition_" + behaviour.getPreCondition().getId() + "_impl.py").toString();
         String fileContentSource = xtendTemplates.preConditionBehaviourImpl(behaviour);
         if (new File(srcPath).exists()) {
             LOG.debug("File \"" + srcPath + "\" already exists and is not overwritten");
@@ -76,14 +78,14 @@ public class GeneratorImplPython extends GeneratorImpl implements IGenerator<Gen
     private void preConditionCreator(Behaviour behaviour) {
         this.preConditionBehaviourImpl(behaviour);
 
-        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "pre_condition_" + behaviour.getId() + ".py").toString();
+        String srcPath = Paths.get(baseDir, "pre_condition_" + behaviour.getId() + ".py").toString();
         String fileContentSource = xtendTemplates.preConditionBehaviour(behaviour);
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
     }
 
     private void runtimeConditionBehaviourImpl(Behaviour behaviour) {
-        String srcPath = Paths.get(implPath, "runtime_condition_" + behaviour.getRuntimeCondition().getId() + "_impl.py").toString();
+        String srcPath = Paths.get(implDir, "runtime_condition_" + behaviour.getRuntimeCondition().getId() + "_impl.py").toString();
         String fileContentSource = xtendTemplates.runtimeConditionBehaviourImpl(behaviour);
         if (new File(srcPath).exists()) {
             LOG.debug("File \"" + srcPath + "\" already exists and is not overwritten");
@@ -96,14 +98,14 @@ public class GeneratorImplPython extends GeneratorImpl implements IGenerator<Gen
     private void runtimeConditionCreator(Behaviour behaviour) {
         this.runtimeConditionBehaviourImpl(behaviour);
 
-        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "runtime_condition_" + behaviour.getId() + ".py").toString();
+        String srcPath = Paths.get(baseDir, "runtime_condition_" + behaviour.getId() + ".py").toString();
         String fileContentSource = xtendTemplates.runtimeConditionBehaviour(behaviour);
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
     }
 
     private void postConditionBehaviourImpl(Behaviour behaviour) {
-        String srcPath = Paths.get(implPath, "post_condition_" + behaviour.getPostCondition().getId() + "_impl.py").toString();
+        String srcPath = Paths.get(implDir, "post_condition_" + behaviour.getPostCondition().getId() + "_impl.py").toString();
         String fileContentSource = xtendTemplates.postConditionBehaviourImpl(behaviour);
         if (new File(srcPath).exists()) {
             LOG.debug("File \"" + srcPath + "\" already exists and is not overwritten");
@@ -116,7 +118,7 @@ public class GeneratorImplPython extends GeneratorImpl implements IGenerator<Gen
     private void postConditionCreator(Behaviour behaviour) {
         this.postConditionBehaviourImpl(behaviour);
 
-        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "post_condition_" + behaviour.getId() + ".py").toString();
+        String srcPath = Paths.get(baseDir, "post_condition_" + behaviour.getId() + ".py").toString();
         String fileContentSource = xtendTemplates.postConditionBehaviour(behaviour);
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
@@ -136,14 +138,14 @@ public class GeneratorImplPython extends GeneratorImpl implements IGenerator<Gen
         }
 
         String destinationPath = cutDestinationPathToDirectory(behaviour);
-        String filename = behaviour.getName() + "_" + behaviour.getId() + ".py";
-        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), destinationPath, filename).toString();
+        String filename = StringUtils.lowerCase(behaviour.getName()) + "_" + behaviour.getId() + ".py";
+        String srcPath = Paths.get(baseDir, destinationPath, filename).toString();
         String fileContentSource = xtendTemplates.behaviourCondition(behaviour);
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
 
-        String filename2 = behaviour.getName() + ".py";
-        String srcPath2 = Paths.get(generatedSourcesManager.getBaseDir(), destinationPath, filename2).toString();
+        String filename2 = StringUtils.lowerCase(behaviour.getName()) + ".py";
+        String srcPath2 = Paths.get(baseDir, destinationPath, filename2).toString();
         String fileContentSource2 = xtendTemplates.behaviour(behaviour);
         writeSourceFile(srcPath2, fileContentSource2);
         formatFile(srcPath2);
@@ -151,7 +153,7 @@ public class GeneratorImplPython extends GeneratorImpl implements IGenerator<Gen
 
     @Override
     public void createConditionCreator(List<Plan> plans, List<Behaviour> behaviours, List<Condition> conditions) {
-        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "condition_creator.py").toString();
+        String srcPath = Paths.get(baseDir, "condition_creator.py").toString();
         String fileContentSource = xtendTemplates.conditionCreator(plans, behaviours, conditions);
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
@@ -159,14 +161,14 @@ public class GeneratorImplPython extends GeneratorImpl implements IGenerator<Gen
 
     @Override
     public void createConstraintCreator(List<Plan> plans, List<Behaviour> behaviours, List<Condition> conditions) {
-        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "constraint_creator.py").toString();
+        String srcPath = Paths.get(baseDir, "constraint_creator.py").toString();
         String fileContentSource = xtendTemplates.constraintCreator(plans, behaviours, conditions);
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
     }
 
     private void constraintPreConditionImpl(Behaviour behaviour) {
-        String srcPath = Paths.get(implPath, "constraint_" + behaviour.getPreCondition().getId() + "_impl.py").toString();
+        String srcPath = Paths.get(implDir, "constraint_" + behaviour.getPreCondition().getId() + "_impl.py").toString();
         String fileContentSource = xtendTemplates.constraintPreConditionImpl(behaviour);
         if (new File(srcPath).exists()) {
             LOG.debug("File \"" + srcPath + "\" already exists and is not overwritten");
@@ -179,14 +181,14 @@ public class GeneratorImplPython extends GeneratorImpl implements IGenerator<Gen
     private void constraintPreCondition(Behaviour behaviour) {
         this.constraintPreConditionImpl(behaviour);
 
-        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "constraint_" + behaviour.getPreCondition().getId() + ".py").toString();
+        String srcPath = Paths.get(baseDir, "constraint_" + behaviour.getPreCondition().getId() + ".py").toString();
         String fileContentSource = xtendTemplates.constraintPreCondition(behaviour);
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
     }
 
     private void constraintRuntimeConditionImpl(Behaviour behaviour) {
-        String srcPath = Paths.get(implPath, "constraint_" + behaviour.getRuntimeCondition().getId() + "_impl.py").toString();
+        String srcPath = Paths.get(implDir, "constraint_" + behaviour.getRuntimeCondition().getId() + "_impl.py").toString();
         String fileContentSource = xtendTemplates.constraintRuntimeConditionImpl(behaviour);
         if (new File(srcPath).exists()) {
             LOG.debug("File \"" + srcPath + "\" already exists and is not overwritten");
@@ -199,14 +201,14 @@ public class GeneratorImplPython extends GeneratorImpl implements IGenerator<Gen
     private void constraintRuntimeCondition(Behaviour behaviour) {
         this.constraintRuntimeConditionImpl(behaviour);
 
-        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "constraint_" + behaviour.getRuntimeCondition().getId() + ".py").toString();
+        String srcPath = Paths.get(baseDir, "constraint_" + behaviour.getRuntimeCondition().getId() + ".py").toString();
         String fileContentSource = xtendTemplates.constraintRuntimeCondition(behaviour);
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
     }
 
     private void constraintPostConditionImpl(Behaviour behaviour) {
-        String srcPath = Paths.get(implPath, "constraint_" + behaviour.getPostCondition().getId() + "_impl.py").toString();
+        String srcPath = Paths.get(implDir, "constraint_" + behaviour.getPostCondition().getId() + "_impl.py").toString();
         String fileContentSource = xtendTemplates.constraintPostConditionImpl(behaviour);
         if (new File(srcPath).exists()) {
             LOG.debug("File \"" + srcPath + "\" already exists and is not overwritten");
@@ -219,7 +221,7 @@ public class GeneratorImplPython extends GeneratorImpl implements IGenerator<Gen
     private void constraintPostCondition(Behaviour behaviour) {
         this.constraintPostConditionImpl(behaviour);
 
-        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "constraint_" + behaviour.getPostCondition().getId() + ".py").toString();
+        String srcPath = Paths.get(baseDir, "constraint_" + behaviour.getPostCondition().getId() + ".py").toString();
         String fileContentSource = xtendTemplates.constraintPostCondition(behaviour);
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
@@ -254,13 +256,13 @@ public class GeneratorImplPython extends GeneratorImpl implements IGenerator<Gen
             cstrIncPathOnDisk.mkdir();
         }
 
-        String constraintSourcePath = Paths.get(generatedSourcesManager.getBaseDir(), destinationPathWithoutName, "constraints").toString();
+        String constraintSourcePath = Paths.get(baseDir, destinationPathWithoutName, "constraints").toString();
         File cstrSrcPathOnDisk = new File(constraintSourcePath);
         if (!cstrSrcPathOnDisk.exists()) {
             cstrSrcPathOnDisk.mkdir();
         }
 
-        String filename = behaviour.getName() + "_" + behaviour.getId() + "_constraints.py";
+        String filename = StringUtils.lowerCase(behaviour.getName()) + "_" + behaviour.getId() + "_constraints.py";
         String srcPath = Paths.get(constraintSourcePath, filename).toString();
         String fileContentSource = xtendTemplates.constraints(behaviour);
         writeSourceFile(srcPath, fileContentSource);
@@ -268,7 +270,7 @@ public class GeneratorImplPython extends GeneratorImpl implements IGenerator<Gen
     }
 
     private void constraintPlanPreConditionImpl(Plan plan) {
-        String srcPath = Paths.get(implPath, "constraint_" + plan.getPreCondition().getId() + "_impl.py").toString();
+        String srcPath = Paths.get(implDir, "constraint_" + plan.getPreCondition().getId() + "_impl.py").toString();
         String fileContentSource = xtendTemplates.constraintPlanPreConditionImpl(plan);
         if (new File(srcPath).exists()) {
             LOG.debug("File \"" + srcPath + "\" already exists and is not overwritten");
@@ -281,14 +283,14 @@ public class GeneratorImplPython extends GeneratorImpl implements IGenerator<Gen
     private void constraintPlanPreCondition(Plan plan) {
         this.constraintPlanPreConditionImpl(plan);
 
-        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "constraint_" + plan.getPreCondition().getId() + ".py").toString();
+        String srcPath = Paths.get(baseDir, "constraint_" + plan.getPreCondition().getId() + ".py").toString();
         String fileContentSource = xtendTemplates.constraintPlanPreCondition(plan);
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
     }
 
     private void constraintPlanRuntimeConditionImpl(Plan plan) {
-        String srcPath = Paths.get(implPath, "constraint_" + plan.getRuntimeCondition().getId() + "_impl.py").toString();
+        String srcPath = Paths.get(implDir, "constraint_" + plan.getRuntimeCondition().getId() + "_impl.py").toString();
         String fileContentSource = xtendTemplates.constraintPlanRuntimeConditionImpl(plan);
         if (new File(srcPath).exists()) {
             LOG.debug("File \"" + srcPath + "\" already exists and is not overwritten");
@@ -301,14 +303,14 @@ public class GeneratorImplPython extends GeneratorImpl implements IGenerator<Gen
     private void constraintPlanRuntimeCondition(Plan plan) {
         this.constraintPlanRuntimeConditionImpl(plan);
 
-        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "constraint_" + plan.getRuntimeCondition().getId() + ".py").toString();
+        String srcPath = Paths.get(baseDir, "constraint_" + plan.getRuntimeCondition().getId() + ".py").toString();
         String fileContentSource = xtendTemplates.constraintPlanRuntimeCondition(plan);
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
     }
 
     private void constraintPlanTransitionPreConditionImpl(Transition transition) {
-        String srcPath = Paths.get(implPath, "constraint_" + transition.getPreCondition().getId() + "_impl.py").toString();
+        String srcPath = Paths.get(implDir, "constraint_" + transition.getPreCondition().getId() + "_impl.py").toString();
         String fileContentSource = xtendTemplates.constraintPlanTransitionPreConditionImpl(transition);
         if (new File(srcPath).exists()) {
             LOG.debug("File \"" + srcPath + "\" already exists and is not overwritten");
@@ -321,7 +323,7 @@ public class GeneratorImplPython extends GeneratorImpl implements IGenerator<Gen
     private void constraintPlanTransitionPreCondition(Plan plan, Transition transition) {
         this.constraintPlanTransitionPreConditionImpl(transition);
 
-        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "constraint_" + transition.getPreCondition().getId() + ".py").toString();
+        String srcPath = Paths.get(baseDir, "constraint_" + transition.getPreCondition().getId() + ".py").toString();
         String fileContentSource = xtendTemplates.constraintPlanTransitionPreCondition(plan, transition);
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
@@ -356,13 +358,13 @@ public class GeneratorImplPython extends GeneratorImpl implements IGenerator<Gen
             cstrIncPathOnDisk.mkdir();
         }
 
-        String constraintSourcePath = Paths.get(generatedSourcesManager.getBaseDir(), destinationPathWithoutName, "constraints").toString();
+        String constraintSourcePath = Paths.get(baseDir, destinationPathWithoutName, "constraints").toString();
         File cstrSrcPathOnDisk = new File(constraintSourcePath);
         if (!cstrSrcPathOnDisk.exists()) {
             cstrSrcPathOnDisk.mkdir();
         }
 
-        String filename = plan.getName() + "_" + plan.getId() + "_constraints.py";
+        String filename = StringUtils.lowerCase(plan.getName()) + "_" + plan.getId() + "_constraints.py";
         String srcPath = Paths.get(constraintSourcePath, filename).toString();
         String fileContentSource = xtendTemplates.constraints(plan);
         writeSourceFile(srcPath, fileContentSource);
@@ -385,7 +387,7 @@ public class GeneratorImplPython extends GeneratorImpl implements IGenerator<Gen
     }
 
     private void createDomainBehaviourImpl() {
-        String srcPath = Paths.get(implPath, "domain_behaviour_impl.py").toString();
+        String srcPath = Paths.get(implDir, "domain_behaviour_impl.py").toString();
         String fileContentSource = xtendTemplates.domainBehaviourImpl();
         if (new File(srcPath).exists()) {
             LOG.debug("File \"" + srcPath + "\" already exists and is not overwritten");
@@ -399,14 +401,14 @@ public class GeneratorImplPython extends GeneratorImpl implements IGenerator<Gen
     public void createDomainBehaviour() {
         this.createDomainBehaviourImpl();
 
-        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "domain_behaviour.py").toString();
+        String srcPath = Paths.get(baseDir, "domain_behaviour.py").toString();
         String fileContentSource = xtendTemplates.domainBehaviour();
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
     }
 
     private void createDomainConditionImpl() {
-        String srcPath = Paths.get(implPath, "domain_condition_impl.py").toString();
+        String srcPath = Paths.get(implDir, "domain_condition_impl.py").toString();
         String fileContentSource = xtendTemplates.domainConditionImpl();
         if (new File(srcPath).exists()) {
             LOG.debug("File \"" + srcPath + "\" already exists and is not overwritten");
@@ -420,15 +422,15 @@ public class GeneratorImplPython extends GeneratorImpl implements IGenerator<Gen
     public void createDomainCondition() {
         this.createDomainConditionImpl();
 
-        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "domain_condition.py").toString();
+        String srcPath = Paths.get(baseDir, "domain_condition.py").toString();
         String fileContentSource = xtendTemplates.domainCondition();
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
     }
 
     private void createPlanImpl(Plan plan) {
-        String filename = plan.getName() + "_" + plan.getId() + "_impl.py";
-        String srcPath = Paths.get(implPath, filename).toString();
+        String filename = StringUtils.lowerCase(plan.getName()) + "_" + plan.getId() + "_impl.py";
+        String srcPath = Paths.get(implDir, filename).toString();
         String fileContentSource = xtendTemplates.planImpl(plan);
         if (new File(srcPath).exists()) {
             LOG.debug("File \"" + srcPath + "\" already exists and is not overwritten");
@@ -441,7 +443,7 @@ public class GeneratorImplPython extends GeneratorImpl implements IGenerator<Gen
     private void utilityFunctionPlan(Plan plan) {
         this.utilityFunctionPlanImpl(plan);
 
-        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "utility_function_" + plan.getId() + ".py").toString();
+        String srcPath = Paths.get(baseDir, "utility_function_" + plan.getId() + ".py").toString();
         String fileContentSource = xtendTemplates.utilityFunctionPlan(plan);
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
@@ -449,7 +451,7 @@ public class GeneratorImplPython extends GeneratorImpl implements IGenerator<Gen
 
     private void utilityFunctionPlanImpl(Plan plan) {
         String filename = "utility_function_" + plan.getId() + "_impl.py";
-        String srcPath = Paths.get(implPath, filename).toString();
+        String srcPath = Paths.get(implDir, filename).toString();
         String fileContentSource = xtendTemplates.utilityFunctionPlanImpl(plan);
         if (new File(srcPath).exists()) {
             LOG.debug("File \"" + srcPath + "\" already exists and is not overwritten");
@@ -460,7 +462,7 @@ public class GeneratorImplPython extends GeneratorImpl implements IGenerator<Gen
     }
 
     private void preConditionPlanImpl(Plan plan) {
-        String srcPath = Paths.get(implPath, "pre_condition_" + plan.getPreCondition().getId() + "_impl.py").toString();
+        String srcPath = Paths.get(implDir, "pre_condition_" + plan.getPreCondition().getId() + "_impl.py").toString();
         String fileContentSource = xtendTemplates.preConditionPlanImpl(plan);
         if (new File(srcPath).exists()) {
             LOG.debug("File \"" + srcPath + "\" already exists and is not overwritten");
@@ -473,14 +475,14 @@ public class GeneratorImplPython extends GeneratorImpl implements IGenerator<Gen
     private void preConditionPlan(Plan plan) {
         this.preConditionPlanImpl(plan);
 
-        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "pre_condition_" + plan.getPreCondition().getId() + ".py").toString();
+        String srcPath = Paths.get(baseDir, "pre_condition_" + plan.getPreCondition().getId() + ".py").toString();
         String fileContentSource = xtendTemplates.preConditionPlan(plan);
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
     }
 
     private void runtimeConditionPlanImpl(Plan plan) {
-        String srcPath = Paths.get(implPath, "runtime_condition_" + plan.getRuntimeCondition().getId() + "_impl.py").toString();
+        String srcPath = Paths.get(implDir, "runtime_condition_" + plan.getRuntimeCondition().getId() + "_impl.py").toString();
         String fileContentSource = xtendTemplates.runtimeConditionPlanImpl(plan);
         if (new File(srcPath).exists()) {
             LOG.debug("File \"" + srcPath + "\" already exists and is not overwritten");
@@ -493,14 +495,14 @@ public class GeneratorImplPython extends GeneratorImpl implements IGenerator<Gen
     private void runtimeConditionPlan(Plan plan) {
         this.runtimeConditionPlanImpl(plan);
 
-        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "runtime_condition_" + plan.getRuntimeCondition().getId() + ".py").toString();
+        String srcPath = Paths.get(baseDir, "runtime_condition_" + plan.getRuntimeCondition().getId() + ".py").toString();
         String fileContentSource = xtendTemplates.runtimeConditionPlan(plan);
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
     }
 
     private void transitionPreConditionPlanImpl(Transition transition) {
-        String srcPath = Paths.get(implPath, "pre_condition_" + transition.getPreCondition().getId() + "_impl.py").toString();
+        String srcPath = Paths.get(implDir, "pre_condition_" + transition.getPreCondition().getId() + "_impl.py").toString();
         String fileContentSource = xtendTemplates.transitionPreConditionPlanImpl(transition);
         if (new File(srcPath).exists()) {
             LOG.debug("File \"" + srcPath + "\" already exists and is not overwritten");
@@ -513,7 +515,7 @@ public class GeneratorImplPython extends GeneratorImpl implements IGenerator<Gen
     private void transitionPreConditionPlan(State state, Transition transition) {
         this.transitionPreConditionPlanImpl(transition);
 
-        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "pre_condition_" + transition.getPreCondition().getId() + ".py").toString();
+        String srcPath = Paths.get(baseDir, "pre_condition_" + transition.getPreCondition().getId() + ".py").toString();
         String fileContentSource = xtendTemplates.transitionPreConditionPlan(state, transition);
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
@@ -540,8 +542,8 @@ public class GeneratorImplPython extends GeneratorImpl implements IGenerator<Gen
         }
 
         String destinationPath = cutDestinationPathToDirectory(plan);
-        String filename = plan.getName() + "_" + plan.getId() + ".py";
-        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), destinationPath, filename).toString();
+        String filename = StringUtils.lowerCase(plan.getName()) + "_" + plan.getId() + ".py";
+        String srcPath = Paths.get(baseDir, destinationPath, filename).toString();
         String fileContentSource = xtendTemplates.plan(plan);
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
@@ -549,7 +551,7 @@ public class GeneratorImplPython extends GeneratorImpl implements IGenerator<Gen
 
     @Override
     public void createUtilityFunctionCreator(List<Plan> plans) {
-        String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "utility_function_creator.py").toString();
+        String srcPath = Paths.get(baseDir, "utility_function_creator.py").toString();
         String fileContentSource = xtendTemplates.utilityFunctionCreator(plans);
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);

@@ -26,8 +26,9 @@ import java.util.Map;
 public class GeneratorImplPython extends GeneratorImpl implements IGenerator<GeneratedSourcesManagerPython>  {
     private XtendTemplates xtendTemplates;
     private GeneratedSourcesManagerPython generatedSourcesManager;
-    private String implDir;
     private String baseDir;
+    private String constraintsDir;
+    private String implDir;
 
     public GeneratorImplPython() {
         xtendTemplates = new XtendTemplates();
@@ -36,7 +37,9 @@ public class GeneratorImplPython extends GeneratorImpl implements IGenerator<Gen
     public void setGeneratedSourcesManager(GeneratedSourcesManagerPython generatedSourcesManager) {
         this.generatedSourcesManager = generatedSourcesManager;
         baseDir = generatedSourcesManager.getBaseDir();
+        constraintsDir = baseDir + File.separator + "constraints";
         implDir = baseDir + File.separator + "impl";
+        createSubfolders();
     }
 
     @Override
@@ -137,15 +140,14 @@ public class GeneratorImplPython extends GeneratorImpl implements IGenerator<Gen
             this.postConditionCreator(behaviour);
         }
 
-        String destinationPath = cutDestinationPathToDirectory(behaviour);
         String filename = StringUtils.lowerCase(behaviour.getName()) + "_" + behaviour.getId() + ".py";
-        String srcPath = Paths.get(baseDir, destinationPath, filename).toString();
+        String srcPath = Paths.get(baseDir, filename).toString();
         String fileContentSource = xtendTemplates.behaviourCondition(behaviour);
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
 
         String filename2 = StringUtils.lowerCase(behaviour.getName()) + ".py";
-        String srcPath2 = Paths.get(baseDir, destinationPath, filename2).toString();
+        String srcPath2 = Paths.get(baseDir, filename2).toString();
         String fileContentSource2 = xtendTemplates.behaviour(behaviour);
         writeSourceFile(srcPath2, fileContentSource2);
         formatFile(srcPath2);
@@ -248,22 +250,8 @@ public class GeneratorImplPython extends GeneratorImpl implements IGenerator<Gen
             }
         }
 
-        String destinationPathWithoutName = cutDestinationPathToDirectory(behaviour);
-        String constraintHeaderPath = Paths.get(generatedSourcesManager.getIncludeDir(),
-                destinationPathWithoutName, "constraints").toString();
-        File cstrIncPathOnDisk = new File(constraintHeaderPath);
-        if (!cstrIncPathOnDisk.exists()) {
-            cstrIncPathOnDisk.mkdir();
-        }
-
-        String constraintSourcePath = Paths.get(baseDir, destinationPathWithoutName, "constraints").toString();
-        File cstrSrcPathOnDisk = new File(constraintSourcePath);
-        if (!cstrSrcPathOnDisk.exists()) {
-            cstrSrcPathOnDisk.mkdir();
-        }
-
         String filename = StringUtils.lowerCase(behaviour.getName()) + "_" + behaviour.getId() + "_constraints.py";
-        String srcPath = Paths.get(constraintSourcePath, filename).toString();
+        String srcPath = Paths.get(constraintsDir, filename).toString();
         String fileContentSource = xtendTemplates.constraints(behaviour);
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
@@ -350,22 +338,8 @@ public class GeneratorImplPython extends GeneratorImpl implements IGenerator<Gen
             }
         }
 
-        String destinationPathWithoutName = cutDestinationPathToDirectory(plan);
-        String constraintHeaderPath = Paths.get(generatedSourcesManager.getIncludeDir(),
-                destinationPathWithoutName, "constraints").toString();
-        File cstrIncPathOnDisk = new File(constraintHeaderPath);
-        if (!cstrIncPathOnDisk.exists()) {
-            cstrIncPathOnDisk.mkdir();
-        }
-
-        String constraintSourcePath = Paths.get(baseDir, destinationPathWithoutName, "constraints").toString();
-        File cstrSrcPathOnDisk = new File(constraintSourcePath);
-        if (!cstrSrcPathOnDisk.exists()) {
-            cstrSrcPathOnDisk.mkdir();
-        }
-
         String filename = StringUtils.lowerCase(plan.getName()) + "_" + plan.getId() + "_constraints.py";
-        String srcPath = Paths.get(constraintSourcePath, filename).toString();
+        String srcPath = Paths.get(constraintsDir, filename).toString();
         String fileContentSource = xtendTemplates.constraints(plan);
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
@@ -541,9 +515,8 @@ public class GeneratorImplPython extends GeneratorImpl implements IGenerator<Gen
             }
         }
 
-        String destinationPath = cutDestinationPathToDirectory(plan);
         String filename = StringUtils.lowerCase(plan.getName()) + "_" + plan.getId() + ".py";
-        String srcPath = Paths.get(baseDir, destinationPath, filename).toString();
+        String srcPath = Paths.get(baseDir, filename).toString();
         String fileContentSource = xtendTemplates.plan(plan);
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
@@ -555,6 +528,19 @@ public class GeneratorImplPython extends GeneratorImpl implements IGenerator<Gen
         String fileContentSource = xtendTemplates.utilityFunctionCreator(plans);
         writeSourceFile(srcPath, fileContentSource);
         formatFile(srcPath);
+    }
+
+    private void createSubfolders() {
+        createInitFile(constraintsDir);
+        createInitFile(implDir);
+    }
+
+    private void createInitFile(String destinationDir) {
+        File filePath = Paths.get(destinationDir, "__init__.py").toFile();
+        if (filePath.exists()) {
+            return;
+        }
+        writeSourceFile(filePath.toString(), "");
     }
 
     @Override

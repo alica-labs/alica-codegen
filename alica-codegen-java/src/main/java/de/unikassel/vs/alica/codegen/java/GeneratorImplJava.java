@@ -249,14 +249,6 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
             }
         }
 
-        String destinationPathWithoutName = cutDestinationPathToDirectory(behaviour);
-        String constraintHeaderPath = Paths.get(generatedSourcesManager.getIncludeDir(),
-                destinationPathWithoutName, "constraints").toString();
-        File cstrIncPathOnDisk = new File(constraintHeaderPath);
-        if (!cstrIncPathOnDisk.exists()) {
-            cstrIncPathOnDisk.mkdir();
-        }
-
         String constraintSourcePath = Paths.get(generatedSourcesManager.getBaseDir(), destinationPathWithoutName, "constraints").toString();
         File cstrSrcPathOnDisk = new File(constraintSourcePath);
         if (!cstrSrcPathOnDisk.exists()) {
@@ -349,14 +341,6 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
                     this.constraintPlanTransitionPreCondition(plan, transition);
                 }
             }
-        }
-
-        String destinationPathWithoutName = cutDestinationPathToDirectory(plan);
-        String constraintHeaderPath = Paths.get(generatedSourcesManager.getIncludeDir(),
-                destinationPathWithoutName, "constraints").toString();
-        File cstrIncPathOnDisk = new File(constraintHeaderPath);
-        if (!cstrIncPathOnDisk.exists()) {
-            cstrIncPathOnDisk.mkdir();
         }
 
         String constraintSourcePath = Paths.get(generatedSourcesManager.getBaseDir(), destinationPathWithoutName, "constraints").toString();

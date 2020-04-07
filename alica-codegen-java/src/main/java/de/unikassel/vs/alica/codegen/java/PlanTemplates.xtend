@@ -274,26 +274,6 @@ public class RunTimeCondition«plan.runtimeCondition.id»Impl {
 }
 '''
 
-def String transitionPreConditionPlanImpl(Transition transition) '''
-package de.uniks.vs.alica.code.impl.conditions;
-
-import de.uniks.vs.jalica.engine.RunningPlan;
-import de.uniks.vs.alica.code.gen.domain.DomainCondition;
-
-public class PreCondition«transition.preCondition.id»Impl {
-    private DomainCondition condition;
-
-    public PreCondition«transition.preCondition.id»Impl(DomainCondition condition) {
-        this.condition = condition;
-    }
-
-    public boolean evaluate(RunningPlan rp) {
-        System.out.println("The PreCondition «transition.preCondition.id» in Transition «transition.getName» is not implement yet!");
-        return false;
-    }
-}
-'''
-
     def String planImpl(Plan plan) '''
 package de.uniks.vs.alica.code.impl.plans;
 

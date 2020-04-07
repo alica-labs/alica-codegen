@@ -475,7 +475,7 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
 
     private void transitionPreConditionPlanImpl(Transition transition) {
         String srcPath = Paths.get(implPath, "conditions", "PreCondition" + transition.getPreCondition().getId() + "Impl.java").toString();
-        String fileContentSource = plans.transitionPreConditionPlanImpl(transition);
+        String fileContentSource = transitions.transitionPreConditionPlanImpl(transition);
         if (new File(srcPath).exists()) {
             LOG.debug("File \"" + srcPath + "\" already exists and is not overwritten");
             return;

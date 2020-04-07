@@ -206,7 +206,7 @@ public class PreCondition«behaviour.preCondition.id»Impl {
     }
 
     public boolean evaluate(RunningPlan rp) {
-        return true;
+        return false;
     }
 }
 '''
@@ -245,7 +245,7 @@ public class RunTimeCondition«behaviour.runtimeCondition.id»Impl {
     }
 
     public boolean evaluate(RunningPlan rp) {
-        return true;
+        return false;
     }
 }
 '''
@@ -284,7 +284,7 @@ public class PostCondition«behaviour.postCondition.id»Impl {
     }
 
     public boolean evaluate(RunningPlan rp) {
-        return true;
+        return false;
     }
 }
 '''
@@ -725,7 +725,7 @@ public class PreCondition«plan.preCondition.id»Impl {
     }
 
     public boolean evaluate(RunningPlan rp) {
-        return true;
+        return false;
     }
 }
 '''
@@ -766,7 +766,7 @@ public class RunTimeCondition«plan.runtimeCondition.id»Impl {
     }
 
     public boolean evaluate(RunningPlan rp) {
-        return true;
+        return false;
     }
 }
 '''
@@ -812,7 +812,7 @@ public class PreCondition«transition.preCondition.id»Impl {
     }
 
     public boolean evaluate(RunningPlan rp) {
-        return true;
+        return false;
     }
 }
 '''

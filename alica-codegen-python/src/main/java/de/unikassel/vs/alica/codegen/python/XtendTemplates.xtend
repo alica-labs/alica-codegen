@@ -157,7 +157,7 @@ class PreCondition«behaviour.preCondition.id»Impl(object):
         pass
 
     def evaluate(self, running_plan: RunningPlan) -> bool:
-        return True
+        return False
 '''
 
     def String runtimeConditionBehaviour(Behaviour behaviour) '''
@@ -188,7 +188,7 @@ class RunTimeCondition«behaviour.runtimeCondition.id»Impl:
         pass
 
     def evaluate(self, running_plan: RunningPlan) -> bool:
-        return True
+        return False
 '''
 
     def String postConditionBehaviour(Behaviour behaviour) '''
@@ -219,7 +219,7 @@ class PostCondition«behaviour.postCondition.id»Impl(object):
         pass
 
     def evaluate(self, running_plan: RunningPlan) -> bool:
-        return True
+        return False
 '''
 
     def String constraints(Behaviour behaviour) '''
@@ -540,7 +540,7 @@ class PreCondition«plan.preCondition.id»Impl(object):
         pass
 
     def evaluate(self, running_plan: RunningPlan) -> bool:
-        return True
+        return False
 '''
 
     def String runtimeConditionPlan(Plan plan) '''
@@ -571,7 +571,7 @@ class RunTimeCondition«plan.runtimeCondition.id»Impl(object):
         pass
 
     def evaluate(self, running_plan: RunningPlan) -> bool:
-        return True
+        return False
 '''
 
     def String transitionPreConditionPlan(State state, Transition transition) '''
@@ -608,7 +608,7 @@ class PreCondition«transition.preCondition.id»Impl(object):
         pass
 
     def evaluate(self, running_plan: RunningPlan) -> bool:
-        return True
+        return False
 '''
 
     def String planImpl(Plan plan) '''

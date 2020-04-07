@@ -111,11 +111,11 @@ public class ConditionCreator implements IConditionCreator {
     def String constraintCreator(List<Plan> plans, List<Behaviour> behaviours, List<Condition> conditions)'''
 package de.uniks.vs.alica.code.gen.creators;
 
-import de.uniks.vs.jalica.engine.BasicCondition;
+import de.uniks.vs.jalica.engine.BasicConstraint;
 
 public class ConstraintCreator {
 
-    public BasicCondition createConstraint(long constraintConfId, Object context) {
+    public BasicConstraint createConstraint(long constraintConfId, Object context) {
         switch (String.valueOf(constraintConfId)) {
             «FOR c: conditions»
                 «IF (c.variables.size > 0) || (c.quantifiers.size > 0)»

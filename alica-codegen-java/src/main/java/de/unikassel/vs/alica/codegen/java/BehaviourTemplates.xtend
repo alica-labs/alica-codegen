@@ -113,7 +113,7 @@ public class PreCondition«behaviour.preCondition.id»Impl {
 
     public boolean evaluate(RunningPlan rp) {
         System.out.println("The PreCondition «behaviour.preCondition.id» in Behaviour «behaviour.getName» is not implement yet!" );
-        return true;
+        return false;
     }
 }
 '''
@@ -155,7 +155,7 @@ public class RunTimeCondition«behaviour.runtimeCondition.id»Impl {
     }
 
     public boolean evaluate(RunningPlan rp) {
-        return true;
+        return false;
     }
 }
 '''
@@ -197,7 +197,7 @@ public class PostCondition«behaviour.postCondition.id»Impl {
     }
 
     public boolean evaluate(RunningPlan rp) {
-        return true;
+        return false;
     }
 }
 '''

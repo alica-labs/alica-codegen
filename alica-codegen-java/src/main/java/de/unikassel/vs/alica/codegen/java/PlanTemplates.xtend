@@ -229,7 +229,7 @@ public class PreCondition«plan.preCondition.id»Impl {
 
     public boolean evaluate(RunningPlan rp) {
         System.out.println("The PreCondition «plan.preCondition.id» in Plan «plan.getName» is not implement yet!" );
-        return true;
+        return false;
     }
 }
 '''
@@ -273,7 +273,7 @@ public class RunTimeCondition«plan.runtimeCondition.id»Impl {
     }
 
     public boolean evaluate(RunningPlan rp) {
-        return true;
+        return false;
     }
 }
 '''
@@ -294,7 +294,7 @@ public class PreCondition«transition.preCondition.id»Impl {
 
     public boolean evaluate(RunningPlan rp) {
         System.out.println("The PreCondition «transition.preCondition.id» in Transition «transition.getName» is not implement yet!");
-        return true;
+        return false;
     }
 }
 '''

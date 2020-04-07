@@ -50,13 +50,6 @@
             <artifactId>commons-lang3</artifactId>
             <version>3.9</version>
         </dependency>
-        <dependency>
-            <!-- https://mvnrepository.com/artifact/com.google.googlejavaformat/google-java-format -->
-            <!-- https://github.com/google/google-java-format -->
-            <groupId>com.google.googlejavaformat</groupId>
-            <artifactId>google-java-format</artifactId>
-            <version>1.7</version>
-        </dependency>
 
         <dependency>
             <!-- https://mvnrepository.com/artifact/junit/junit -->

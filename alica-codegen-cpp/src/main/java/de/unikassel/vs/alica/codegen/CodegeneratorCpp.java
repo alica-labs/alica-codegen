@@ -34,7 +34,6 @@ public class CodegeneratorCpp extends Codegenerator {
             List<Plan> plans,
             List<Behaviour> behaviours,
             List<Condition> conditions,
-            String formatter,
             String destination,
             GeneratedSourcesManagerCpp generatedSourcesManager
     ) {
@@ -42,7 +41,6 @@ public class CodegeneratorCpp extends Codegenerator {
                 plans,
                 behaviours,
                 conditions,
-                formatter,
                 destination,
                 generatedSourcesManager
         );

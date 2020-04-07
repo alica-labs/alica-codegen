@@ -36,7 +36,6 @@ public class CodegeneratorPython extends Codegenerator {
                 plans,
                 behaviours,
                 conditions,
-                null,
                 destination,
                 generatedSourcesManager
         );

@@ -65,12 +65,10 @@ public class CodegenCppTest {
         String genPath = tmpPath + File.separator + "src" + File.separator + "main" + File.separator + "java";
         GeneratedSourcesManagerCpp generatedSourcesManager = new GeneratedSourcesManagerCpp();
         generatedSourcesManager.setGenSrcPath(genPath);
-        String clangFormatPath = "clang-format";
         CodegeneratorCpp codegenerator = new CodegeneratorCpp(
                 plans,
                 behaviours,
                 conditions,
-                clangFormatPath,
                 genPath,
                 generatedSourcesManager);
         codegenerator.generate();

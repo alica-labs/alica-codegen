@@ -15,7 +15,6 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
-import java.net.URL;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +22,6 @@ import java.util.Map;
 /**
  * Code generator for C++. It uses the XtendTemplates for creating the code.
  * After this the created strings are written to disk according to {@link GeneratedSourcesManager}.
- * Every file that is written is formatted by the formatter that is set by setFormatter.
  */
 public class GeneratorImplCpp extends GeneratorImpl implements IGenerator<GeneratedSourcesManagerCpp> {
     private XtendTemplates xtendTemplates;
@@ -54,13 +52,9 @@ public class GeneratorImplCpp extends GeneratorImpl implements IGenerator<Genera
         String fileContentHeader = xtendTemplates.behaviourCreatorHeader();
         writeSourceFile(headerPath, fileContentHeader);
 
-        formatFile(headerPath);
-
         String srcPath = Paths.get(generatedSourcesManager.getSrcDir(), "BehaviourCreator.cpp").toString();
         String fileContentSource = xtendTemplates.behaviourCreatorSource(behaviours);
         writeSourceFile(srcPath, fileContentSource);
-
-        formatFile(srcPath);
     }
 
     @Override
@@ -72,26 +66,18 @@ public class GeneratorImplCpp extends GeneratorImpl implements IGenerator<Genera
         String fileContentHeader = xtendTemplates.behaviourConditionHeader(behaviour);
         writeSourceFile(headerPath, fileContentHeader);
 
-        formatFile(headerPath);
-
         String srcPath = Paths.get(generatedSourcesManager.getSrcDir(), destinationPath, behaviour.getName() + behaviour.getId() + ".cpp").toString();
         String fileContentSource = xtendTemplates.behaviourConditionSource(behaviour);
         writeSourceFile(srcPath, fileContentSource);
-
-        formatFile(srcPath);
 
         //Behaviour
         String headerPath2 = Paths.get(generatedSourcesManager.getIncludeDir(), destinationPath, behaviour.getName()+ ".h").toString();
         String fileContentHeader2 = xtendTemplates.behaviourHeader(behaviour);
         writeSourceFile(headerPath2, fileContentHeader2);
 
-        formatFile(headerPath2);
-
         String srcPath2 = Paths.get(generatedSourcesManager.getSrcDir(), destinationPath, behaviour.getName()+ ".cpp").toString();
         String fileContentSource2 = xtendTemplates.behaviourSource(behaviour);
         writeSourceFile(srcPath2, fileContentSource2);
-
-        formatFile(srcPath2);
     }
 
     @Override
@@ -100,13 +86,9 @@ public class GeneratorImplCpp extends GeneratorImpl implements IGenerator<Genera
         String fileContentHeader = xtendTemplates.conditionCreatorHeader();
         writeSourceFile(headerPath, fileContentHeader);
 
-        formatFile(headerPath);
-
         String srcPath = Paths.get(generatedSourcesManager.getSrcDir(), "ConditionCreator.cpp").toString();
         String fileContentSource = xtendTemplates.conditionCreatorSource(plans, behaviours, conditions);
         writeSourceFile(srcPath, fileContentSource);
-
-        formatFile(srcPath);
     }
 
     @Override
@@ -115,13 +97,9 @@ public class GeneratorImplCpp extends GeneratorImpl implements IGenerator<Genera
         String fileContentHeader = xtendTemplates.constraintCreatorHeader();
         writeSourceFile(headerPath, fileContentHeader);
 
-        formatFile(headerPath);
-
         String srcPath = Paths.get(generatedSourcesManager.getSrcDir(), "ConstraintCreator.cpp").toString();
         String fileContentSource = xtendTemplates.constraintCreatorSource(plans, behaviours, conditions);
         writeSourceFile(srcPath, fileContentSource);
-
-        formatFile(srcPath);
     }
 
     @Override
@@ -137,8 +115,6 @@ public class GeneratorImplCpp extends GeneratorImpl implements IGenerator<Genera
         String fileContentHeader = xtendTemplates.constraintsHeader(plan);
         writeSourceFile(headerPath, fileContentHeader);
 
-        formatFile(headerPath);
-
         String constraintSourcePath = Paths.get(generatedSourcesManager.getSrcDir(), destinationPathWithoutName, "constraints").toString();
         File cstrSrcPathOnDisk = new File(constraintSourcePath);
         if (!cstrSrcPathOnDisk.exists()) {
@@ -148,7 +124,6 @@ public class GeneratorImplCpp extends GeneratorImpl implements IGenerator<Genera
         String srcPath = Paths.get(constraintSourcePath, plan.getName() + plan.getId() + "Constraints.cpp").toString();
         String fileContentSource = xtendTemplates.constraintsSource(plan);
         writeSourceFile(srcPath, fileContentSource);
-        formatFile(srcPath);
 
         for (State inPlan : plan.getStates()) {
             try {
@@ -179,8 +154,6 @@ public class GeneratorImplCpp extends GeneratorImpl implements IGenerator<Genera
         String fileContentHeader = xtendTemplates.constraintsHeader(behaviour);
         writeSourceFile(headerPath, fileContentHeader);
 
-        formatFile(headerPath);
-
         String constraintSourcePath = Paths.get(generatedSourcesManager.getSrcDir(), destinationPathWithoutName, "constraints").toString();
         File cstrSrcPathOnDisk = new File(constraintSourcePath);
         if (!cstrSrcPathOnDisk.exists()) {
@@ -190,7 +163,6 @@ public class GeneratorImplCpp extends GeneratorImpl implements IGenerator<Genera
         String srcPath = Paths.get(constraintSourcePath, behaviour.getName() + behaviour.getId() + "Constraints.cpp").toString();
         String fileContentSource = xtendTemplates.constraintsSource(behaviour);
         writeSourceFile(srcPath, fileContentSource);
-        formatFile(srcPath);
     }
 
     @Override
@@ -201,13 +173,9 @@ public class GeneratorImplCpp extends GeneratorImpl implements IGenerator<Genera
         String fileContentHeader = xtendTemplates.planHeader(plan);
         writeSourceFile(headerPath, fileContentHeader);
 
-        formatFile(headerPath);
-
         String srcPath = Paths.get(generatedSourcesManager.getSrcDir(), destinationPath, plan.getName() + plan.getId() + ".cpp").toString();
         String fileContentSource = xtendTemplates.planSource(plan);
         writeSourceFile(srcPath, fileContentSource);
-
-        formatFile(srcPath);
 
         RuntimeCondition runtimeCondition = plan.getRuntimeCondition();
         if (runtimeCondition != null) {
@@ -266,13 +234,9 @@ public class GeneratorImplCpp extends GeneratorImpl implements IGenerator<Genera
         String fileContentHeader = xtendTemplates.utilityFunctionCreatorHeader();
         writeSourceFile(headerPath, fileContentHeader);
 
-        formatFile(headerPath);
-
         String srcPath = Paths.get(generatedSourcesManager.getSrcDir(), "UtilityFunctionCreator.cpp").toString();
         String fileContentSource = xtendTemplates.utilityFunctionCreatorSource(plans);
         writeSourceFile(srcPath, fileContentSource);
-
-        formatFile(srcPath);
     }
 
     @Override
@@ -281,13 +245,9 @@ public class GeneratorImplCpp extends GeneratorImpl implements IGenerator<Genera
         String fileContentHeader = xtendTemplates.domainConditionHeader();
         writeSourceFile(headerPath, fileContentHeader);
 
-        formatFile(headerPath);
-
         String srcPath = Paths.get(generatedSourcesManager.getSrcDir(), "DomainCondition.cpp").toString();
         String fileContentSource = xtendTemplates.domainConditionSource();
         writeSourceFile(srcPath, fileContentSource);
-
-        formatFile(srcPath);
     }
 
     @Override
@@ -296,36 +256,8 @@ public class GeneratorImplCpp extends GeneratorImpl implements IGenerator<Genera
         String fileContentHeader = xtendTemplates.domainBehaviourHeader();
         writeSourceFile(headerPath, fileContentHeader);
 
-        formatFile(headerPath);
-
         String srcPath = Paths.get(generatedSourcesManager.getSrcDir(), "DomainBehaviour.cpp").toString();
         String fileContentSource = xtendTemplates.domainBehaviourSource();
         writeSourceFile(srcPath, fileContentSource);
-
-        formatFile(srcPath);
-    }
-
-    /**
-     * Calls the executable found by the formatter attribute on the file found by filename.
-     * It is assumed that the executable is clang-format or has the same CLI as clang-format.
-     *
-     * @param fileName
-     */
-    @Override
-    public void formatFile(String fileName) {
-        if (formatter != null && formatter.length() > 0) {
-            URL clangFormatStyle = GeneratorImplCpp.class.getResource(".clang-format");
-            String command = formatter +
-                    " -style=" + clangFormatStyle +
-                    " -i " + fileName;
-            try {
-                Runtime.getRuntime().exec(command).waitFor();
-            } catch (IOException | InterruptedException e) {
-                LOG.error("An error occurred while formatting generated sources", e);
-                throw new RuntimeException(e);
-            }
-        } else {
-            LOG.warn("Generated files are not formatted because no formatter is configured");
-        }
     }
 }

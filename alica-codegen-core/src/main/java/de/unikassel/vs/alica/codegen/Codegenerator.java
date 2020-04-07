@@ -29,13 +29,11 @@ public class Codegenerator implements ICodegenerator {
                          List<Plan> plans,
                          List<Behaviour> behaviours,
                          List<Condition> conditions,
-                         String formatter,
                          String destination,
                          GeneratedSourcesManager generatedSourcesManager
     ) {
         languageSpecificGenerator = generatorImpl;
         languageSpecificGenerator.setGeneratedSourcesManager(generatedSourcesManager);
-        languageSpecificGenerator.setFormatter(formatter);
         codeGenerationDestination = destination;
         this.generatedSourcesManager = generatedSourcesManager;
 

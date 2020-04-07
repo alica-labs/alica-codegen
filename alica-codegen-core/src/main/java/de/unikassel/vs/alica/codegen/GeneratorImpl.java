@@ -17,8 +17,6 @@ import java.util.List;
 public abstract class GeneratorImpl {
     protected static final Logger LOG = LogManager.getLogger(GeneratorImpl.class);
 
-    protected String formatter;
-
     /**
      * Small helper for writing source files
      *
@@ -73,10 +71,6 @@ public abstract class GeneratorImpl {
             destinationPath = destinationPath.substring(0, destinationPath.lastIndexOf(File.separator) + 1);
         }
         return destinationPath;
-    }
-
-    public void setFormatter(String formatter) {
-        this.formatter = formatter;
     }
 
     /**

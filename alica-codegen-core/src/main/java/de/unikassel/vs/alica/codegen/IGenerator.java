@@ -29,8 +29,4 @@ public interface IGenerator<T> {
 
     void createDomainCondition();
     void createDomainBehaviour();
-
-    void setFormatter(String formatter);
-    void formatFile(String fileName);
-    IConstraintCodeGenerator getActiveConstraintCodeGenerator();
 }

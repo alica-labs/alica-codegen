@@ -1,7 +1,5 @@
 package de.unikassel.vs.alica.codegen.java;
 
-import com.google.googlejavaformat.java.Formatter;
-import com.google.googlejavaformat.java.FormatterException;
 import de.unikassel.vs.alica.codegen.GeneratedSourcesManagerJava;
 import de.unikassel.vs.alica.codegen.GeneratorImpl;
 import de.unikassel.vs.alica.codegen.IGenerator;
@@ -14,12 +12,9 @@ import de.unikassel.vs.alica.codegen.java.XtendTemplates;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Stream;
 
 
 /**
@@ -50,7 +45,6 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
         String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "BehaviourCreator.java").toString();
         String fileContentSource = xtendTemplates.behaviourCreator(behaviours);
         writeSourceFile(srcPath, fileContentSource);
-        formatFile(srcPath);
     }
 
     private void createBehaviourImpl(Behaviour behaviour) {
@@ -62,7 +56,6 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
             return;
         }
         writeSourceFile(srcPath, fileContentSource);
-        formatFile(srcPath);
     }
 
     private void preConditionBehaviourImpl(Behaviour behaviour) {
@@ -73,7 +66,6 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
             return;
         }
         writeSourceFile(srcPath, fileContentSource);
-        formatFile(srcPath);
     }
 
     private void preConditionCreator(Behaviour behaviour) {
@@ -82,7 +74,6 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
         String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "PreCondition" + behaviour.getId() + ".java").toString();
         String fileContentSource = xtendTemplates.preConditionBehaviour(behaviour);
         writeSourceFile(srcPath, fileContentSource);
-        formatFile(srcPath);
     }
 
     private void runtimeConditionBehaviourImpl(Behaviour behaviour) {
@@ -93,7 +84,6 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
             return;
         }
         writeSourceFile(srcPath, fileContentSource);
-        formatFile(srcPath);
     }
 
     private void runtimeConditionCreator(Behaviour behaviour) {
@@ -102,7 +92,6 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
         String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "RunTimeCondition" + behaviour.getId() + ".java").toString();
         String fileContentSource = xtendTemplates.runtimeConditionBehaviour(behaviour);
         writeSourceFile(srcPath, fileContentSource);
-        formatFile(srcPath);
     }
 
     private void postConditionBehaviourImpl(Behaviour behaviour) {
@@ -113,7 +102,6 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
             return;
         }
         writeSourceFile(srcPath, fileContentSource);
-        formatFile(srcPath);
     }
 
     private void postConditionCreator(Behaviour behaviour) {
@@ -122,7 +110,6 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
         String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "PostCondition" + behaviour.getId() + ".java").toString();
         String fileContentSource = xtendTemplates.postConditionBehaviour(behaviour);
         writeSourceFile(srcPath, fileContentSource);
-        formatFile(srcPath);
     }
 
     @Override
@@ -143,13 +130,11 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
         String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), destinationPath, filename).toString();
         String fileContentSource = xtendTemplates.behaviourCondition(behaviour);
         writeSourceFile(srcPath, fileContentSource);
-        formatFile(srcPath);
 
         String filename2 = StringUtils.capitalize(behaviour.getName()) + ".java";
         String srcPath2 = Paths.get(generatedSourcesManager.getBaseDir(), destinationPath, filename2).toString();
         String fileContentSource2 = xtendTemplates.behaviour(behaviour);
         writeSourceFile(srcPath2, fileContentSource2);
-        formatFile(srcPath2);
     }
 
     @Override
@@ -157,7 +142,6 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
         String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "ConditionCreator.java").toString();
         String fileContentSource = xtendTemplates.conditionCreator(plans, behaviours, conditions);
         writeSourceFile(srcPath, fileContentSource);
-        formatFile(srcPath);
     }
 
     @Override
@@ -165,7 +149,6 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
         String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "ConstraintCreator.java").toString();
         String fileContentSource = xtendTemplates.constraintCreator(plans, behaviours, conditions);
         writeSourceFile(srcPath, fileContentSource);
-        formatFile(srcPath);
     }
 
     private void constraintPreConditionImpl(Behaviour behaviour) {
@@ -176,7 +159,6 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
             return;
         }
         writeSourceFile(srcPath, fileContentSource);
-        formatFile(srcPath);
     }
 
     private void constraintPreCondition(Behaviour behaviour) {
@@ -185,7 +167,6 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
         String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "Constraint" + behaviour.getPreCondition().getId() + ".java").toString();
         String fileContentSource = xtendTemplates.constraintPreCondition(behaviour);
         writeSourceFile(srcPath, fileContentSource);
-        formatFile(srcPath);
     }
 
     private void constraintRuntimeConditionImpl(Behaviour behaviour) {
@@ -196,7 +177,6 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
             return;
         }
         writeSourceFile(srcPath, fileContentSource);
-        formatFile(srcPath);
     }
 
     private void constraintRuntimeCondition(Behaviour behaviour) {
@@ -205,7 +185,6 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
         String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "Constraint" + behaviour.getRuntimeCondition().getId() + ".java").toString();
         String fileContentSource = xtendTemplates.constraintRuntimeCondition(behaviour);
         writeSourceFile(srcPath, fileContentSource);
-        formatFile(srcPath);
     }
 
     private void constraintPostConditionImpl(Behaviour behaviour) {
@@ -216,7 +195,6 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
             return;
         }
         writeSourceFile(srcPath, fileContentSource);
-        formatFile(srcPath);
     }
 
     private void constraintPostCondition(Behaviour behaviour) {
@@ -225,11 +203,12 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
         String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "Constraint" + behaviour.getPostCondition().getId() + ".java").toString();
         String fileContentSource = xtendTemplates.constraintPostCondition(behaviour);
         writeSourceFile(srcPath, fileContentSource);
-        formatFile(srcPath);
     }
 
     @Override
     public void createConstraintsForBehaviour(Behaviour behaviour) {
+        String destinationPathWithoutName = cutDestinationPathToDirectory(behaviour);
+
         PreCondition preCondition = behaviour.getPreCondition();
         if (preCondition != null) {
             if (preCondition.getVariables().size() > 0 || preCondition.getQuantifiers().size() > 0) {
@@ -259,7 +238,6 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
         String srcPath = Paths.get(constraintSourcePath, filename).toString();
         String fileContentSource = xtendTemplates.constraints(behaviour);
         writeSourceFile(srcPath, fileContentSource);
-        formatFile(srcPath);
     }
 
     private void constraintPlanPreConditionImpl(Plan plan) {
@@ -270,7 +248,6 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
             return;
         }
         writeSourceFile(srcPath, fileContentSource);
-        formatFile(srcPath);
     }
 
     private void constraintPlanPreCondition(Plan plan) {
@@ -279,7 +256,6 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
         String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "Constraint" + plan.getPreCondition().getId() + ".java").toString();
         String fileContentSource = xtendTemplates.constraintPlanPreCondition(plan);
         writeSourceFile(srcPath, fileContentSource);
-        formatFile(srcPath);
     }
 
     private void constraintPlanRuntimeConditionImpl(Plan plan) {
@@ -290,7 +266,6 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
             return;
         }
         writeSourceFile(srcPath, fileContentSource);
-        formatFile(srcPath);
     }
 
     private void constraintPlanRuntimeCondition(Plan plan) {
@@ -299,7 +274,6 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
         String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "Constraint" + plan.getRuntimeCondition().getId() + ".java").toString();
         String fileContentSource = xtendTemplates.constraintPlanRuntimeCondition(plan);
         writeSourceFile(srcPath, fileContentSource);
-        formatFile(srcPath);
     }
 
     private void constraintPlanTransitionPreConditionImpl(Transition transition) {
@@ -310,7 +284,6 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
             return;
         }
         writeSourceFile(srcPath, fileContentSource);
-        formatFile(srcPath);
     }
 
     private void constraintPlanTransitionPreCondition(Plan plan, Transition transition) {
@@ -319,11 +292,12 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
         String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "Constraint" + transition.getPreCondition().getId() + ".java").toString();
         String fileContentSource = xtendTemplates.constraintPlanTransitionPreCondition(plan, transition);
         writeSourceFile(srcPath, fileContentSource);
-        formatFile(srcPath);
     }
 
     @Override
     public void createConstraintsForPlan(Plan plan) {
+        String destinationPathWithoutName = cutDestinationPathToDirectory(plan);
+
         if (plan.getPreCondition() != null) {
             this.constraintPlanPreCondition(plan);
         }
@@ -353,7 +327,6 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
         String srcPath = Paths.get(constraintSourcePath, filename).toString();
         String fileContentSource = xtendTemplates.constraints(plan);
         writeSourceFile(srcPath, fileContentSource);
-        formatFile(srcPath);
 
         for (State inPlan: plan.getStates()) {
             try {
@@ -379,7 +352,6 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
             return;
         }
         writeSourceFile(srcPath, fileContentSource);
-        formatFile(srcPath);
     }
 
     @Override
@@ -389,7 +361,6 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
         String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "DomainBehaviour.java").toString();
         String fileContentSource = xtendTemplates.domainBehaviour();
         writeSourceFile(srcPath, fileContentSource);
-        formatFile(srcPath);
     }
 
     private void createDomainConditionImpl() {
@@ -400,7 +371,6 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
             return;
         }
         writeSourceFile(srcPath, fileContentSource);
-        formatFile(srcPath);
     }
 
     @Override
@@ -410,7 +380,6 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
         String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "DomainCondition.java").toString();
         String fileContentSource = xtendTemplates.domainCondition();
         writeSourceFile(srcPath, fileContentSource);
-        formatFile(srcPath);
     }
 
     private void createPlanImpl(Plan plan) {
@@ -422,7 +391,6 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
             return;
         }
         writeSourceFile(srcPath, fileContentSource);
-        formatFile(srcPath);
     }
 
     private void utilityFunctionPlan(Plan plan) {
@@ -431,7 +399,6 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
         String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "UtilityFunction" + plan.getId() + ".java").toString();
         String fileContentSource = xtendTemplates.utilityFunctionPlan(plan);
         writeSourceFile(srcPath, fileContentSource);
-        formatFile(srcPath);
     }
 
     private void utilityFunctionPlanImpl(Plan plan) {
@@ -443,7 +410,6 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
             return;
         }
         writeSourceFile(srcPath, fileContentSource);
-        formatFile(srcPath);
     }
 
     private void preConditionPlanImpl(Plan plan) {
@@ -454,7 +420,6 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
             return;
         }
         writeSourceFile(srcPath, fileContentSource);
-        formatFile(srcPath);
     }
 
     private void preConditionPlan(Plan plan) {
@@ -463,7 +428,6 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
         String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "PreCondition" + plan.getPreCondition().getId() + ".java").toString();
         String fileContentSource = xtendTemplates.preConditionPlan(plan);
         writeSourceFile(srcPath, fileContentSource);
-        formatFile(srcPath);
     }
 
     private void runtimeConditionPlanImpl(Plan plan) {
@@ -474,7 +438,6 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
             return;
         }
         writeSourceFile(srcPath, fileContentSource);
-        formatFile(srcPath);
     }
 
     private void runtimeConditionPlan(Plan plan) {
@@ -483,7 +446,6 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
         String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "RunTimeCondition" + plan.getRuntimeCondition().getId() + ".java").toString();
         String fileContentSource = xtendTemplates.runtimeConditionPlan(plan);
         writeSourceFile(srcPath, fileContentSource);
-        formatFile(srcPath);
     }
 
     private void transitionPreConditionPlanImpl(Transition transition) {
@@ -494,7 +456,6 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
             return;
         }
         writeSourceFile(srcPath, fileContentSource);
-        formatFile(srcPath);
     }
 
     private void transitionPreConditionPlan(State state, Transition transition) {
@@ -503,7 +464,6 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
         String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "PreCondition" + transition.getPreCondition().getId() + ".java").toString();
         String fileContentSource = xtendTemplates.transitionPreConditionPlan(state, transition);
         writeSourceFile(srcPath, fileContentSource);
-        formatFile(srcPath);
     }
 
     @Override
@@ -531,7 +491,6 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
         String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), destinationPath, filename).toString();
         String fileContentSource = xtendTemplates.plan(plan);
         writeSourceFile(srcPath, fileContentSource);
-        formatFile(srcPath);
     }
 
     @Override
@@ -539,47 +498,5 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
         String srcPath = Paths.get(generatedSourcesManager.getBaseDir(), "UtilityFunctionCreator.java").toString();
         String fileContentSource = xtendTemplates.utilityFunctionCreator(plans);
         writeSourceFile(srcPath, fileContentSource);
-        formatFile(srcPath);
-    }
-
-    private String readFile(String path) {
-        StringBuilder stringBuilder = new StringBuilder();
-        try (Stream stream = Files.lines(Paths.get(path), StandardCharsets.UTF_8)) {
-            stream.forEach(s -> stringBuilder.append(s).append("\n"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return stringBuilder.toString();
-    }
-
-    private void writeFile(String path, String content) {
-        try (
-                Writer writer = new BufferedWriter(new OutputStreamWriter(
-                        new FileOutputStream(path),
-                        StandardCharsets.UTF_8
-                ))
-        ) {
-            writer.write(content);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
-     * Calls the executable found by the formatter attribute on the file found by filename.
-     * It is assumed that the executable is clang-format or has the same CLI as clang-format.
-     *
-     * @param fileName
-     */
-    @Override
-    public void formatFile(String fileName) {
-        String sourceString = readFile(fileName);
-        try {
-            String formattedSource = new Formatter().formatSource(sourceString);
-            writeFile(fileName, formattedSource);
-        } catch (FormatterException e) {
-            LOG.error("An error occurred while formatting generated sources", e);
-            e.printStackTrace();
-        }
     }
 }

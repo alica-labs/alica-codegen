@@ -36,7 +36,6 @@ public class CodegeneratorJava extends Codegenerator {
                 plans,
                 behaviours,
                 conditions,
-                null,
                 destination,
                 generatedSourcesManager
         );

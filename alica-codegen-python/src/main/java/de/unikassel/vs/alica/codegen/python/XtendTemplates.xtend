@@ -32,7 +32,7 @@ class BehaviourCreator(object):
         if behaviour_id == «beh.id»:
             return «StringUtils.capitalize(beh.name)»()
         «ENDFOR»
-        raise ValueError("BehaviourCreator: Unknown behaviour requested: {}".format(behaviour_id))
+        print("BehaviourCreator: Unknown behaviour requested: {}".format(behaviour_id))
 '''
 
     def String behaviour(Behaviour behaviour) '''
@@ -62,10 +62,10 @@ class «StringUtils.capitalize(behaviour.name)»Impl:
         pass
 
     def run(self, msg: Any) -> None:
-        raise NotImplementedError()
+        pass
 
     def initialise_parameters(self) -> None:
-        raise NotImplementedError()
+        pass
 '''
 
     def String utilityFunctionCreator(List<Plan> plans)'''
@@ -81,7 +81,7 @@ class UtilityFunctionCreator(object):
         if utility_function_conf_id == «p.id»:
             return UtilityFunction«p.id»()
         «ENDFOR»
-        raise ValueError("UtilityFunctionCreator: Unknown utility requested: {}".format(utility_function_conf_id))
+        print("UtilityFunctionCreator: Unknown utility requested: {}".format(utility_function_conf_id))
 '''
 
     def String conditionCreator(List<Plan> plans, List<Behaviour> behaviours, List<Condition> conditions) '''
@@ -105,7 +105,7 @@ class ConditionCreator(object):
             return RunTimeCondition«con.id»()
             «ENDIF»
         «ENDFOR»
-        raise ValueError("ConditionCreator: Unknown condition id requested: {}".format(condition_conf_id))
+        print("ConditionCreator: Unknown condition id requested: {}".format(condition_conf_id))
 '''
 
     def String constraintCreator(List<Plan> plans, List<Behaviour> behaviours, List<Condition> conditions)'''
@@ -120,7 +120,7 @@ class ConstraintCreator(object):
                     return Constraint«c.id»()
             «ENDIF»
         «ENDFOR»
-        raise ValueError("ConstraintCreator: Unknown constraint requested: {}".format(constraint_conf_id))
+        print("ConstraintCreator: Unknown constraint requested: {}".format(constraint_conf_id))
 '''
 
     def String behaviourCondition(Behaviour behaviour) '''

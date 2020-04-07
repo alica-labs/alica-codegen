@@ -16,12 +16,12 @@ import org.apache.commons.lang3.StringUtils;
 class XtendTemplates {
 
     def String behaviourCreator(List<Behaviour> behaviours)'''
-package de.unikassel.vs.alica.codegen.out;
+package de.uniks.vs.alica.code.gen;
 
 import de.unikassel.vs.alica.engine.BasicBehaviour;
 «FOR beh : behaviours»
     «IF (!beh.relativeDirectory.isEmpty)»
-        import de.unikassel.vs.alica.codegen.out.«beh.relativeDirectory».«StringUtils.capitalize(beh.name)»;
+        import de.uniks.vs.alica.code.gen.«beh.relativeDirectory».«StringUtils.capitalize(beh.name)»;
     «ENDIF»
 «ENDFOR»
 
@@ -42,12 +42,12 @@ public class BehaviourCreator {
 
     def String behaviour(Behaviour behaviour) '''
 «IF (behaviour.relativeDirectory.isEmpty)»
-    package de.unikassel.vs.alica.codegen.out;
+    package de.uniks.vs.alica.code.gen;
 «ELSE»
-    package de.unikassel.vs.alica.codegen.out.«behaviour.relativeDirectory»;
+    package de.uniks.vs.alica.code.gen.«behaviour.relativeDirectory»;
 «ENDIF»
 
-import de.unikassel.vs.alica.codegen.out.impl.«StringUtils.capitalize(behaviour.name)»Impl;
+import de.uniks.vs.alica.code.impl.«StringUtils.capitalize(behaviour.name)»Impl;
 
 public class «StringUtils.capitalize(behaviour.name)» extends DomainBehaviour {
     private «StringUtils.capitalize(behaviour.name)»Impl impl;
@@ -68,7 +68,7 @@ public class «StringUtils.capitalize(behaviour.name)» extends DomainBehaviour 
 '''
 
     def String behaviourImpl(Behaviour behaviour) '''
-package de.unikassel.vs.alica.codegen.out.impl;
+package de.uniks.vs.alica.code.impl;
 
 public class «StringUtils.capitalize(behaviour.name)»Impl {
     public «StringUtils.capitalize(behaviour.name)»Impl() {
@@ -86,12 +86,12 @@ public class «StringUtils.capitalize(behaviour.name)»Impl {
 '''
 
     def String utilityFunctionCreator(List<Plan> plans)'''
-package de.unikassel.vs.alica.codegen.out;
+package de.uniks.vs.alica.code.gen;
 
 import de.unikassel.vs.alica.engine.BasicUtilityFunction;
 «FOR p: plans»
     «IF (!p.relativeDirectory.isEmpty)»
-        import de.unikassel.vs.alica.codegen.out.«p.relativeDirectory».«StringUtils.capitalize(p.name)»«p.id»;
+        import de.uniks.vs.alica.code.gen.«p.relativeDirectory».«StringUtils.capitalize(p.name)»«p.id»;
     «ENDIF»
 «ENDFOR»
 
@@ -111,7 +111,7 @@ public class UtilityFunctionCreator {
 '''
 
     def String conditionCreator(List<Plan> plans, List<Behaviour> behaviours, List<Condition> conditions) '''
-package de.unikassel.vs.alica.codegen.out;
+package de.uniks.vs.alica.code.gen;
 
 import de.unikassel.vs.alica.engine.BasicCondition;
 
@@ -139,7 +139,7 @@ public class ConditionCreator {
 '''
 
     def String constraintCreator(List<Plan> plans, List<Behaviour> behaviours, List<Condition> conditions)'''
-package de.unikassel.vs.alica.codegen.out;
+package de.uniks.vs.alica.code.gen;
 
 import de.unikassel.vs.alica.engine.BasicConstraint;
 
@@ -162,9 +162,9 @@ public class ConstraintCreator {
 
     def String behaviourCondition(Behaviour behaviour) '''
 «IF (behaviour.relativeDirectory.isEmpty)»
-    package de.unikassel.vs.alica.codegen.out;
+    package de.uniks.vs.alica.code.gen;
 «ELSE»
-    package de.unikassel.vs.alica.codegen.out.«behaviour.relativeDirectory»;
+    package de.uniks.vs.alica.code.gen.«behaviour.relativeDirectory»;
 «ENDIF»
 
 public class «StringUtils.capitalize(behaviour.name)»«behaviour.id» {
@@ -173,12 +173,12 @@ public class «StringUtils.capitalize(behaviour.name)»«behaviour.id» {
 '''
 
     def String preConditionBehaviour(Behaviour behaviour) '''
-package de.unikassel.vs.alica.codegen.out;
+package de.uniks.vs.alica.code.gen;
 
 import de.unikassel.vs.alica.engine.RunningPlan;
-import de.unikassel.vs.alica.codegen.out.DomainCondition;
+import de.uniks.vs.alica.code.gen.DomainCondition;
 «IF (behaviour.postCondition !== null && behaviour.postCondition.pluginName == "DefaultPlugin")»
-    import de.unikassel.vs.alica.codegen.out.impl.PreCondition«behaviour.preCondition.id»Impl;
+    import de.uniks.vs.alica.code.impl.PreCondition«behaviour.preCondition.id»Impl;
 «ENDIF»
 
 public class PreCondition«behaviour.preCondition.id» extends DomainCondition {
@@ -198,7 +198,7 @@ public class PreCondition«behaviour.preCondition.id» extends DomainCondition {
 '''
 
 def String preConditionBehaviourImpl(Behaviour behaviour) '''
-package de.unikassel.vs.alica.codegen.out.impl;
+package de.uniks.vs.alica.code.impl;
 
 public class PreCondition«behaviour.preCondition.id»Impl {
     public PreCondition«behaviour.preCondition.id»Impl() {
@@ -212,12 +212,12 @@ public class PreCondition«behaviour.preCondition.id»Impl {
 '''
 
     def String runtimeConditionBehaviour(Behaviour behaviour) '''
-package de.unikassel.vs.alica.codegen.out;
+package de.uniks.vs.alica.code.gen;
 
 import de.unikassel.vs.alica.engine.RunningPlan;
-import de.unikassel.vs.alica.codegen.out.DomainCondition;
+import de.uniks.vs.alica.code.gen.DomainCondition;
 «IF (behaviour.runtimeCondition !== null && behaviour.runtimeCondition.pluginName == "DefaultPlugin")»
-    import de.unikassel.vs.alica.codegen.out.impl.RunTimeCondition«behaviour.runtimeCondition.id»Impl;
+    import de.uniks.vs.alica.code.impl.RunTimeCondition«behaviour.runtimeCondition.id»Impl;
 «ENDIF»
 
 public class RunTimeCondition«behaviour.runtimeCondition.id» extends DomainCondition {
@@ -237,7 +237,7 @@ public class RunTimeCondition«behaviour.runtimeCondition.id» extends DomainCon
 '''
 
 def String runtimeConditionBehaviourImpl(Behaviour behaviour) '''
-package de.unikassel.vs.alica.codegen.out.impl;
+package de.uniks.vs.alica.code.impl;
 
 public class RunTimeCondition«behaviour.runtimeCondition.id»Impl {
     public RunTimeCondition«behaviour.runtimeCondition.id»Impl() {
@@ -251,12 +251,12 @@ public class RunTimeCondition«behaviour.runtimeCondition.id»Impl {
 '''
 
     def String postConditionBehaviour(Behaviour behaviour) '''
-package de.unikassel.vs.alica.codegen.out;
+package de.uniks.vs.alica.code.gen;
 
 import de.unikassel.vs.alica.engine.RunningPlan;
-import de.unikassel.vs.alica.codegen.out.DomainCondition;
+import de.uniks.vs.alica.code.gen.DomainCondition;
 «IF (behaviour.postCondition !== null && behaviour.postCondition.pluginName == "DefaultPlugin")»
-    import de.unikassel.vs.alica.codegen.out.impl.PostCondition«behaviour.postCondition.id»Impl;
+    import de.uniks.vs.alica.code.impl.PostCondition«behaviour.postCondition.id»Impl;
 «ENDIF»
 
 public class PostCondition«behaviour.postCondition.id» extends DomainCondition {
@@ -276,7 +276,7 @@ public class PostCondition«behaviour.postCondition.id» extends DomainCondition
 '''
 
 def String postConditionBehaviourImpl(Behaviour behaviour) '''
-package de.unikassel.vs.alica.codegen.out.impl;
+package de.uniks.vs.alica.code.impl;
 
 public class PostCondition«behaviour.postCondition.id»Impl {
     public PostCondition«behaviour.postCondition.id»Impl() {
@@ -291,9 +291,9 @@ public class PostCondition«behaviour.postCondition.id»Impl {
 
     def String constraints(Behaviour behaviour) '''
 «IF (behaviour.relativeDirectory.isEmpty)»
-    package de.unikassel.vs.alica.codegen.out.constraints;
+    package de.uniks.vs.alica.code.gen.constraints;
 «ELSE»
-    package de.unikassel.vs.alica.codegen.out.«behaviour.relativeDirectory».constraints;
+    package de.uniks.vs.alica.code.gen.«behaviour.relativeDirectory».constraints;
 «ENDIF»
 
 public class «StringUtils.capitalize(behaviour.name)»«behaviour.id»Constraints {
@@ -302,12 +302,12 @@ public class «StringUtils.capitalize(behaviour.name)»«behaviour.id»Constrain
 '''
 
     def String constraintPreCondition(Behaviour behaviour) '''
-package de.unikassel.vs.alica.codegen.out;
+package de.uniks.vs.alica.code.gen;
 
 import de.unikassel.vs.alica.engine.BasicConstraint;
 import de.unikassel.vs.alica.engine.ProblemDescriptor;
 import de.unikassel.vs.alica.engine.RunningPlan;
-import de.unikassel.vs.alica.codegen.out.impl.Constraint«behaviour.preCondition.id»Impl;
+import de.uniks.vs.alica.code.impl.Constraint«behaviour.preCondition.id»Impl;
 
 public class Constraint«behaviour.preCondition.id» extends BasicConstraint {
     private Constraint«behaviour.preCondition.id»Impl impl;
@@ -328,7 +328,7 @@ public class Constraint«behaviour.preCondition.id» extends BasicConstraint {
 '''
 
 def String constraintPreConditionImpl(Behaviour behaviour) '''
-package de.unikassel.vs.alica.codegen.out.impl;
+package de.uniks.vs.alica.code.impl;
 
 import de.unikassel.vs.alica.engine.ProblemDescriptor;
 import de.unikassel.vs.alica.engine.RunningPlan;
@@ -345,12 +345,12 @@ public class Constraint«behaviour.preCondition.id»Impl {
 '''
 
     def String constraintRuntimeCondition(Behaviour behaviour) '''
-package de.unikassel.vs.alica.codegen.out;
+package de.uniks.vs.alica.code.gen;
 
 import de.unikassel.vs.alica.engine.BasicConstraint;
 import de.unikassel.vs.alica.engine.ProblemDescriptor;
 import de.unikassel.vs.alica.engine.RunningPlan;
-import de.unikassel.vs.alica.codegen.out.impl.Constraint«behaviour.runtimeCondition.id»Impl;
+import de.uniks.vs.alica.code.impl.Constraint«behaviour.runtimeCondition.id»Impl;
 
 public class Constraint«behaviour.runtimeCondition.id» extends BasicConstraint {
     private Constraint«behaviour.runtimeCondition.id»Impl impl;
@@ -371,7 +371,7 @@ public class Constraint«behaviour.runtimeCondition.id» extends BasicConstraint
 '''
 
 def String constraintRuntimeConditionImpl(Behaviour behaviour) '''
-package de.unikassel.vs.alica.codegen.out.impl;
+package de.uniks.vs.alica.code.impl;
 
 import de.unikassel.vs.alica.engine.ProblemDescriptor;
 import de.unikassel.vs.alica.engine.RunningPlan;
@@ -388,12 +388,12 @@ public class Constraint«behaviour.runtimeCondition.id»Impl {
 '''
 
     def String constraintPostCondition(Behaviour behaviour) '''
-package de.unikassel.vs.alica.codegen.out;
+package de.uniks.vs.alica.code.gen;
 
 import de.unikassel.vs.alica.engine.BasicConstraint;
 import de.unikassel.vs.alica.engine.ProblemDescriptor;
 import de.unikassel.vs.alica.engine.RunningPlan;
-import de.unikassel.vs.alica.codegen.out.impl.Constraint«behaviour.postCondition.id»Impl;
+import de.uniks.vs.alica.code.impl.Constraint«behaviour.postCondition.id»Impl;
 
 public class Constraint«behaviour.postCondition.id» extends BasicConstraint {
     private Constraint«behaviour.postCondition.id»Impl impl;
@@ -414,7 +414,7 @@ public class Constraint«behaviour.postCondition.id» extends BasicConstraint {
 '''
 
 def String constraintPostConditionImpl(Behaviour behaviour) '''
-package de.unikassel.vs.alica.codegen.out.impl;
+package de.uniks.vs.alica.code.impl;
 
 import de.unikassel.vs.alica.engine.ProblemDescriptor;
 import de.unikassel.vs.alica.engine.RunningPlan;
@@ -432,9 +432,9 @@ public class Constraint«behaviour.postCondition.id»Impl {
 
     def String constraints(Plan plan) '''
 «IF (plan.relativeDirectory.isEmpty)»
-    package de.unikassel.vs.alica.codegen.out.constraints;
+    package de.uniks.vs.alica.code.gen.constraints;
 «ELSE»
-    package de.unikassel.vs.alica.codegen.out.«plan.relativeDirectory».constraints;
+    package de.uniks.vs.alica.code.gen.«plan.relativeDirectory».constraints;
 «ENDIF»
 
 public class «StringUtils.capitalize(plan.name)»«plan.id»Constraints {
@@ -443,12 +443,12 @@ public class «StringUtils.capitalize(plan.name)»«plan.id»Constraints {
 '''
 
     def String constraintPlanPreCondition(Plan plan) '''
-package de.unikassel.vs.alica.codegen.out;
+package de.uniks.vs.alica.code.gen;
 
 import de.unikassel.vs.alica.engine.BasicConstraint;
 import de.unikassel.vs.alica.engine.ProblemDescriptor;
 import de.unikassel.vs.alica.engine.RunningPlan;
-import de.unikassel.vs.alica.codegen.out.impl.Constraint«plan.preCondition.id»Impl;
+import de.uniks.vs.alica.code.impl.Constraint«plan.preCondition.id»Impl;
 
 public class Constraint«plan.preCondition.id» extends BasicConstraint {
     private Constraint«plan.preCondition.id»Impl impl;
@@ -467,7 +467,7 @@ public class Constraint«plan.preCondition.id» extends BasicConstraint {
 '''
 
 def String constraintPlanPreConditionImpl(Plan plan) '''
-package de.unikassel.vs.alica.codegen.out.impl;
+package de.uniks.vs.alica.code.impl;
 
 import de.unikassel.vs.alica.engine.ProblemDescriptor;
 import de.unikassel.vs.alica.engine.RunningPlan;
@@ -484,12 +484,12 @@ public class Constraint«plan.preCondition.id»Impl {
 '''
 
     def String constraintPlanRuntimeCondition(Plan plan) '''
-package de.unikassel.vs.alica.codegen.out;
+package de.uniks.vs.alica.code.gen;
 
 import de.unikassel.vs.alica.engine.BasicConstraint;
 import de.unikassel.vs.alica.engine.ProblemDescriptor;
 import de.unikassel.vs.alica.engine.RunningPlan;
-import de.unikassel.vs.alica.codegen.out.impl.Constraint«plan.runtimeCondition.id»;
+import de.uniks.vs.alica.code.impl.Constraint«plan.runtimeCondition.id»;
 
 public class Constraint«plan.runtimeCondition.id» extends BasicConstraint {
     private Constraint«plan.runtimeCondition.id»Impl impl;
@@ -508,7 +508,7 @@ public class Constraint«plan.runtimeCondition.id» extends BasicConstraint {
 '''
 
 def String constraintPlanRuntimeConditionImpl(Plan plan) '''
-package de.unikassel.vs.alica.codegen.out.impl;
+package de.uniks.vs.alica.code.impl;
 
 import de.unikassel.vs.alica.engine.ProblemDescriptor;
 import de.unikassel.vs.alica.engine.RunningPlan;
@@ -525,12 +525,12 @@ public class Constraint«plan.runtimeCondition.id»Impl {
 '''
 
     def String constraintPlanTransitionPreCondition(Plan plan, Transition transition) '''
-package de.unikassel.vs.alica.codegen.out;
+package de.uniks.vs.alica.code.gen;
 
 import de.unikassel.vs.alica.engine.BasicConstraint;
 import de.unikassel.vs.alica.engine.ProblemDescriptor;
 import de.unikassel.vs.alica.engine.RunningPlan;
-import de.unikassel.vs.alica.codegen.out.impl.Constraint«transition.preCondition.id»Impl;
+import de.uniks.vs.alica.code.impl.Constraint«transition.preCondition.id»Impl;
 
 public class Constraint«transition.preCondition.id» extends BasicConstraint {
     private Constraint«transition.preCondition.id»Impl impl;
@@ -558,7 +558,7 @@ public class Constraint«transition.preCondition.id» extends BasicConstraint {
 '''
 
 def String constraintPlanTransitionPreConditionImpl(Transition transition) '''
-package de.unikassel.vs.alica.codegen.out.impl;
+package de.uniks.vs.alica.code.impl;
 
 import de.unikassel.vs.alica.engine.ProblemDescriptor;
 import de.unikassel.vs.alica.engine.RunningPlan;
@@ -575,10 +575,10 @@ public class Constraint«transition.preCondition.id»Impl {
 '''
 
     def String domainBehaviour() '''
-package de.unikassel.vs.alica.codegen.out;
+package de.uniks.vs.alica.code.gen;
 
 import de.unikassel.vs.alica.engine.BasicBehaviour;
-import de.unikassel.vs.alica.codegen.out.impl.DomainBehaviourImpl;
+import de.uniks.vs.alica.code.impl.DomainBehaviourImpl;
 
 public class DomainBehaviour extends BasicBehaviour {
     private DomainBehaviourImpl impl;
@@ -591,7 +591,7 @@ public class DomainBehaviour extends BasicBehaviour {
 '''
 
     def String domainBehaviourImpl() '''
-package de.unikassel.vs.alica.codegen.out.impl;
+package de.uniks.vs.alica.code.impl;
 
 public class DomainBehaviourImpl {
     public DomainBehaviourImpl() {
@@ -601,10 +601,10 @@ public class DomainBehaviourImpl {
 '''
 
     def String domainCondition() '''
-package de.unikassel.vs.alica.codegen.out;
+package de.uniks.vs.alica.code.gen;
 
 import de.unikassel.vs.alica.engine.BasicCondition;
-import de.unikassel.vs.alica.codegen.out.impl.DomainConditionImpl;
+import de.uniks.vs.alica.code.impl.DomainConditionImpl;
 
 public class DomainCondition extends BasicCondition {
     private DomainConditionImpl impl;
@@ -617,7 +617,7 @@ public class DomainCondition extends BasicCondition {
 '''
 
     def String domainConditionImpl() '''
-package de.unikassel.vs.alica.codegen.out.impl;
+package de.uniks.vs.alica.code.impl;
 
 public class DomainConditionImpl {
     public DomainConditionImpl() {
@@ -628,14 +628,14 @@ public class DomainConditionImpl {
 
     def String plan(Plan plan) '''
 «IF (plan.relativeDirectory.isEmpty)»
-    package de.unikassel.vs.alica.codegen.out;
+    package de.uniks.vs.alica.code.gen;
 «ELSE»
-    package de.unikassel.vs.alica.codegen.out.«plan.relativeDirectory»;
+    package de.uniks.vs.alica.code.gen.«plan.relativeDirectory»;
 «ENDIF»
 
 import de.unikassel.vs.alica.engine.BasicPlan;
 import de.unikassel.vs.alica.engine.BasicUtilityFunction;
-import de.unikassel.vs.alica.codegen.out.impl.«StringUtils.capitalize(plan.name)»«plan.id»Impl;
+import de.uniks.vs.alica.code.impl.«StringUtils.capitalize(plan.name)»«plan.id»Impl;
 
 public class «StringUtils.capitalize(plan.name)»«plan.id» extends BasicPlan {
     private «StringUtils.capitalize(plan.name)»«plan.id»Impl impl;
@@ -651,12 +651,12 @@ public class «StringUtils.capitalize(plan.name)»«plan.id» extends BasicPlan 
 '''
 
     def String utilityFunctionPlan(Plan plan) '''
-package de.unikassel.vs.alica.codegen.out;
+package de.uniks.vs.alica.code.gen;
 
 import de.unikassel.vs.alica.engine.BasicUtilityFunction;
 import de.unikassel.vs.alica.engine.BasicPlan;
 import de.unikassel.vs.alica.engine.UtilityFunction;
-import de.unikassel.vs.alica.codegen.out.impl.UtilityFunction«plan.id»Impl;
+import de.uniks.vs.alica.code.impl.UtilityFunction«plan.id»Impl;
 
 public class UtilityFunction«plan.id» extends BasicUtilityFunction {
     private UtilityFunction«plan.id»Impl impl;
@@ -672,7 +672,7 @@ public class UtilityFunction«plan.id» extends BasicUtilityFunction {
 '''
 
     def String utilityFunctionPlanImpl(Plan plan) '''
-package de.unikassel.vs.alica.codegen.out.impl;
+package de.uniks.vs.alica.code.impl;
 
 import de.unikassel.vs.alica.engine.BasicPlan;
 import de.unikassel.vs.alica.engine.UtilityFunction;
@@ -690,11 +690,11 @@ public class UtilityFunction«plan.id»Impl {
 '''
 
     def String preConditionPlan(Plan plan) '''
-package de.unikassel.vs.alica.codegen.out;
+package de.uniks.vs.alica.code.gen;
 
 import de.unikassel.vs.alica.engine.RunningPlan;
-import de.unikassel.vs.alica.codegen.out.DomainCondition;
-import de.unikassel.vs.alica.codegen.out.impl.PreCondition«plan.preCondition.id»Impl;
+import de.uniks.vs.alica.code.gen.DomainCondition;
+import de.uniks.vs.alica.code.impl.PreCondition«plan.preCondition.id»Impl;
 
 public class PreCondition«plan.preCondition.id» extends DomainCondition {
     private PreCondition«plan.preCondition.id»Impl impl;
@@ -715,7 +715,7 @@ public class PreCondition«plan.preCondition.id» extends DomainCondition {
 '''
 
 def String preConditionPlanImpl(Plan plan) '''
-package de.unikassel.vs.alica.codegen.out.impl;
+package de.uniks.vs.alica.code.impl;
 
 import de.unikassel.vs.alica.engine.RunningPlan;
 
@@ -731,11 +731,11 @@ public class PreCondition«plan.preCondition.id»Impl {
 '''
 
     def String runtimeConditionPlan(Plan plan) '''
-package de.unikassel.vs.alica.codegen.out;
+package de.uniks.vs.alica.code.gen;
 
 import de.unikassel.vs.alica.engine.RunningPlan;
-import de.unikassel.vs.alica.codegen.out.DomainCondition;
-import de.unikassel.vs.alica.codegen.out.impl.RunTimeCondition«plan.runtimeCondition.id»Impl;
+import de.uniks.vs.alica.code.gen.DomainCondition;
+import de.uniks.vs.alica.code.impl.RunTimeCondition«plan.runtimeCondition.id»Impl;
 
 public class RunTimeCondition«plan.runtimeCondition.id» extends DomainCondition {
     private RunTimeCondition«plan.runtimeCondition.id»Impl impl;
@@ -756,7 +756,7 @@ public class RunTimeCondition«plan.runtimeCondition.id» extends DomainConditio
 '''
 
 def String runtimeConditionPlanImpl(Plan plan) '''
-package de.unikassel.vs.alica.codegen.out.impl;
+package de.uniks.vs.alica.code.impl;
 
 import de.unikassel.vs.alica.engine.RunningPlan;
 
@@ -772,11 +772,11 @@ public class RunTimeCondition«plan.runtimeCondition.id»Impl {
 '''
 
     def String transitionPreConditionPlan(State state, Transition transition) '''
-package de.unikassel.vs.alica.codegen.out;
+package de.uniks.vs.alica.code.gen;
 
 import de.unikassel.vs.alica.engine.RunningPlan;
-import de.unikassel.vs.alica.codegen.out.DomainCondition;
-import de.unikassel.vs.alica.codegen.out.impl.PreCondition«transition.preCondition.id»Impl;
+import de.uniks.vs.alica.code.gen.DomainCondition;
+import de.uniks.vs.alica.code.impl.PreCondition«transition.preCondition.id»Impl;
 
 public class PreCondition«transition.preCondition.id» extends DomainCondition {
     private PreCondition«transition.preCondition.id»Impl impl;
@@ -802,7 +802,7 @@ public class PreCondition«transition.preCondition.id» extends DomainCondition 
 '''
 
 def String transitionPreConditionPlanImpl(Transition transition) '''
-package de.unikassel.vs.alica.codegen.out.impl;
+package de.uniks.vs.alica.code.impl;
 
 import de.unikassel.vs.alica.engine.RunningPlan;
 
@@ -818,7 +818,7 @@ public class PreCondition«transition.preCondition.id»Impl {
 '''
 
     def String planImpl(Plan plan) '''
-package de.unikassel.vs.alica.codegen.out.impl;
+package de.uniks.vs.alica.code.impl;
 
 import de.unikassel.vs.alica.engine.BasicPlan;
 import de.unikassel.vs.alica.engine.BasicUtilityFunction;

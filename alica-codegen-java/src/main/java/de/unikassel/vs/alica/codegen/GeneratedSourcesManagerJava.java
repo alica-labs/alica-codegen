@@ -12,7 +12,7 @@ import java.util.List;
 public class GeneratedSourcesManagerJava extends GeneratedSourcesManager {
 
     public String getBaseDir() {
-        return Paths.get(genSrcPath, "de", "unikassel", "vs", "alica", "codegen", "out").toString();
+        return Paths.get(genSrcPath, "de", "uniks", "vs", "alica", "code").toString();
     }
 
     public List<File> getGeneratedFilesForBehaviour(Behaviour behaviour) {

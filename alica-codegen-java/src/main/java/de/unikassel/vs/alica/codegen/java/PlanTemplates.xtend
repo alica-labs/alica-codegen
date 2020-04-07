@@ -1,15 +1,7 @@
 package de.unikassel.vs.alica.codegen.java;
 
-import de.unikassel.vs.alica.planDesigner.alicamodel.Behaviour;
-import de.unikassel.vs.alica.planDesigner.alicamodel.Condition;
 import de.unikassel.vs.alica.planDesigner.alicamodel.Plan;
-import de.unikassel.vs.alica.planDesigner.alicamodel.PostCondition;
-import de.unikassel.vs.alica.planDesigner.alicamodel.PreCondition;
-import de.unikassel.vs.alica.planDesigner.alicamodel.RuntimeCondition;
-import java.util.List;
 import de.unikassel.vs.alica.planDesigner.alicamodel.Transition;
-import de.unikassel.vs.alica.planDesigner.alicamodel.State;
-import de.unikassel.vs.alica.planDesigner.alicamodel.Variable;
 import org.apache.commons.lang3.StringUtils;
 
 
@@ -22,6 +14,7 @@ class PlanTemplates {
 «ELSE»
     package de.uniks.vs.alica.code.gen.«plan.relativeDirectory».constraints;
 «ENDIF»
+
 /*
  * Constraints - («StringUtils.capitalize(plan.name)»): «plan.id»
  */
@@ -41,7 +34,6 @@ import de.uniks.vs.alica.code.impl.Constraint«plan.preCondition.id»Impl;
 /*
  * PreCondition («StringUtils.capitalize(plan.name)»:«plan.id»): «plan.preCondition.id»
  */
-
 public class Constraint«plan.preCondition.id» extends BasicConstraint {
     private Constraint«plan.preCondition.id»Impl impl;
 
@@ -228,7 +220,7 @@ public class PreCondition«plan.preCondition.id»Impl {
     }
 
     public boolean evaluate(RunningPlan rp) {
-        System.out.println("The PreCondition «plan.preCondition.id» in Plan «plan.getName» is not implement yet!" );
+        System.out.println("The PreCondition «plan.preCondition.id» in Plan «plan.getName» is not implement yet!");
         return false;
     }
 }
@@ -242,7 +234,6 @@ import de.uniks.vs.alica.code.gen.domain.DomainCondition;
 import de.uniks.vs.alica.code.impl.RunTimeCondition«plan.runtimeCondition.id»Impl;
 
 public class RunTimeCondition«plan.runtimeCondition.id» extends DomainCondition {
-
     static long id = «plan.runtimeCondition.id»L;
 
     private RunTimeCondition«plan.runtimeCondition.id»Impl impl;
@@ -285,7 +276,6 @@ import de.uniks.vs.jalica.engine.RunningPlan;
 import de.uniks.vs.alica.code.gen.domain.DomainCondition;
 
 public class PreCondition«transition.preCondition.id»Impl {
-
     private DomainCondition condition;
 
     public PreCondition«transition.preCondition.id»Impl(DomainCondition condition) {
@@ -312,4 +302,5 @@ public class «StringUtils.capitalize(plan.name)»«plan.id»Impl {
     }
 }
 '''
+
 }

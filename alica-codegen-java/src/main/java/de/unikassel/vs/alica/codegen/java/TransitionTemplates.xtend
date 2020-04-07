@@ -1,16 +1,8 @@
 package de.unikassel.vs.alica.codegen.java;
 
-import de.unikassel.vs.alica.planDesigner.alicamodel.Behaviour;
-import de.unikassel.vs.alica.planDesigner.alicamodel.Condition;
 import de.unikassel.vs.alica.planDesigner.alicamodel.Plan;
-import de.unikassel.vs.alica.planDesigner.alicamodel.PostCondition;
-import de.unikassel.vs.alica.planDesigner.alicamodel.PreCondition;
-import de.unikassel.vs.alica.planDesigner.alicamodel.RuntimeCondition;
 import de.unikassel.vs.alica.planDesigner.alicamodel.Transition;
 import de.unikassel.vs.alica.planDesigner.alicamodel.State;
-import de.unikassel.vs.alica.planDesigner.alicamodel.Variable;
-import java.util.List;
-import org.apache.commons.lang3.StringUtils;
 
 
 class TransitionTemplates {

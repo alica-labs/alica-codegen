@@ -6,9 +6,6 @@ import de.unikassel.vs.alica.planDesigner.alicamodel.Plan;
 import de.unikassel.vs.alica.planDesigner.alicamodel.PostCondition;
 import de.unikassel.vs.alica.planDesigner.alicamodel.PreCondition;
 import de.unikassel.vs.alica.planDesigner.alicamodel.RuntimeCondition;
-import de.unikassel.vs.alica.planDesigner.alicamodel.Transition;
-import de.unikassel.vs.alica.planDesigner.alicamodel.State;
-import de.unikassel.vs.alica.planDesigner.alicamodel.Variable;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 
@@ -21,7 +18,7 @@ package de.uniks.vs.alica.code.gen.creators;
 import de.uniks.vs.jalica.engine.BasicBehaviour;
 import de.uniks.vs.jalica.engine.IBehaviourCreator;
 
-«FOR beh : behaviours»
+«FOR beh: behaviours»
     «IF (!beh.relativeDirectory.isEmpty)»
         import de.uniks.vs.alica.code.gen.behaviours.«beh.relativeDirectory».«StringUtils.capitalize(beh.name)»;
      «ELSE»
@@ -30,10 +27,9 @@ import de.uniks.vs.jalica.engine.IBehaviourCreator;
 «ENDFOR»
 
 public class BehaviourCreator implements IBehaviourCreator {
-
     public BasicBehaviour createBehaviour(long behaviourId, Object context) {
         switch (String.valueOf(behaviourId)) {
-            «FOR beh : behaviours»
+            «FOR beh: behaviours»
                 case "«beh.id»":
                     return new «StringUtils.capitalize(beh.name)»(context);
             «ENDFOR»
@@ -60,7 +56,6 @@ import de.uniks.vs.jalica.engine.IUtilityCreator;
 «ENDFOR»
 
 public class UtilityFunctionCreator implements IUtilityCreator {
-
     public BasicUtilityFunction createUtility(long utilityFunctionConfId) {
         switch(String.valueOf(utilityFunctionConfId)) {
             «FOR p: plans»
@@ -80,9 +75,8 @@ package de.uniks.vs.alica.code.gen.creators;
 
 import de.uniks.vs.jalica.engine.BasicCondition;
 import de.uniks.vs.jalica.engine.IConditionCreator;
-
 «FOR con: conditions»
-import de.uniks.vs.alica.code.gen.conditions.PreCondition«con.id»;
+    import de.uniks.vs.alica.code.gen.conditions.PreCondition«con.id»;
 «ENDFOR»
 
 public class ConditionCreator implements IConditionCreator {
@@ -114,7 +108,6 @@ package de.uniks.vs.alica.code.gen.creators;
 import de.uniks.vs.jalica.engine.BasicConstraint;
 
 public class ConstraintCreator {
-
     public BasicConstraint createConstraint(long constraintConfId, Object context) {
         switch (String.valueOf(constraintConfId)) {
             «FOR c: conditions»
@@ -130,4 +123,5 @@ public class ConstraintCreator {
     }
 }
 '''
+
 }

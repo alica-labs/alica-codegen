@@ -8,7 +8,6 @@ import org.apache.commons.lang3.StringUtils;
 class PlanTemplates {
 
     def String constraints(Plan plan) '''
-
 «IF (plan.relativeDirectory.isEmpty)»
     package de.uniks.vs.alica.code.gen.constraints;
 «ELSE»
@@ -29,7 +28,7 @@ package de.uniks.vs.alica.code.gen.constraints;
 import de.uniks.vs.jalica.engine.BasicConstraint;
 import de.uniks.vs.jalica.engine.ProblemDescriptor;
 import de.uniks.vs.jalica.engine.RunningPlan;
-import de.uniks.vs.alica.code.impl.Constraint«plan.preCondition.id»Impl;
+import de.uniks.vs.alica.code.impl.constraints.Constraint«plan.preCondition.id»Impl;
 
 /*
  * PreCondition («StringUtils.capitalize(plan.name)»:«plan.id»): «plan.preCondition.id»
@@ -51,7 +50,7 @@ public class Constraint«plan.preCondition.id» extends BasicConstraint {
 '''
 
 def String constraintPlanPreConditionImpl(Plan plan) '''
-package de.uniks.vs.alica.code.impl;
+package de.uniks.vs.alica.code.impl.constraints;
 
 import de.uniks.vs.jalica.engine.ProblemDescriptor;
 import de.uniks.vs.jalica.engine.RunningPlan;
@@ -60,20 +59,23 @@ import de.uniks.vs.jalica.engine.RunningPlan;
  * Plan PreCondition («StringUtils.capitalize(plan.name)»:«plan.id»): «plan.preCondition.id»
  */
 public class Constraint«plan.preCondition.id»Impl {
+    public Constraint«plan.preCondition.id»Impl() {
 
-    public Constraint«plan.preCondition.id»Impl() { }
+    }
 
-    public void getConstraint(ProblemDescriptor c, RunningPlan rp) { }
+    public void getConstraint(ProblemDescriptor c, RunningPlan rp) {
+
+    }
 }
 '''
 
     def String constraintPlanRuntimeCondition(Plan plan) '''
-package de.uniks.vs.alica.code.gen;
+package de.uniks.vs.alica.code.gen.constraints;
 
 import de.uniks.vs.jalica.engine.BasicConstraint;
 import de.uniks.vs.jalica.engine.ProblemDescriptor;
 import de.uniks.vs.jalica.engine.RunningPlan;
-import de.uniks.vs.alica.code.impl.Constraint«plan.runtimeCondition.id»;
+import de.uniks.vs.alica.code.impl.constraints.Constraint«plan.runtimeCondition.id»;
 
 /*
  * Plan RuntimeCondition («StringUtils.capitalize(plan.name)»:«plan.id»): «plan.runtimeCondition.id»
@@ -95,7 +97,7 @@ public class Constraint«plan.runtimeCondition.id» extends BasicConstraint {
 '''
 
 def String constraintPlanRuntimeConditionImpl(Plan plan) '''
-package de.uniks.vs.alica.code.impl;
+package de.uniks.vs.alica.code.impl.constraints;
 
 import de.uniks.vs.jalica.engine.ProblemDescriptor;
 import de.uniks.vs.jalica.engine.RunningPlan;
@@ -116,14 +118,14 @@ public class Constraint«plan.runtimeCondition.id»Impl {
 
     def String plan(Plan plan) '''
 «IF (plan.relativeDirectory.isEmpty)»
-    package de.uniks.vs.alica.code.gen;
+    package de.uniks.vs.alica.code.gen.plans;
 «ELSE»
-    package de.uniks.vs.alica.code.gen.«plan.relativeDirectory»;
+    package de.uniks.vs.alica.code.gen.plans.«plan.relativeDirectory»;
 «ENDIF»
 
 import de.uniks.vs.jalica.engine.BasicPlan;
 import de.uniks.vs.jalica.engine.BasicUtilityFunction;
-import de.uniks.vs.alica.code.impl.«StringUtils.capitalize(plan.name)»«plan.id»Impl;
+import de.uniks.vs.alica.code.impl.plans.«StringUtils.capitalize(plan.name)»«plan.id»Impl;
 
 /*
  * Plan («StringUtils.capitalize(plan.name)» : «plan.id»)
@@ -293,7 +295,7 @@ public class PreCondition«transition.preCondition.id»Impl {
 '''
 
     def String planImpl(Plan plan) '''
-package de.uniks.vs.alica.code.impl;
+package de.uniks.vs.alica.code.impl.plans;
 
 import de.uniks.vs.jalica.engine.BasicPlan;
 import de.uniks.vs.jalica.engine.BasicUtilityFunction;

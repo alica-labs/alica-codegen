@@ -141,10 +141,10 @@ public class ConditionCreator {
     def String constraintCreator(List<Plan> plans, List<Behaviour> behaviours, List<Condition> conditions)'''
 package de.unikassel.vs.alica.codegen.out;
 
-import de.unikassel.vs.alica.engine.BasicCondition;
+import de.unikassel.vs.alica.engine.BasicConstraint;
 
 public class ConstraintCreator {
-    public BasicCondition createConstraint(long constraintConfId) throws Exception {
+    public BasicConstraint createConstraint(long constraintConfId) throws Exception {
         switch (String.valueOf(constraintConfId)) {
             «FOR c: conditions»
                 «IF (c.variables.size > 0) || (c.quantifiers.size > 0)»

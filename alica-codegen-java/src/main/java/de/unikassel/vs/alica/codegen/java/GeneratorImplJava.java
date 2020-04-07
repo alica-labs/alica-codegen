@@ -243,7 +243,6 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
             }
         }
 
-        // TODO: check why this is new
         String constraintHeaderPath = Paths.get(generatedSourcesManager.getIncludeDir(),
                 destinationPathWithoutName, "constraints").toString();
         File cstrIncPathOnDisk = new File(constraintHeaderPath);

@@ -10,8 +10,8 @@ class TransitionTemplates {
     def String constraintPlanTransitionPreCondition(Plan plan, Transition transition) '''
 package de.uniks.vs.alica.code.gen.constraints;
 
-import de.uniks.vs.alica.engine.BasicConstraint;
-import de.uniks.vs.alica.engine.ProblemDescriptor;
+import de.uniks.vs.jalica.engine.BasicConstraint;
+import de.uniks.vs.jalica.engine.ProblemDescriptor;
 import de.uniks.vs.jalica.engine.RunningPlan;
 import de.uniks.vs.alica.code.impl.Constraint«transition.preCondition.id»Impl;
 
@@ -43,7 +43,7 @@ public class Constraint«transition.preCondition.id» extends BasicConstraint {
 def String constraintPlanTransitionPreConditionImpl(Transition transition) '''
 package de.uniks.vs.alica.code.impl.constraints;
 
-import de.unikassel.vs.alica.engine.ProblemDescriptor;
+import de.uniks.vs.jalica.engine.ProblemDescriptor;
 import de.uniks.vs.jalica.engine.RunningPlan;
 
 public class Constraint«transition.preCondition.id»Impl {
@@ -61,14 +61,13 @@ import de.uniks.vs.alica.code.gen.domain.DomainCondition;
 import de.uniks.vs.alica.code.impl.conditions.PreCondition«transition.preCondition.id»Impl;
 
 public class PreCondition«transition.preCondition.id» extends DomainCondition {
-
     static long id = «transition.preCondition.id»L;
 
     private PreCondition«transition.preCondition.id»Impl impl;
 
     public PreCondition«transition.preCondition.id»(Object context) {
         super(context);
-        impl = new PreCondition«transition.preCondition.id»Impl(this);
+        impl = new PreCondition«transition.preCondition.id»Impl(id);
     }
 
     public boolean evaluate(RunningPlan rp) {

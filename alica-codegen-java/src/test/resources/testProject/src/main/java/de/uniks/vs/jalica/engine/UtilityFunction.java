@@ -1,4 +1,4 @@
-package de.unikassel.vs.alica.engine;
+package de.uniks.vs.jalica.engine;
 
 public class UtilityFunction extends BasicUtilityFunction {
 }

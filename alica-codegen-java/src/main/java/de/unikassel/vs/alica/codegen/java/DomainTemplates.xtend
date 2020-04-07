@@ -11,15 +11,21 @@ import de.uniks.vs.jalica.engine.BasicBehaviour;
 
 public abstract class DomainBehaviour extends BasicBehaviour {
     protected DomainBehaviourImpl impl;
+    private long id;
     private Object context;
 
-    public DomainBehaviour(String name, Object context) {
+    public DomainBehaviour(String name, long id, Object context) {
         super(name);
+        this.id = id;
         this.context = context;
     }
 
     public Object getContext() {
         return context;
+    }
+
+    public long getOwnId() {
+        return this.id;
     }
 }
 '''

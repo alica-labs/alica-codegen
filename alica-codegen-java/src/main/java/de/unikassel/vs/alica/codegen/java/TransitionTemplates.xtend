@@ -16,6 +16,8 @@ import de.uniks.vs.jalica.engine.RunningPlan;
 import de.uniks.vs.alica.code.impl.Constraint«transition.preCondition.id»Impl;
 
 public class Constraint«transition.preCondition.id» extends BasicConstraint {
+    static long id = «transition.preCondition.id»L;
+
     private Constraint«transition.preCondition.id»Impl impl;
 
     public Constraint«transition.preCondition.id»() {
@@ -47,9 +49,15 @@ import de.uniks.vs.jalica.engine.ProblemDescriptor;
 import de.uniks.vs.jalica.engine.RunningPlan;
 
 public class Constraint«transition.preCondition.id»Impl {
-    public Constraint«transition.preCondition.id»Impl() { }
+    static long id = «transition.preCondition.id»L;
 
-    public void getConstraint(ProblemDescriptor c, RunningPlan rp) { }
+    public Constraint«transition.preCondition.id»Impl() {
+
+    }
+
+    public void getConstraint(ProblemDescriptor c, RunningPlan rp) {
+
+    }
 }
 '''
 
@@ -67,7 +75,7 @@ public class PreCondition«transition.preCondition.id» extends DomainCondition 
 
     public PreCondition«transition.preCondition.id»(Object context) {
         super(context);
-        impl = new PreCondition«transition.preCondition.id»Impl(id);
+        impl = new PreCondition«transition.preCondition.id»Impl();
     }
 
     public boolean evaluate(RunningPlan rp) {
@@ -93,6 +101,8 @@ import de.uniks.vs.jalica.engine.RunningPlan;
 import de.uniks.vs.alica.code.gen.domain.DomainCondition;
 
 public class PreCondition«transition.preCondition.id»Impl {
+    static long id = «transition.preCondition.id»L;
+
     private DomainCondition condition;
 
     public PreCondition«transition.preCondition.id»Impl(DomainCondition condition) {
@@ -100,7 +110,7 @@ public class PreCondition«transition.preCondition.id»Impl {
     }
 
     public boolean evaluate(RunningPlan rp) {
-        System.out.println("The PreCondition «transition.preCondition.id» in Transition «transition.getName» is not implement yet!");
+        System.out.println("The PreCondition " + id + " in Transition «transition.getName» is not implement yet!");
         return false;
     }
 }

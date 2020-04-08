@@ -17,7 +17,6 @@ package de.uniks.vs.alica.code.gen.creators;
 
 import de.uniks.vs.jalica.engine.BasicBehaviour;
 import de.uniks.vs.jalica.engine.IBehaviourCreator;
-
 «FOR beh: behaviours»
     «IF (!beh.relativeDirectory.isEmpty)»
         import de.uniks.vs.alica.code.gen.behaviours.«beh.relativeDirectory».«StringUtils.capitalize(beh.name)»;
@@ -46,7 +45,6 @@ package de.uniks.vs.alica.code.gen.creators;
 
 import de.uniks.vs.jalica.engine.BasicUtilityFunction;
 import de.uniks.vs.jalica.engine.IUtilityCreator;
-
 «FOR p: plans»
     «IF (!p.relativeDirectory.isEmpty)»
         import de.uniks.vs.alica.code.gen.utilityfunctions«p.relativeDirectory».UtilityFunction«p.id»;

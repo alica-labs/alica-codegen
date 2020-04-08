@@ -18,12 +18,6 @@
             <artifactId>codegen-model</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-        <dependency>
-            <!-- https://github.com/dasys-lab/alica-codegen -->
-            <groupId>de.unikassel.vs.alica</groupId>
-            <artifactId>codegen-modelmanagement</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
 
         <dependency>
             <!-- https://mvnrepository.com/artifact/org.eclipse.xtext/org.eclipse.xtext.xbase.lib -->

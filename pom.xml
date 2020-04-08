@@ -11,8 +11,6 @@
 
     <modules>
         <module>alica-codegen-model</module>
-        <module>alica-codegen-modelmanagement</module>
-
         <module>alica-codegen-core</module>
         <module>alica-codegen-cpp</module>
         <module>alica-codegen-java</module>

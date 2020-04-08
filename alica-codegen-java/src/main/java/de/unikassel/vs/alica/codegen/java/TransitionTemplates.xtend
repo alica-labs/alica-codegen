@@ -42,7 +42,7 @@ public class Constraint«transition.preCondition.id» extends BasicConstraint {
 }
 '''
 
-def String constraintPlanTransitionPreConditionImpl(Transition transition) '''
+    def String constraintPlanTransitionPreConditionImpl(Transition transition) '''
 package de.uniks.vs.alica.code.impl.constraints;
 
 import de.uniks.vs.jalica.engine.ProblemDescriptor;
@@ -94,7 +94,7 @@ public class PreCondition«transition.preCondition.id» extends DomainCondition 
 }
 '''
 
-def String transitionPreConditionPlanImpl(Transition transition) '''
+    def String transitionPreConditionPlanImpl(Transition transition) '''
 package de.uniks.vs.alica.code.impl.conditions;
 
 import de.uniks.vs.jalica.engine.RunningPlan;

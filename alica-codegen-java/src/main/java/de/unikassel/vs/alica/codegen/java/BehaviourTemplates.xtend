@@ -95,7 +95,7 @@ public class PreCondition«behaviour.preCondition.id» extends DomainCondition {
 }
 '''
 
-def String preConditionBehaviourImpl(Behaviour behaviour) '''
+    def String preConditionBehaviourImpl(Behaviour behaviour) '''
 package de.uniks.vs.alica.code.impl.conditions;
 
 public class PreCondition«behaviour.preCondition.id»Impl {
@@ -139,7 +139,7 @@ public class RunTimeCondition«behaviour.runtimeCondition.id» extends DomainCon
 }
 '''
 
-def String runtimeConditionBehaviourImpl(Behaviour behaviour) '''
+    def String runtimeConditionBehaviourImpl(Behaviour behaviour) '''
 package de.uniks.vs.alica.code.impl.conditions;
 
 public class RunTimeCondition«behaviour.runtimeCondition.id»Impl {
@@ -182,7 +182,7 @@ public class PostCondition«behaviour.postCondition.id» extends DomainCondition
 }
 '''
 
-def String postConditionBehaviourImpl(Behaviour behaviour) '''
+    def String postConditionBehaviourImpl(Behaviour behaviour) '''
 package de.uniks.vs.alica.code.impl.conditions;
 
 public class PostCondition«behaviour.postCondition.id»Impl {
@@ -238,7 +238,7 @@ public class Constraint«behaviour.preCondition.id» extends BasicConstraint {
 }
 '''
 
-def String constraintPreConditionImpl(Behaviour behaviour) '''
+    def String constraintPreConditionImpl(Behaviour behaviour) '''
 package de.uniks.vs.alica.code.impl.constraints;
 
 import de.uniks.vs.jalica.engine.ProblemDescriptor;
@@ -285,7 +285,7 @@ public class Constraint«behaviour.runtimeCondition.id» extends BasicConstraint
 }
 '''
 
-def String constraintRuntimeConditionImpl(Behaviour behaviour) '''
+    def String constraintRuntimeConditionImpl(Behaviour behaviour) '''
 package de.uniks.vs.alica.code.impl.constraints;
 
 import de.uniks.vs.jalica.engine.ProblemDescriptor;
@@ -332,7 +332,7 @@ public class Constraint«behaviour.postCondition.id» extends BasicConstraint {
 }
 '''
 
-def String constraintPostConditionImpl(Behaviour behaviour) '''
+    def String constraintPostConditionImpl(Behaviour behaviour) '''
 package de.uniks.vs.alica.code.impl.constraints;
 
 import de.uniks.vs.jalica.engine.ProblemDescriptor;

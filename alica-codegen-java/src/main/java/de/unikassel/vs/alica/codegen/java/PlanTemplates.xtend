@@ -51,7 +51,7 @@ public class Constraint«plan.preCondition.id» extends BasicConstraint {
 }
 '''
 
-def String constraintPlanPreConditionImpl(Plan plan) '''
+    def String constraintPlanPreConditionImpl(Plan plan) '''
 package de.uniks.vs.alica.code.impl.constraints;
 
 import de.uniks.vs.jalica.engine.ProblemDescriptor;
@@ -102,7 +102,7 @@ public class Constraint«plan.runtimeCondition.id» extends BasicConstraint {
 }
 '''
 
-def String constraintPlanRuntimeConditionImpl(Plan plan) '''
+    def String constraintPlanRuntimeConditionImpl(Plan plan) '''
 package de.uniks.vs.alica.code.impl.constraints;
 
 import de.uniks.vs.jalica.engine.ProblemDescriptor;
@@ -226,7 +226,7 @@ public class PreCondition«plan.preCondition.id» extends DomainCondition {
 }
 '''
 
-def String preConditionPlanImpl(Plan plan) '''
+    def String preConditionPlanImpl(Plan plan) '''
 package de.uniks.vs.alica.code.impl.conditions;
 
 import de.uniks.vs.jalica.engine.RunningPlan;
@@ -272,7 +272,7 @@ public class RunTimeCondition«plan.runtimeCondition.id» extends DomainConditio
 }
 '''
 
-def String runtimeConditionPlanImpl(Plan plan) '''
+    def String runtimeConditionPlanImpl(Plan plan) '''
 package de.uniks.vs.alica.code.impl.conditions;
 
 import de.uniks.vs.jalica.engine.RunningPlan;

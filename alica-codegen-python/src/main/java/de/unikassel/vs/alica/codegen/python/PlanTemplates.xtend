@@ -18,7 +18,7 @@ class «StringUtils.capitalize(plan.name)»«plan.id»Constraints(object):
 from engine import BasicConstraint
 from engine import ProblemDescriptor
 from engine import RunningPlan
-from impl.constraint_«plan.preCondition.id»_impl import Constraint«plan.preCondition.id»Impl
+from impl.constraints.constraint_«plan.preCondition.id»_impl import Constraint«plan.preCondition.id»Impl
 
 
 class Constraint«plan.preCondition.id»(BasicConstraint):
@@ -49,7 +49,7 @@ class Constraint«plan.preCondition.id»Impl(object):
 from engine import BasicConstraint
 from engine import ProblemDescriptor
 from engine import RunningPlan
-from impl.constraint_«plan.runtimeCondition.id» import Constraint«plan.runtimeCondition.id»
+from impl.constraints.constraint_«plan.runtimeCondition.id» import Constraint«plan.runtimeCondition.id»
 
 
 class Constraint«plan.runtimeCondition.id»(BasicConstraint):
@@ -79,7 +79,7 @@ class Constraint«plan.runtimeCondition.id»Impl(object):
     override String utilityFunctionPlan(Plan plan) '''
 from engine import BasicPlan
 from engine import BasicUtilityFunction
-from impl.utility_function_«plan.id»_impl import UtilityFunction«plan.id»Impl
+from impl.utilityfunctions.utility_function_«plan.id»_impl import UtilityFunction«plan.id»Impl
 
 
 class UtilityFunction«plan.id»(BasicUtilityFunction):
@@ -106,8 +106,8 @@ class UtilityFunction«plan.id»Impl(object):
 
     override String preConditionPlan(Plan plan) '''
 from engine import RunningPlan
-from domain_condition import DomainCondition
-from impl.pre_condition_«plan.preCondition.id»_impl import PreCondition«plan.preCondition.id»Impl
+from gen.domain.domain_condition import DomainCondition
+from impl.conditions.pre_condition_«plan.preCondition.id»_impl import PreCondition«plan.preCondition.id»Impl
 
 
 class PreCondition«plan.preCondition.id»(DomainCondition):
@@ -137,8 +137,8 @@ class PreCondition«plan.preCondition.id»Impl(object):
 
     override String runtimeConditionPlan(Plan plan) '''
 from engine import RunningPlan
-from domain_condition import DomainCondition
-from impl.runtime_condition_«plan.runtimeCondition.id»_impl import RunTimeCondition«plan.runtimeCondition.id»Impl
+from gen.domain.domain_condition import DomainCondition
+from impl.conditions.runtime_condition_«plan.runtimeCondition.id»_impl import RunTimeCondition«plan.runtimeCondition.id»Impl
 
 
 class RunTimeCondition«plan.runtimeCondition.id»(DomainCondition):

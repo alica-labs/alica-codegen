@@ -17,9 +17,9 @@ class CreatorTemplates implements ICreatorTemplates {
 from engine import BasicBehaviour
 «FOR beh : behaviours»
     «IF (!beh.relativeDirectory.isEmpty)»
-        from «beh.relativeDirectory».«StringUtils.lowerCase(beh.name)» import «StringUtils.capitalize(beh.name)»
+        from gen.behaviours.«beh.relativeDirectory».«StringUtils.lowerCase(beh.name)» import «StringUtils.capitalize(beh.name)»
     «ELSE»
-        from «StringUtils.lowerCase(beh.name)» import «StringUtils.capitalize(beh.name)»
+        from gen.behaviours.«StringUtils.lowerCase(beh.name)» import «StringUtils.capitalize(beh.name)»
     «ENDIF»
 «ENDFOR»
 
@@ -36,7 +36,7 @@ class BehaviourCreator(object):
     override String utilityFunctionCreator(List<Plan> plans)'''
 from engine import BasicUtilityFunction
 «FOR p: plans»
-    from utility_function_«p.id» import UtilityFunction«p.id»
+    from gen.utilityfunctions.utility_function_«p.id» import UtilityFunction«p.id»
 «ENDFOR»
 
 
@@ -52,7 +52,7 @@ class UtilityFunctionCreator(object):
     override String conditionCreator(List<Plan> plans, List<Behaviour> behaviours, List<Condition> conditions) '''
 from engine import BasicCondition
 «FOR con: conditions»
-    from pre_condition_«con.id» import PreCondition«con.id»
+    from gen.conditions.pre_condition_«con.id» import PreCondition«con.id»
 «ENDFOR»
 
 

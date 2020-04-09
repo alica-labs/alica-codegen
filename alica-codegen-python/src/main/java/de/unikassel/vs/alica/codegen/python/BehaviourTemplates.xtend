@@ -11,8 +11,8 @@ class BehaviourTemplates implements IBehaviourTemplates {
 
     override String behaviour(Behaviour behaviour) '''
 from typing import Any
-from domain_behaviour import DomainBehaviour
-from impl.«StringUtils.lowerCase(behaviour.name)»_impl import «StringUtils.capitalize(behaviour.name)»Impl
+from gen.domain.domain_behaviour import DomainBehaviour
+from impl.behaviours.«StringUtils.lowerCase(behaviour.name)»_impl import «StringUtils.capitalize(behaviour.name)»Impl
 
 
 class «StringUtils.capitalize(behaviour.name)»(DomainBehaviour):
@@ -50,9 +50,9 @@ class «StringUtils.capitalize(behaviour.name)»«behaviour.id»(object):
 
     override String preConditionBehaviour(Behaviour behaviour) '''
 from engine import RunningPlan
-from domain_condition import DomainCondition
+from gen.domain.domain_condition import DomainCondition
 «IF (behaviour.postCondition !== null && behaviour.postCondition.pluginName == "DefaultPlugin")»
-    from impl.pre_condition_«behaviour.preCondition.id»_impl import PreCondition«behaviour.preCondition.id»Impl
+    from impl.conditions.pre_condition_«behaviour.preCondition.id»_impl import PreCondition«behaviour.preCondition.id»Impl
 «ENDIF»
 
 
@@ -81,9 +81,9 @@ class PreCondition«behaviour.preCondition.id»Impl(object):
 
     override String runtimeConditionBehaviour(Behaviour behaviour) '''
 from engine import RunningPlan
-from domain_condition import DomainCondition
+from gen.domain.domain_condition import DomainCondition
 «IF (behaviour.runtimeCondition !== null && behaviour.runtimeCondition.pluginName == "DefaultPlugin")»
-    from impl.runtime_condition_«behaviour.runtimeCondition.id»_impl import RunTimeCondition«behaviour.runtimeCondition.id»Impl
+    from impl.conditions.runtime_condition_«behaviour.runtimeCondition.id»_impl import RunTimeCondition«behaviour.runtimeCondition.id»Impl
 «ENDIF»
 
 
@@ -112,9 +112,9 @@ class RunTimeCondition«behaviour.runtimeCondition.id»Impl:
 
     override String postConditionBehaviour(Behaviour behaviour) '''
 from engine import RunningPlan
-from domain_condition import DomainCondition
+from gen.domain.domain_condition import DomainCondition
 «IF (behaviour.postCondition !== null && behaviour.postCondition.pluginName == "DefaultPlugin")»
-    from impl.post_condition_«behaviour.postCondition.id»_impl import PostCondition«behaviour.postCondition.id»Impl
+    from impl.conditions.post_condition_«behaviour.postCondition.id»_impl import PostCondition«behaviour.postCondition.id»Impl
 «ENDIF»
 
 
@@ -151,7 +151,7 @@ class «StringUtils.capitalize(behaviour.name)»«behaviour.id»Constraints(obje
 from engine import BasicConstraint
 from engine import ProblemDescriptor
 from engine import RunningPlan
-from impl.constraint_«behaviour.preCondition.id»_impl import Constraint«behaviour.preCondition.id»Impl
+from impl.constraints.constraint_«behaviour.preCondition.id»_impl import Constraint«behaviour.preCondition.id»Impl
 
 
 class Constraint«behaviour.preCondition.id»(BasicConstraint):
@@ -184,7 +184,7 @@ class Constraint«behaviour.preCondition.id»Impl(object):
 from engine import BasicConstraint
 from engine import ProblemDescriptor
 from engine import RunningPlan
-from impl.constraint_«behaviour.runtimeCondition.id»_impl import Constraint«behaviour.runtimeCondition.id»Impl
+from impl.constraints.constraint_«behaviour.runtimeCondition.id»_impl import Constraint«behaviour.runtimeCondition.id»Impl
 
 
 class Constraint«behaviour.runtimeCondition.id»(BasicConstraint):
@@ -217,7 +217,7 @@ class Constraint«behaviour.runtimeCondition.id»Impl(object):
 from engine import BasicConstraint
 from engine import ProblemDescriptor
 from engine import RunningPlan
-from impl.constraint_«behaviour.postCondition.id»_impl import Constraint«behaviour.postCondition.id»Impl
+from impl.constraints.constraint_«behaviour.postCondition.id»_impl import Constraint«behaviour.postCondition.id»Impl
 
 
 class Constraint«behaviour.postCondition.id»(BasicConstraint):

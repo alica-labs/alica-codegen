@@ -1,6 +1,6 @@
 import unittest
-from behaviour_creator import BehaviourCreator
-from testfxbehaviour import TestfxBehaviour
+from gen.creators.behaviour_creator import BehaviourCreator
+from gen.behaviours.testfxbehaviour import TestfxBehaviour
 
 
 class TestStringMethods(unittest.TestCase):
@@ -11,8 +11,8 @@ class TestStringMethods(unittest.TestCase):
 
     def test_create_not_existing_behaviour(self):
         behaviour_creator = BehaviourCreator()
-        with self.assertRaises(ValueError):
-            behaviour_creator.create_behaviour(0)
+        behaviour = behaviour_creator.create_behaviour(0)
+        self.assertIsNone(behaviour)
 
 
 if __name__ == '__main__':

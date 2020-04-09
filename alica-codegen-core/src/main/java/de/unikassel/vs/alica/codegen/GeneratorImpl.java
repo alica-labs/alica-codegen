@@ -13,7 +13,9 @@ import java.io.IOException;
 import java.io.LineNumberReader;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class GeneratorImpl {
@@ -43,17 +45,33 @@ public abstract class GeneratorImpl {
      */
     protected void writeSourceFile(String filePath, String fileContent) {
         try {
-
-            if (Files.notExists(Paths.get(filePath).getParent())) {
-                Files.createDirectories(Paths.get(filePath).getParent());
-            }
-            Files.write(Paths.get(filePath), fileContent.getBytes(StandardCharsets.UTF_8));
+            Path file = Paths.get(filePath);
+            createFolders(file);
+            Files.write(file, fileContent.getBytes(StandardCharsets.UTF_8));
         } catch (IOException e) {
             LOG.error("Couldn't write source file "
                     + filePath + " with content size " + fileContent
                     .getBytes(StandardCharsets.UTF_8).length, e);
             throw new RuntimeException(e);
         }
+    }
+
+    private void createFolders(Path file) {
+        // generate list of folders that does not exist
+        List<Path> foldersNotExist = new ArrayList<>();
+        Path folder = file.getParent();
+        while (Files.notExists(folder)) {
+            foldersNotExist.add(0, folder);
+            folder = folder.getParent();
+        }
+        // create these folders
+        for (Path f: foldersNotExist) {
+            createFolder(f);
+        }
+    }
+
+    public void createFolder(Path folder) {
+        folder.toFile().mkdir();
     }
 
     /**
@@ -139,13 +157,6 @@ public abstract class GeneratorImpl {
                 this.constraintPostConditionImpl(behaviour);
             }
         }
-
-        String destinationPathWithoutName = cutDestinationPathToDirectory(behaviour);
-
-        File cstrIncPathOnDisk = Paths.get(implPath, destinationPathWithoutName, "constraints").toFile();
-        if (!cstrIncPathOnDisk.exists()) {
-            cstrIncPathOnDisk.mkdir();
-        }
     }
 
     protected abstract void constraintPostConditionImpl(Behaviour behaviour);
@@ -161,16 +172,6 @@ public abstract class GeneratorImpl {
     protected abstract void constraintPreCondition(Behaviour behaviour);
 
     public void createConstraintsForPlan(Plan plan) {
-        String destinationPathWithoutName = cutDestinationPathToDirectory(plan);
-        File constraintsImplPath = Paths.get(implPath, destinationPathWithoutName, "constraints").toFile();
-        if (!constraintsImplPath.exists()) {
-            constraintsImplPath.mkdir();
-        }
-        File constraintsGenPath = Paths.get(genPath, destinationPathWithoutName, "constraints").toFile();
-        if (!constraintsGenPath.exists()) {
-            constraintsGenPath.mkdir();
-        }
-
         if (plan.getPreCondition() != null) {
             this.constraintPlanPreCondition(plan);
             this.constraintPlanPreConditionImpl(plan);
@@ -196,8 +197,7 @@ public abstract class GeneratorImpl {
 
     public void readConstraintsForPlan(String filename, Plan plan) {
         String destinationPathWithoutName = cutDestinationPathToDirectory(plan);
-        File constraintsGenPath = Paths.get(genPath, destinationPathWithoutName, "constraints").toFile();
-        String srcPath = Paths.get(constraintsGenPath.toString(), filename).toString();
+        String srcPath = Paths.get(genPath, destinationPathWithoutName, "constraints", filename).toString();
 
         for (State inPlan: plan.getStates()) {
             try {
@@ -233,6 +233,7 @@ public abstract class GeneratorImpl {
 
         if (plan.getPreCondition() != null) {
             this.preConditionPlan(plan);
+            this.preConditionPlanImpl(plan);
         }
 
         if (plan.getRuntimeCondition() != null) {
@@ -251,6 +252,8 @@ public abstract class GeneratorImpl {
             }
         }
     }
+
+    protected abstract void preConditionPlanImpl(Plan plan);
 
     protected abstract void runtimeConditionPlanImpl(Plan plan);
 
@@ -280,13 +283,6 @@ public abstract class GeneratorImpl {
         return PluginManager.getInstance().getDefaultPlugin().getConstraintCodeGenerator();
     }
 
-
-
-
-
-
-
-
     public void createBehaviourCreator(String filename, List<Behaviour> behaviours) {
         String srcPath = Paths.get(genPath, "creators", filename).toString();
         String fileContentSource = creators.behaviourCreator(behaviours);
@@ -304,7 +300,7 @@ public abstract class GeneratorImpl {
     }
 
     public void preConditionBehaviourImpl(String filename, Behaviour behaviour) {
-        String srcPath = Paths.get(implPath, filename).toString();
+        String srcPath = Paths.get(implPath, "conditions", filename).toString();
         String fileContentSource = behaviours.preConditionBehaviourImpl(behaviour);
         if (new File(srcPath).exists()) {
             LOG.debug("File \"" + srcPath + "\" already exists and is not overwritten");
@@ -428,7 +424,7 @@ public abstract class GeneratorImpl {
     }
 
     public void constraintPlanRuntimeConditionImpl(String filename, Plan plan) {
-        String srcPath = Paths.get(implPath, filename).toString();
+        String srcPath = Paths.get(implPath, "constraints", filename).toString();
         String fileContentSource = plans.constraintPlanRuntimeConditionImpl(plan);
         if (new File(srcPath).exists()) {
             LOG.debug("File \"" + srcPath + "\" already exists and is not overwritten");
@@ -438,13 +434,13 @@ public abstract class GeneratorImpl {
     }
 
     public void constraintPlanRuntimeCondition(String filename, Plan plan) {
-        String srcPath = Paths.get(genPath, filename).toString();
+        String srcPath = Paths.get(genPath, "constraints", filename).toString();
         String fileContentSource = plans.constraintPlanRuntimeCondition(plan);
         writeSourceFile(srcPath, fileContentSource);
     }
 
     public void constraintPlanTransitionPreConditionImpl(String filename, Transition transition) {
-        String srcPath = Paths.get(implPath, filename).toString();
+        String srcPath = Paths.get(implPath, "constraints", filename).toString();
         String fileContentSource = transitions.constraintPlanTransitionPreConditionImpl(transition);
         if (new File(srcPath).exists()) {
             LOG.debug("File \"" + srcPath + "\" already exists and is not overwritten");
@@ -454,7 +450,7 @@ public abstract class GeneratorImpl {
     }
 
     public void constraintPlanTransitionPreCondition(String filename, Plan plan, Transition transition) {
-        String srcPath = Paths.get(genPath, filename).toString();
+        String srcPath = Paths.get(genPath, "constraints", filename).toString();
         String fileContentSource = transitions.constraintPlanTransitionPreCondition(plan, transition);
         writeSourceFile(srcPath, fileContentSource);
     }
@@ -577,14 +573,7 @@ public abstract class GeneratorImpl {
 
     public void createBehaviourConstraints(String filename, Behaviour behaviour) {
         String destinationPathWithoutName = cutDestinationPathToDirectory(behaviour);
-
-        String constraintSourcePath = Paths.get(genPath, destinationPathWithoutName, "constraints").toString();
-        File cstrSrcPathOnDisk = new File(constraintSourcePath);
-        if (!cstrSrcPathOnDisk.exists()) {
-            cstrSrcPathOnDisk.mkdir();
-        }
-
-        String srcPath = Paths.get(constraintSourcePath, filename).toString();
+        String srcPath = Paths.get(genPath, destinationPathWithoutName, "constraints", filename).toString();
         String fileContentSource = behaviours.constraints(behaviour);
         writeSourceFile(srcPath, fileContentSource);
     }

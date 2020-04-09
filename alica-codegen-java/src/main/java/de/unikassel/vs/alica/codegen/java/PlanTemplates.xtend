@@ -130,7 +130,6 @@ package de.uniks.vs.alica.code.gen.utilityfunctions;
 
 import de.uniks.vs.jalica.engine.BasicUtilityFunction;
 import de.uniks.vs.jalica.engine.UtilityFunction;
-// import de.uniks.vs.jalica.engine.model.Plan;
 import de.uniks.vs.jalica.engine.BasicPlan;
 
 import de.uniks.vs.alica.code.impl.utilityfunctions.UtilityFunction«plan.id»Impl;
@@ -222,7 +221,7 @@ package de.uniks.vs.alica.code.gen.conditions;
 
 import de.uniks.vs.jalica.engine.RunningPlan;
 import de.uniks.vs.alica.code.gen.domain.DomainCondition;
-import de.uniks.vs.alica.code.impl.RunTimeCondition«plan.runtimeCondition.id»Impl;
+import de.uniks.vs.alica.code.impl.conditions.RunTimeCondition«plan.runtimeCondition.id»Impl;
 
 public class RunTimeCondition«plan.runtimeCondition.id» extends DomainCondition {
     static long id = «plan.runtimeCondition.id»L;

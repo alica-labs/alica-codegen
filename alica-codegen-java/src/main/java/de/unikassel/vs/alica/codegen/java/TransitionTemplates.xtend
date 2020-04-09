@@ -14,7 +14,7 @@ package de.uniks.vs.alica.code.gen.constraints;
 import de.uniks.vs.jalica.engine.BasicConstraint;
 import de.uniks.vs.jalica.engine.ProblemDescriptor;
 import de.uniks.vs.jalica.engine.RunningPlan;
-import de.uniks.vs.alica.code.impl.Constraint«transition.preCondition.id»Impl;
+import de.uniks.vs.alica.code.impl.constraints.Constraint«transition.preCondition.id»Impl;
 
 public class Constraint«transition.preCondition.id» extends BasicConstraint {
     static long id = «transition.preCondition.id»L;

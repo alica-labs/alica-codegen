@@ -20,6 +20,9 @@ import de.unikassel.vs.alica.codegen.python.PlanTemplates;
 import de.unikassel.vs.alica.codegen.python.TransitionTemplates;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 
@@ -41,7 +44,6 @@ public class GeneratorImplPython extends GeneratorImpl implements IGenerator<Gen
         this.generatedSourcesManager = generatedSourcesManager;
         String baseDir = generatedSourcesManager.getBaseDir();
         super.setBaseDir(baseDir);
-//        createSubfolders();
     }
 
     @Deprecated
@@ -226,7 +228,7 @@ public class GeneratorImplPython extends GeneratorImpl implements IGenerator<Gen
         this.preConditionPlan(filename, plan);
     }
 
-    private void preConditionPlanImpl(Plan plan) {
+    public void preConditionPlanImpl(Plan plan) {
         String filename = "pre_condition_" + plan.getPreCondition().getId() + "_impl.py";
         this.preConditionPlanImpl(filename, plan);
     }
@@ -257,16 +259,17 @@ public class GeneratorImplPython extends GeneratorImpl implements IGenerator<Gen
         this.createUtilityFunctionCreator(filename, plans);
     }
 
-//    private void createSubfolders() {
-//        createInitFile(constraintsDir);
-//        createInitFile(implDir);
-//    }
-//
-//    private void createInitFile(String destinationDir) {
-//        File filePath = Paths.get(destinationDir, "__init__.py").toFile();
-//        if (filePath.exists()) {
-//            return;
-//        }
-//        writeSourceFile(filePath.toString(), "");
-//    }
+    @Override
+    public void createFolder(Path folder) {
+        super.createFolder(folder);
+        createInitFile(folder.toString());
+    }
+
+    private void createInitFile(String destinationDir) {
+        File filePath = Paths.get(destinationDir, "__init__.py").toFile();
+        if (filePath.exists()) {
+            return;
+        }
+        writeSourceFile(filePath.toString(), "");
+    }
 }

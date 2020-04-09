@@ -226,12 +226,11 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
     }
 
     public void preConditionPlan(Plan plan) {
-        this.preConditionPlanImpl(plan);
         String filename = "PreCondition" + plan.getPreCondition().getId() + ".java";
         this.preConditionPlan(filename, plan);
     }
 
-    private void preConditionPlanImpl(Plan plan) {
+    public void preConditionPlanImpl(Plan plan) {
         String filename = "PreCondition" + plan.getPreCondition().getId() + "Impl.java";
         this.preConditionPlanImpl(filename, plan);
     }

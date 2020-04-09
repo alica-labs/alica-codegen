@@ -15,7 +15,7 @@ class TransitionTemplates implements ITransitionTemplates {
 from engine import BasicConstraint
 from engine import ProblemDescriptor
 from engine import RunningPlan
-from impl.constraint_«transition.preCondition.id»_impl import Constraint«transition.preCondition.id»Impl
+from impl.constraints.constraint_«transition.preCondition.id»_impl import Constraint«transition.preCondition.id»Impl
 
 
 class Constraint«transition.preCondition.id»(BasicConstraint):
@@ -53,8 +53,8 @@ class Constraint«transition.preCondition.id»Impl(object):
 
     override String transitionPreConditionPlan(State state, Transition transition) '''
 from engine import RunningPlan
-from domain_condition import DomainCondition
-from impl.pre_condition_«transition.preCondition.id»_impl import PreCondition«transition.preCondition.id»Impl
+from gen.domain.domain_condition import DomainCondition
+from impl.conditions.pre_condition_«transition.preCondition.id»_impl import PreCondition«transition.preCondition.id»Impl
 
 
 class PreCondition«transition.preCondition.id»(DomainCondition):

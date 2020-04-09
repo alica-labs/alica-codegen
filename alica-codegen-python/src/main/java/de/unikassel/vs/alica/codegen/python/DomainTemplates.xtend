@@ -7,7 +7,7 @@ class DomainTemplates implements IDomainTemplates {
 
     override String domainBehaviour() '''
 from engine import BasicBehaviour
-from impl.domain_behaviour_impl import DomainBehaviourImpl
+from impl.domain.domain_behaviour_impl import DomainBehaviourImpl
 
 
 class DomainBehaviour(BasicBehaviour):
@@ -24,7 +24,7 @@ class DomainBehaviourImpl(object):
 
     override String domainCondition() '''
 from engine import BasicCondition
-from impl.domain_condition_impl import DomainConditionImpl
+from impl.domain.domain_condition_impl import DomainConditionImpl
 
 
 class DomainCondition(BasicCondition):

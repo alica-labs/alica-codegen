@@ -58,7 +58,7 @@ public class GeneratorImplCpp extends GeneratorImpl implements IGenerator<Genera
     }
 
     @Override
-    public void createBehaviour(Behaviour behaviour) {
+    public void createBehaviours(Behaviour behaviour) {
         String destinationPath = cutDestinationPathToDirectory(behaviour);
 
         //DomainBehaviour

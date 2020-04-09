@@ -85,7 +85,7 @@ public class Codegenerator implements ICodegenerator {
         collectProtectedRegions(generatedFiles);
         languageSpecificGenerator.createBehaviourCreator(behaviours);
         languageSpecificGenerator.createConstraintsForBehaviour(behaviour);
-        languageSpecificGenerator.createBehaviour(behaviour);
+        languageSpecificGenerator.createBehaviours(behaviour);
     }
 
     @Override

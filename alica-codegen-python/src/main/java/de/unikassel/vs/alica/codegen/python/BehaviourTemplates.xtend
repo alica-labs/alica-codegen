@@ -4,11 +4,12 @@ import de.unikassel.vs.alica.planDesigner.alicamodel.Behaviour;
 import de.unikassel.vs.alica.planDesigner.alicamodel.PostCondition;
 import de.unikassel.vs.alica.planDesigner.alicamodel.PreCondition;
 import org.apache.commons.lang3.StringUtils;
+import de.unikassel.vs.alica.codegen.templates.IBehaviourTemplates;
 
 
-class XtendTemplates {
+class BehaviourTemplates implements IBehaviourTemplates {
 
-    def String behaviour(Behaviour behaviour) '''
+    override String behaviour(Behaviour behaviour) '''
 from typing import Any
 from domain_behaviour import DomainBehaviour
 from impl.«StringUtils.lowerCase(behaviour.name)»_impl import «StringUtils.capitalize(behaviour.name)»Impl
@@ -26,7 +27,7 @@ class «StringUtils.capitalize(behaviour.name)»(DomainBehaviour):
         self.impl.initialise_parameters()
 '''
 
-    def String behaviourImpl(Behaviour behaviour) '''
+    override String behaviourImpl(Behaviour behaviour) '''
 from typing import Any
 
 
@@ -41,13 +42,13 @@ class «StringUtils.capitalize(behaviour.name)»Impl:
         pass
 '''
 
-    def String behaviourCondition(Behaviour behaviour) '''
+    override String behaviourCondition(Behaviour behaviour) '''
 class «StringUtils.capitalize(behaviour.name)»«behaviour.id»(object):
     def __init__(self) -> None:
         pass
 '''
 
-    def String preConditionBehaviour(Behaviour behaviour) '''
+    override String preConditionBehaviour(Behaviour behaviour) '''
 from engine import RunningPlan
 from domain_condition import DomainCondition
 «IF (behaviour.postCondition !== null && behaviour.postCondition.pluginName == "DefaultPlugin")»
@@ -66,7 +67,7 @@ class PreCondition«behaviour.preCondition.id»(DomainCondition):
     «ENDIF»
 '''
 
-    def String preConditionBehaviourImpl(Behaviour behaviour) '''
+    override String preConditionBehaviourImpl(Behaviour behaviour) '''
 from engine import RunningPlan
 
 
@@ -78,7 +79,7 @@ class PreCondition«behaviour.preCondition.id»Impl(object):
         return False
 '''
 
-    def String runtimeConditionBehaviour(Behaviour behaviour) '''
+    override String runtimeConditionBehaviour(Behaviour behaviour) '''
 from engine import RunningPlan
 from domain_condition import DomainCondition
 «IF (behaviour.runtimeCondition !== null && behaviour.runtimeCondition.pluginName == "DefaultPlugin")»
@@ -97,7 +98,7 @@ class RunTimeCondition«behaviour.runtimeCondition.id»(DomainCondition):
     «ENDIF»
 '''
 
-    def String runtimeConditionBehaviourImpl(Behaviour behaviour) '''
+    override String runtimeConditionBehaviourImpl(Behaviour behaviour) '''
 from engine import RunningPlan
 
 
@@ -109,7 +110,7 @@ class RunTimeCondition«behaviour.runtimeCondition.id»Impl:
         return False
 '''
 
-    def String postConditionBehaviour(Behaviour behaviour) '''
+    override String postConditionBehaviour(Behaviour behaviour) '''
 from engine import RunningPlan
 from domain_condition import DomainCondition
 «IF (behaviour.postCondition !== null && behaviour.postCondition.pluginName == "DefaultPlugin")»
@@ -128,7 +129,7 @@ class PostCondition«behaviour.postCondition.id»(DomainCondition):
     «ENDIF»
 '''
 
-    def String postConditionBehaviourImpl(Behaviour behaviour) '''
+    override String postConditionBehaviourImpl(Behaviour behaviour) '''
 from engine import RunningPlan
 
 
@@ -140,13 +141,13 @@ class PostCondition«behaviour.postCondition.id»Impl(object):
         return False
 '''
 
-    def String constraints(Behaviour behaviour) '''
+    override String constraints(Behaviour behaviour) '''
 class «StringUtils.capitalize(behaviour.name)»«behaviour.id»Constraints(object):
     def __init__(self) -> None:
         pass
 '''
 
-    def String constraintPreCondition(Behaviour behaviour) '''
+    override String constraintPreCondition(Behaviour behaviour) '''
 from engine import BasicConstraint
 from engine import ProblemDescriptor
 from engine import RunningPlan
@@ -166,7 +167,7 @@ class Constraint«behaviour.preCondition.id»(BasicConstraint):
         «ENDIF»
 '''
 
-    def String constraintPreConditionImpl(Behaviour behaviour) '''
+    override String constraintPreConditionImpl(Behaviour behaviour) '''
 from engine import ProblemDescriptor
 from engine import RunningPlan
 
@@ -179,7 +180,7 @@ class Constraint«behaviour.preCondition.id»Impl(object):
         pass
 '''
 
-    def String constraintRuntimeCondition(Behaviour behaviour) '''
+    override String constraintRuntimeCondition(Behaviour behaviour) '''
 from engine import BasicConstraint
 from engine import ProblemDescriptor
 from engine import RunningPlan
@@ -199,7 +200,7 @@ class Constraint«behaviour.runtimeCondition.id»(BasicConstraint):
         «ENDIF»
 '''
 
-    def String constraintRuntimeConditionImpl(Behaviour behaviour) '''
+    override String constraintRuntimeConditionImpl(Behaviour behaviour) '''
 from engine import ProblemDescriptor
 from engine import RunningPlan
 
@@ -212,7 +213,7 @@ class Constraint«behaviour.runtimeCondition.id»Impl(object):
         pass
 '''
 
-    def String constraintPostCondition(Behaviour behaviour) '''
+    override String constraintPostCondition(Behaviour behaviour) '''
 from engine import BasicConstraint
 from engine import ProblemDescriptor
 from engine import RunningPlan
@@ -232,7 +233,7 @@ class Constraint«behaviour.postCondition.id»(BasicConstraint):
         «ENDIF»
 '''
 
-    def String constraintPostConditionImpl(Behaviour behaviour) '''
+    override String constraintPostConditionImpl(Behaviour behaviour) '''
 from engine import ProblemDescriptor
 from engine import RunningPlan
 

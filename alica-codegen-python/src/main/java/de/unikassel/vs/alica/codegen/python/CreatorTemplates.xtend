@@ -8,11 +8,12 @@ import de.unikassel.vs.alica.planDesigner.alicamodel.PreCondition;
 import de.unikassel.vs.alica.planDesigner.alicamodel.RuntimeCondition;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
+import de.unikassel.vs.alica.codegen.templates.ICreatorTemplates;
 
 
-class XtendTemplates {
+class CreatorTemplates implements ICreatorTemplates {
 
-    def String behaviourCreator(List<Behaviour> behaviours)'''
+    override String behaviourCreator(List<Behaviour> behaviours)'''
 from engine import BasicBehaviour
 «FOR beh : behaviours»
     «IF (!beh.relativeDirectory.isEmpty)»
@@ -32,7 +33,7 @@ class BehaviourCreator(object):
         print("BehaviourCreator: Unknown behaviour requested: {}".format(behaviour_id))
 '''
 
-    def String utilityFunctionCreator(List<Plan> plans)'''
+    override String utilityFunctionCreator(List<Plan> plans)'''
 from engine import BasicUtilityFunction
 «FOR p: plans»
     from utility_function_«p.id» import UtilityFunction«p.id»
@@ -48,7 +49,7 @@ class UtilityFunctionCreator(object):
         print("UtilityFunctionCreator: Unknown utility requested: {}".format(utility_function_conf_id))
 '''
 
-    def String conditionCreator(List<Plan> plans, List<Behaviour> behaviours, List<Condition> conditions) '''
+    override String conditionCreator(List<Plan> plans, List<Behaviour> behaviours, List<Condition> conditions) '''
 from engine import BasicCondition
 «FOR con: conditions»
     from pre_condition_«con.id» import PreCondition«con.id»
@@ -72,7 +73,7 @@ class ConditionCreator(object):
         print("ConditionCreator: Unknown condition id requested: {}".format(condition_conf_id))
 '''
 
-    def String constraintCreator(List<Plan> plans, List<Behaviour> behaviours, List<Condition> conditions)'''
+    override String constraintCreator(List<Plan> plans, List<Behaviour> behaviours, List<Condition> conditions)'''
 from engine import BasicConstraint
 
 

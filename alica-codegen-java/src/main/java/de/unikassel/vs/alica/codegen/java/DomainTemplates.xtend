@@ -1,9 +1,11 @@
 package de.unikassel.vs.alica.codegen.java;
 
+import de.unikassel.vs.alica.codegen.templates.IDomainTemplates;
 
-class DomainTemplates {
 
-    def String domainBehaviour() '''
+class DomainTemplates implements IDomainTemplates {
+
+    override String domainBehaviour() '''
 package de.uniks.vs.alica.code.gen.domain;
 
 import de.uniks.vs.alica.code.impl.domain.DomainBehaviourImpl;
@@ -30,7 +32,7 @@ public abstract class DomainBehaviour extends BasicBehaviour {
 }
 '''
 
-    def String domainBehaviourImpl() '''
+    override String domainBehaviourImpl() '''
 package de.uniks.vs.alica.code.impl.domain;
 
 import de.uniks.vs.alica.code.gen.domain.DomainBehaviour;
@@ -52,7 +54,7 @@ public class DomainBehaviourImpl {
 }
 '''
 
-    def String domainCondition() '''
+    override String domainCondition() '''
 package de.uniks.vs.alica.code.gen.domain;
 
 import de.uniks.vs.alica.code.impl.domain.DomainConditionImpl;
@@ -67,7 +69,7 @@ public abstract class DomainCondition extends BasicCondition {
 }
 '''
 
-    def String domainConditionImpl() '''
+    override String domainConditionImpl() '''
 package de.uniks.vs.alica.code.impl.domain;
 
 import de.uniks.vs.jalica.engine.RunningPlan;

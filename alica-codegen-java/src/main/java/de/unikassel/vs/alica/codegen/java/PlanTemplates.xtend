@@ -3,11 +3,12 @@ package de.unikassel.vs.alica.codegen.java;
 import de.unikassel.vs.alica.planDesigner.alicamodel.Plan;
 import de.unikassel.vs.alica.planDesigner.alicamodel.Transition;
 import org.apache.commons.lang3.StringUtils;
+import de.unikassel.vs.alica.codegen.templates.IPlanTemplates;
 
 
-class PlanTemplates {
+class PlanTemplates implements IPlanTemplates {
 
-    def String constraints(Plan plan) '''
+    override String constraints(Plan plan) '''
 «IF (plan.relativeDirectory.isEmpty)»
     package de.uniks.vs.alica.code.gen.constraints;
 «ELSE»
@@ -22,7 +23,7 @@ public class «StringUtils.capitalize(plan.name)»«plan.id»Constraints {
 }
 '''
 
-    def String constraintPlanPreCondition(Plan plan) '''
+    override String constraintPlanPreCondition(Plan plan) '''
 package de.uniks.vs.alica.code.gen.constraints;
 
 import de.uniks.vs.jalica.engine.BasicConstraint;
@@ -51,7 +52,7 @@ public class Constraint«plan.preCondition.id» extends BasicConstraint {
 }
 '''
 
-    def String constraintPlanPreConditionImpl(Plan plan) '''
+    override String constraintPlanPreConditionImpl(Plan plan) '''
 package de.uniks.vs.alica.code.impl.constraints;
 
 import de.uniks.vs.jalica.engine.ProblemDescriptor;
@@ -73,7 +74,7 @@ public class Constraint«plan.preCondition.id»Impl {
 }
 '''
 
-    def String constraintPlanRuntimeCondition(Plan plan) '''
+    override String constraintPlanRuntimeCondition(Plan plan) '''
 package de.uniks.vs.alica.code.gen.constraints;
 
 import de.uniks.vs.jalica.engine.BasicConstraint;
@@ -102,7 +103,7 @@ public class Constraint«plan.runtimeCondition.id» extends BasicConstraint {
 }
 '''
 
-    def String constraintPlanRuntimeConditionImpl(Plan plan) '''
+    override String constraintPlanRuntimeConditionImpl(Plan plan) '''
 package de.uniks.vs.alica.code.impl.constraints;
 
 import de.uniks.vs.jalica.engine.ProblemDescriptor;
@@ -124,36 +125,7 @@ public class Constraint«plan.runtimeCondition.id»Impl {
 }
 '''
 
-    def String plan(Plan plan) '''
-«IF (plan.relativeDirectory.isEmpty)»
-    package de.uniks.vs.alica.code.gen.plans;
-«ELSE»
-    package de.uniks.vs.alica.code.gen.plans.«plan.relativeDirectory»;
-«ENDIF»
-
-import de.uniks.vs.jalica.engine.BasicPlan;
-import de.uniks.vs.jalica.engine.BasicUtilityFunction;
-import de.uniks.vs.alica.code.impl.plans.«StringUtils.capitalize(plan.name)»«plan.id»Impl;
-
-/*
- * Plan («StringUtils.capitalize(plan.name)» : «plan.id»)
- */
-public class «StringUtils.capitalize(plan.name)»«plan.id» extends BasicPlan {
-    static long id = «plan.id»L;
-
-    private «StringUtils.capitalize(plan.name)»«plan.id»Impl impl;
-
-    public «StringUtils.capitalize(plan.name)»«plan.id»() {
-        impl = new «StringUtils.capitalize(plan.name)»«plan.id»Impl();
-    }
-
-    public BasicUtilityFunction getUtilityFunction(BasicPlan plan) {
-        return impl.getUtilityFunction(plan);
-    }
-}
-'''
-
-    def String utilityFunctionPlan(Plan plan) '''
+    override String utilityFunctionPlan(Plan plan) '''
 package de.uniks.vs.alica.code.gen.utilityfunctions;
 
 import de.uniks.vs.jalica.engine.BasicUtilityFunction;
@@ -178,7 +150,7 @@ public class UtilityFunction«plan.id» extends BasicUtilityFunction {
 }
 '''
 
-    def String utilityFunctionPlanImpl(Plan plan) '''
+    override String utilityFunctionPlanImpl(Plan plan) '''
 package de.uniks.vs.alica.code.impl.utilityfunctions;
 
 import de.uniks.vs.jalica.engine.DefaultUtilityFunction;
@@ -199,7 +171,7 @@ public class UtilityFunction«plan.id»Impl {
 }
 '''
 
-    def String preConditionPlan(Plan plan) '''
+    override String preConditionPlan(Plan plan) '''
 package de.uniks.vs.alica.code.gen.conditions;
 
 import de.uniks.vs.jalica.engine.RunningPlan;
@@ -226,7 +198,7 @@ public class PreCondition«plan.preCondition.id» extends DomainCondition {
 }
 '''
 
-    def String preConditionPlanImpl(Plan plan) '''
+    override String preConditionPlanImpl(Plan plan) '''
 package de.uniks.vs.alica.code.impl.conditions;
 
 import de.uniks.vs.jalica.engine.RunningPlan;
@@ -245,7 +217,7 @@ public class PreCondition«plan.preCondition.id»Impl {
 }
 '''
 
-    def String runtimeConditionPlan(Plan plan) '''
+    override String runtimeConditionPlan(Plan plan) '''
 package de.uniks.vs.alica.code.gen.conditions;
 
 import de.uniks.vs.jalica.engine.RunningPlan;
@@ -272,7 +244,7 @@ public class RunTimeCondition«plan.runtimeCondition.id» extends DomainConditio
 }
 '''
 
-    def String runtimeConditionPlanImpl(Plan plan) '''
+    override String runtimeConditionPlanImpl(Plan plan) '''
 package de.uniks.vs.alica.code.impl.conditions;
 
 import de.uniks.vs.jalica.engine.RunningPlan;
@@ -286,22 +258,6 @@ public class RunTimeCondition«plan.runtimeCondition.id»Impl {
 
     public boolean evaluate(RunningPlan rp) {
         return false;
-    }
-}
-'''
-
-    def String planImpl(Plan plan) '''
-package de.uniks.vs.alica.code.impl.plans;
-
-import de.uniks.vs.jalica.engine.BasicPlan;
-import de.uniks.vs.jalica.engine.BasicUtilityFunction;
-import de.uniks.vs.jalica.engine.DefaultUtilityFunction;
-
-public class «StringUtils.capitalize(plan.name)»«plan.id»Impl {
-    static long id = «plan.id»L;
-
-    public BasicUtilityFunction getUtilityFunction(BasicPlan plan) {
-        return new DefaultUtilityFunction(plan);
     }
 }
 '''

@@ -1,9 +1,11 @@
 package de.unikassel.vs.alica.codegen.python;
 
+import de.unikassel.vs.alica.codegen.templates.IDomainTemplates;
 
-class XtendTemplates {
 
-    def String domainBehaviour() '''
+class DomainTemplates implements IDomainTemplates {
+
+    override String domainBehaviour() '''
 from engine import BasicBehaviour
 from impl.domain_behaviour_impl import DomainBehaviourImpl
 
@@ -14,13 +16,13 @@ class DomainBehaviour(BasicBehaviour):
         self.impl = DomainBehaviourImpl()
 '''
 
-    def String domainBehaviourImpl() '''
+    override String domainBehaviourImpl() '''
 class DomainBehaviourImpl(object):
     def __init__(self) -> None:
         pass
 '''
 
-    def String domainCondition() '''
+    override String domainCondition() '''
 from engine import BasicCondition
 from impl.domain_condition_impl import DomainConditionImpl
 
@@ -31,7 +33,7 @@ class DomainCondition(BasicCondition):
         self.impl = DomainConditionImpl()
 '''
 
-    def String domainConditionImpl() '''
+    override String domainConditionImpl() '''
 class DomainConditionImpl(object):
     def __init__(self) -> None:
         pass

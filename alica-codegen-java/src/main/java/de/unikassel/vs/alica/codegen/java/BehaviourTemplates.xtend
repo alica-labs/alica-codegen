@@ -2,11 +2,12 @@ package de.unikassel.vs.alica.codegen.java;
 
 import de.unikassel.vs.alica.planDesigner.alicamodel.Behaviour;
 import org.apache.commons.lang3.StringUtils;
+import de.unikassel.vs.alica.codegen.templates.IBehaviourTemplates;
 
 
-class BehaviourTemplates {
+class BehaviourTemplates implements IBehaviourTemplates {
 
-    def String behaviour(Behaviour behaviour) '''
+    override String behaviour(Behaviour behaviour) '''
 «IF (behaviour.relativeDirectory.isEmpty)»
     package de.uniks.vs.alica.code.gen.behaviours;
 «ELSE»
@@ -37,7 +38,7 @@ public class «StringUtils.capitalize(behaviour.name)» extends DomainBehaviour 
 }
 '''
 
-    def String behaviourImpl(Behaviour behaviour) '''
+    override String behaviourImpl(Behaviour behaviour) '''
 package de.uniks.vs.alica.code.impl.behaviours;
 
 import de.uniks.vs.alica.code.gen.domain.DomainBehaviour;
@@ -56,7 +57,7 @@ public class «StringUtils.capitalize(behaviour.name)»Impl extends DomainBehavi
 }
 '''
 
-    def String behaviourCondition(Behaviour behaviour) '''
+    override String behaviourCondition(Behaviour behaviour) '''
 «IF (behaviour.relativeDirectory.isEmpty)»
     package de.uniks.vs.alica.code.gen.behaviours;
 «ELSE»
@@ -68,7 +69,7 @@ public class «StringUtils.capitalize(behaviour.name)»«behaviour.id» {
 }
 '''
 
-    def String preConditionBehaviour(Behaviour behaviour) '''
+    override String preConditionBehaviour(Behaviour behaviour) '''
 package de.uniks.vs.alica.code.gen.conditions;
 
 import de.uniks.vs.jalica.engine.RunningPlan;
@@ -95,7 +96,7 @@ public class PreCondition«behaviour.preCondition.id» extends DomainCondition {
 }
 '''
 
-    def String preConditionBehaviourImpl(Behaviour behaviour) '''
+    override String preConditionBehaviourImpl(Behaviour behaviour) '''
 package de.uniks.vs.alica.code.impl.conditions;
 
 public class PreCondition«behaviour.preCondition.id»Impl {
@@ -112,7 +113,7 @@ public class PreCondition«behaviour.preCondition.id»Impl {
 }
 '''
 
-    def String runtimeConditionBehaviour(Behaviour behaviour) '''
+    override String runtimeConditionBehaviour(Behaviour behaviour) '''
 package de.uniks.vs.alica.code.gen.conditions;
 
 import de.uniks.vs.jalica.engine.RunningPlan;
@@ -139,7 +140,7 @@ public class RunTimeCondition«behaviour.runtimeCondition.id» extends DomainCon
 }
 '''
 
-    def String runtimeConditionBehaviourImpl(Behaviour behaviour) '''
+    override String runtimeConditionBehaviourImpl(Behaviour behaviour) '''
 package de.uniks.vs.alica.code.impl.conditions;
 
 public class RunTimeCondition«behaviour.runtimeCondition.id»Impl {
@@ -155,7 +156,7 @@ public class RunTimeCondition«behaviour.runtimeCondition.id»Impl {
 }
 '''
 
-    def String postConditionBehaviour(Behaviour behaviour) '''
+    override String postConditionBehaviour(Behaviour behaviour) '''
 package de.uniks.vs.alica.code.gen.conditions;
 
 import de.uniks.vs.jalica.engine.RunningPlan;
@@ -182,7 +183,7 @@ public class PostCondition«behaviour.postCondition.id» extends DomainCondition
 }
 '''
 
-    def String postConditionBehaviourImpl(Behaviour behaviour) '''
+    override String postConditionBehaviourImpl(Behaviour behaviour) '''
 package de.uniks.vs.alica.code.impl.conditions;
 
 public class PostCondition«behaviour.postCondition.id»Impl {
@@ -198,7 +199,7 @@ public class PostCondition«behaviour.postCondition.id»Impl {
 }
 '''
 
-    def String constraints(Behaviour behaviour) '''
+    override String constraints(Behaviour behaviour) '''
 «IF (behaviour.relativeDirectory.isEmpty)»
     package de.uniks.vs.alica.code.gen.constraints;
 «ELSE»
@@ -210,7 +211,7 @@ public class «StringUtils.capitalize(behaviour.name)»«behaviour.id»Constrain
 }
 '''
 
-    def String constraintPreCondition(Behaviour behaviour) '''
+    override String constraintPreCondition(Behaviour behaviour) '''
 package de.uniks.vs.alica.code.gen.constraints;
 
 import de.uniks.vs.jalica.engine.BasicConstraint;
@@ -238,7 +239,7 @@ public class Constraint«behaviour.preCondition.id» extends BasicConstraint {
 }
 '''
 
-    def String constraintPreConditionImpl(Behaviour behaviour) '''
+    override String constraintPreConditionImpl(Behaviour behaviour) '''
 package de.uniks.vs.alica.code.impl.constraints;
 
 import de.uniks.vs.jalica.engine.ProblemDescriptor;
@@ -257,7 +258,7 @@ public class Constraint«behaviour.preCondition.id»Impl {
 }
 '''
 
-    def String constraintRuntimeCondition(Behaviour behaviour) '''
+    override String constraintRuntimeCondition(Behaviour behaviour) '''
 package de.uniks.vs.alica.code.gen.constraints;
 
 import de.uniks.vs.jalica.engine.BasicConstraint;
@@ -285,7 +286,7 @@ public class Constraint«behaviour.runtimeCondition.id» extends BasicConstraint
 }
 '''
 
-    def String constraintRuntimeConditionImpl(Behaviour behaviour) '''
+    override String constraintRuntimeConditionImpl(Behaviour behaviour) '''
 package de.uniks.vs.alica.code.impl.constraints;
 
 import de.uniks.vs.jalica.engine.ProblemDescriptor;
@@ -304,7 +305,7 @@ public class Constraint«behaviour.runtimeCondition.id»Impl {
 }
 '''
 
-    def String constraintPostCondition(Behaviour behaviour) '''
+    override String constraintPostCondition(Behaviour behaviour) '''
 package de.uniks.vs.alica.code.gen.constraints;
 
 import de.uniks.vs.jalica.engine.BasicConstraint;
@@ -332,7 +333,7 @@ public class Constraint«behaviour.postCondition.id» extends BasicConstraint {
 }
 '''
 
-    def String constraintPostConditionImpl(Behaviour behaviour) '''
+    override String constraintPostConditionImpl(Behaviour behaviour) '''
 package de.uniks.vs.alica.code.impl.constraints;
 
 import de.uniks.vs.jalica.engine.ProblemDescriptor;

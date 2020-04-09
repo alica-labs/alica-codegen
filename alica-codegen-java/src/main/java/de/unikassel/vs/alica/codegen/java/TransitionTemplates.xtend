@@ -3,11 +3,12 @@ package de.unikassel.vs.alica.codegen.java;
 import de.unikassel.vs.alica.planDesigner.alicamodel.Plan;
 import de.unikassel.vs.alica.planDesigner.alicamodel.Transition;
 import de.unikassel.vs.alica.planDesigner.alicamodel.State;
+import de.unikassel.vs.alica.codegen.templates.ITransitionTemplates;
 
 
-class TransitionTemplates {
+class TransitionTemplates implements ITransitionTemplates {
 
-    def String constraintPlanTransitionPreCondition(Plan plan, Transition transition) '''
+    override String constraintPlanTransitionPreCondition(Plan plan, Transition transition) '''
 package de.uniks.vs.alica.code.gen.constraints;
 
 import de.uniks.vs.jalica.engine.BasicConstraint;
@@ -42,7 +43,7 @@ public class Constraint«transition.preCondition.id» extends BasicConstraint {
 }
 '''
 
-    def String constraintPlanTransitionPreConditionImpl(Transition transition) '''
+    override String constraintPlanTransitionPreConditionImpl(Transition transition) '''
 package de.uniks.vs.alica.code.impl.constraints;
 
 import de.uniks.vs.jalica.engine.ProblemDescriptor;
@@ -61,7 +62,7 @@ public class Constraint«transition.preCondition.id»Impl {
 }
 '''
 
-    def String transitionPreConditionPlan(State state, Transition transition) '''
+    override String transitionPreConditionPlan(State state, Transition transition) '''
 package de.uniks.vs.alica.code.gen.conditions;
 
 import de.uniks.vs.jalica.engine.RunningPlan;
@@ -94,7 +95,7 @@ public class PreCondition«transition.preCondition.id» extends DomainCondition 
 }
 '''
 
-    def String transitionPreConditionPlanImpl(Transition transition) '''
+    override String transitionPreConditionPlanImpl(Transition transition) '''
 package de.uniks.vs.alica.code.impl.conditions;
 
 import de.uniks.vs.jalica.engine.RunningPlan;

@@ -3,17 +3,18 @@ package de.unikassel.vs.alica.codegen.python;
 import de.unikassel.vs.alica.planDesigner.alicamodel.Plan;
 import de.unikassel.vs.alica.planDesigner.alicamodel.PreCondition;
 import org.apache.commons.lang3.StringUtils;
+import de.unikassel.vs.alica.codegen.templates.IPlanTemplates;
 
 
-class XtendTemplates {
+class PlanTemplates implements IPlanTemplates {
 
-    def String constraints(Plan plan) '''
+    override String constraints(Plan plan) '''
 class «StringUtils.capitalize(plan.name)»«plan.id»Constraints(object):
     def __init__(self) -> None:
         pass
 '''
 
-    def String constraintPlanPreCondition(Plan plan) '''
+    override String constraintPlanPreCondition(Plan plan) '''
 from engine import BasicConstraint
 from engine import ProblemDescriptor
 from engine import RunningPlan
@@ -31,7 +32,7 @@ class Constraint«plan.preCondition.id»(BasicConstraint):
         «ENDIF»
 '''
 
-    def String constraintPlanPreConditionImpl(Plan plan) '''
+    override String constraintPlanPreConditionImpl(Plan plan) '''
 from engine import ProblemDescriptor
 from engine import RunningPlan
 
@@ -44,7 +45,7 @@ class Constraint«plan.preCondition.id»Impl(object):
         pass
 '''
 
-    def String constraintPlanRuntimeCondition(Plan plan) '''
+    override String constraintPlanRuntimeCondition(Plan plan) '''
 from engine import BasicConstraint
 from engine import ProblemDescriptor
 from engine import RunningPlan
@@ -62,7 +63,7 @@ class Constraint«plan.runtimeCondition.id»(BasicConstraint):
         «ENDIF»
 '''
 
-    def String constraintPlanRuntimeConditionImpl(Plan plan) '''
+    override String constraintPlanRuntimeConditionImpl(Plan plan) '''
 from engine import ProblemDescriptor
 from engine import RunningPlan
 
@@ -75,22 +76,7 @@ class Constraint«plan.runtimeCondition.id»Impl(object):
         pass
 '''
 
-    def String plan(Plan plan) '''
-from engine import BasicPlan
-from engine import BasicUtilityFunction
-from impl.«StringUtils.lowerCase(plan.name)»_«plan.id»_impl import «StringUtils.capitalize(plan.name)»«plan.id»Impl
-
-
-class «StringUtils.capitalize(plan.name)»«plan.id»(BasicPlan):
-    def __init__(self) -> None:
-        super().__init__()
-        self.impl = «StringUtils.capitalize(plan.name)»«plan.id»Impl()
-
-    def get_utility_function(self, basic_plan: BasicPlan) -> BasicUtilityFunction:
-        return self.impl.get_utility_function(basic_plan)
-'''
-
-    def String utilityFunctionPlan(Plan plan) '''
+    override String utilityFunctionPlan(Plan plan) '''
 from engine import BasicPlan
 from engine import BasicUtilityFunction
 from impl.utility_function_«plan.id»_impl import UtilityFunction«plan.id»Impl
@@ -105,7 +91,7 @@ class UtilityFunction«plan.id»(BasicUtilityFunction):
         return self.impl.get_utility_function(basic_plan)
 '''
 
-    def String utilityFunctionPlanImpl(Plan plan) '''
+    override String utilityFunctionPlanImpl(Plan plan) '''
 from engine import BasicPlan
 from engine import DefaultUtilityFunction
 
@@ -118,7 +104,7 @@ class UtilityFunction«plan.id»Impl(object):
         return DefaultUtilityFunction(basic_plan)
 '''
 
-    def String preConditionPlan(Plan plan) '''
+    override String preConditionPlan(Plan plan) '''
 from engine import RunningPlan
 from domain_condition import DomainCondition
 from impl.pre_condition_«plan.preCondition.id»_impl import PreCondition«plan.preCondition.id»Impl
@@ -137,7 +123,7 @@ class PreCondition«plan.preCondition.id»(DomainCondition):
         «ENDIF»
 '''
 
-    def String preConditionPlanImpl(Plan plan) '''
+    override String preConditionPlanImpl(Plan plan) '''
 from engine import RunningPlan
 
 
@@ -149,7 +135,7 @@ class PreCondition«plan.preCondition.id»Impl(object):
         return False
 '''
 
-    def String runtimeConditionPlan(Plan plan) '''
+    override String runtimeConditionPlan(Plan plan) '''
 from engine import RunningPlan
 from domain_condition import DomainCondition
 from impl.runtime_condition_«plan.runtimeCondition.id»_impl import RunTimeCondition«plan.runtimeCondition.id»Impl
@@ -168,7 +154,7 @@ class RunTimeCondition«plan.runtimeCondition.id»(DomainCondition):
         «ENDIF»
 '''
 
-    def String runtimeConditionPlanImpl(Plan plan) '''
+    override String runtimeConditionPlanImpl(Plan plan) '''
 from engine import RunningPlan
 
 
@@ -178,16 +164,6 @@ class RunTimeCondition«plan.runtimeCondition.id»Impl(object):
 
     def evaluate(self, running_plan: RunningPlan) -> bool:
         return False
-'''
-
-    def String planImpl(Plan plan) '''
-from engine import BasicPlan
-from engine import DefaultUtilityFunction
-
-
-class «StringUtils.capitalize(plan.name)»«plan.id»Impl(object):
-    def get_utility_function(self, basic_plan: BasicPlan) -> DefaultUtilityFunction:
-        return DefaultUtilityFunction(basic_plan)
 '''
 
 }

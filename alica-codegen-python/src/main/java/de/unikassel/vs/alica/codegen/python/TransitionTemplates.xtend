@@ -6,11 +6,12 @@ import java.util.List;
 import de.unikassel.vs.alica.planDesigner.alicamodel.Transition;
 import de.unikassel.vs.alica.planDesigner.alicamodel.State;
 import de.unikassel.vs.alica.planDesigner.alicamodel.Variable;
+import de.unikassel.vs.alica.codegen.templates.ITransitionTemplates;
 
 
-class XtendTemplates {
+class TransitionTemplates implements ITransitionTemplates {
 
-    def String constraintPlanTransitionPreCondition(Plan plan, Transition transition) '''
+    override String constraintPlanTransitionPreCondition(Plan plan, Transition transition) '''
 from engine import BasicConstraint
 from engine import ProblemDescriptor
 from engine import RunningPlan
@@ -37,7 +38,7 @@ class Constraint«transition.preCondition.id»(BasicConstraint):
         «ENDFOR»
 '''
 
-    def String constraintPlanTransitionPreConditionImpl(Transition transition) '''
+    override String constraintPlanTransitionPreConditionImpl(Transition transition) '''
 from engine import ProblemDescriptor
 from engine import RunningPlan
 
@@ -50,7 +51,7 @@ class Constraint«transition.preCondition.id»Impl(object):
         pass
 '''
 
-    def String transitionPreConditionPlan(State state, Transition transition) '''
+    override String transitionPreConditionPlan(State state, Transition transition) '''
 from engine import RunningPlan
 from domain_condition import DomainCondition
 from impl.pre_condition_«transition.preCondition.id»_impl import PreCondition«transition.preCondition.id»Impl
@@ -73,7 +74,7 @@ class PreCondition«transition.preCondition.id»(DomainCondition):
         return result
 '''
 
-    def String transitionPreConditionPlanImpl(Transition transition) '''
+    override String transitionPreConditionPlanImpl(Transition transition) '''
 from engine import RunningPlan
 from engine import BasicPlan
 from engine import DefaultUtilityFunction

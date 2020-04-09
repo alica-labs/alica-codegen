@@ -73,7 +73,7 @@ public class CodegeneratorPython extends Codegenerator {
         languageSpecificGenerator.createPlans(plans);
 
         for (Behaviour behaviour : behaviours) {
-            languageSpecificGenerator.createBehaviour(behaviour);
+            languageSpecificGenerator.createBehaviours(behaviour);
             languageSpecificGenerator.createConstraintsForBehaviour(behaviour);
         }
         LOG.info("Generated all files successfully");

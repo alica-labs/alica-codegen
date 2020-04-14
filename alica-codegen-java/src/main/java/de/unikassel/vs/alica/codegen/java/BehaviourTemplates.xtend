@@ -23,17 +23,17 @@ public class «StringUtils.capitalize(behaviour.name)» extends DomainBehaviour 
         this.impl = new «StringUtils.capitalize(behaviour.name)»Impl(this);
     }
 
+    @Override
+    public void run() {
+
+    }
+
     public void run(Object msg) {
         this.impl.run(msg);
     }
 
     public void initialiseParameters() {
         this.impl.initialiseParameters();
-    }
-
-    @Override
-    public void run() {
-
     }
 }
 '''
@@ -53,7 +53,9 @@ public class «StringUtils.capitalize(behaviour.name)»Impl extends DomainBehavi
         System.out.println("Behaviour «StringUtils.capitalize(behaviour.name)»(" + this.domain.getOwnId()+ "): started");
     }
 
-    public void initialiseParameters() { }
+    public void initialiseParameters() {
+
+    }
 }
 '''
 
@@ -74,25 +76,21 @@ package de.uniks.vs.alica.code.gen.conditions;
 
 import de.uniks.vs.jalica.engine.RunningPlan;
 import de.uniks.vs.alica.code.gen.domain.DomainCondition;
-««««IF (behaviour.postCondition !== null && behaviour.postCondition.pluginName == "DefaultPlugin")»
-    import de.uniks.vs.alica.code.impl.conditions.PreCondition«behaviour.preCondition.id»Impl;
-««««ENDIF»
+import de.uniks.vs.alica.code.impl.conditions.PreCondition«behaviour.preCondition.id»Impl;
 
 public class PreCondition«behaviour.preCondition.id» extends DomainCondition {
-«««    «IF (behaviour.preCondition !== null && behaviour.preCondition.pluginName == "DefaultPlugin")»
-        static long id = «behaviour.preCondition.id»L;
+    static long id = «behaviour.preCondition.id»L;
 
-        private PreCondition«behaviour.preCondition.id»Impl impl;
+    private PreCondition«behaviour.preCondition.id»Impl impl;
 
-        public PreCondition«behaviour.preCondition.id»(Object context) {
-            super(context);
-            impl = new PreCondition«behaviour.preCondition.id»Impl();
-        }
+    public PreCondition«behaviour.preCondition.id»(Object context) {
+        super(context);
+        this.impl = new PreCondition«behaviour.preCondition.id»Impl();
+    }
 
-        public boolean evaluate(RunningPlan rp) {
-            return impl.evaluate(rp);
-        }
-«««    «ENDIF»
+    public boolean evaluate(RunningPlan rp) {
+        return this.impl.evaluate(rp);
+    }
 }
 '''
 
@@ -118,25 +116,21 @@ package de.uniks.vs.alica.code.gen.conditions;
 
 import de.uniks.vs.jalica.engine.RunningPlan;
 import de.uniks.vs.alica.code.gen.domain.DomainCondition;
-««««IF (behaviour.runtimeCondition !== null && behaviour.runtimeCondition.pluginName == "DefaultPlugin")»
-    import de.uniks.vs.alica.code.impl.conditions.RunTimeCondition«behaviour.runtimeCondition.id»Impl;
-««««ENDIF»
+import de.uniks.vs.alica.code.impl.conditions.RunTimeCondition«behaviour.runtimeCondition.id»Impl;
 
 public class RunTimeCondition«behaviour.runtimeCondition.id» extends DomainCondition {
-«««    «IF (behaviour.runtimeCondition !== null && behaviour.runtimeCondition.pluginName == "DefaultPlugin")»
-        static long id = «behaviour.runtimeCondition.id»L;
+    static long id = «behaviour.runtimeCondition.id»L;
 
-        private RunTimeCondition«behaviour.runtimeCondition.id»Impl impl;
+    private RunTimeCondition«behaviour.runtimeCondition.id»Impl impl;
 
-        public RunTimeCondition«behaviour.runtimeCondition.id»(Object context) {
-            super(context);
-            impl = new PostCondition«behaviour.postCondition.id»Impl();
-        }
+    public RunTimeCondition«behaviour.runtimeCondition.id»(Object context) {
+        super(context);
+        this.impl = new PostCondition«behaviour.postCondition.id»Impl();
+    }
 
-        public boolean evaluate(RunningPlan rp) {
-            return impl.evaluate(rp);
-        }
-«««    «ENDIF»
+    public boolean evaluate(RunningPlan rp) {
+        return this.impl.evaluate(rp);
+    }
 }
 '''
 
@@ -161,25 +155,21 @@ package de.uniks.vs.alica.code.gen.conditions;
 
 import de.uniks.vs.jalica.engine.RunningPlan;
 import de.uniks.vs.alica.code.gen.domain.DomainCondition;
-««««IF (behaviour.postCondition !== null && behaviour.postCondition.pluginName == "DefaultPlugin")»
-    import de.uniks.vs.alica.code.impl.conditions.PostCondition«behaviour.postCondition.id»Impl;
-««««ENDIF»
+import de.uniks.vs.alica.code.impl.conditions.PostCondition«behaviour.postCondition.id»Impl;
 
 public class PostCondition«behaviour.postCondition.id» extends DomainCondition {
-«««    «IF (behaviour.postCondition !== null && behaviour.postCondition.pluginName == "DefaultPlugin")»
-        static long id = «behaviour.postCondition.id»L;
+    static long id = «behaviour.postCondition.id»L;
 
-        private PostCondition«behaviour.postCondition.id»Impl impl;
+    private PostCondition«behaviour.postCondition.id»Impl impl;
 
-        public PostCondition«behaviour.postCondition.id»(Object context) {
-            super(context);
-            impl = new PostCondition«behaviour.postCondition.id»Impl();
-        }
+    public PostCondition«behaviour.postCondition.id»(Object context) {
+        super(context);
+        this.impl = new PostCondition«behaviour.postCondition.id»Impl();
+    }
 
-        public boolean evaluate(RunningPlan rp) {
-            return impl.evaluate(rp);
-        }
-«««    «ENDIF»
+    public boolean evaluate(RunningPlan rp) {
+        return this.impl.evaluate(rp);
+    }
 }
 '''
 
@@ -226,15 +216,11 @@ public class Constraint«behaviour.preCondition.id» extends BasicConstraint {
 
     public Constraint«behaviour.preCondition.id»() {
         super();
-        impl = new Constraint«behaviour.preCondition.id»Impl();
+        this.impl = new Constraint«behaviour.preCondition.id»Impl();
     }
 
     public void getConstraint(ProblemDescriptor c, RunningPlan rp) {
-«««        «IF (behaviour.preCondition !== null && behaviour.preCondition.pluginName == "DefaultPlugin")»
-«««            «IF (behaviour.preCondition.variables.size > 0) || (behaviour.preCondition.quantifiers.size > 0)»
-                impl.getConstraint(c, rp);
-«««            «ENDIF»
-«««        «ENDIF»
+        this.impl.getConstraint(c, rp);
     }
 }
 '''
@@ -273,15 +259,11 @@ public class Constraint«behaviour.runtimeCondition.id» extends BasicConstraint
 
     public Constraint«behaviour.runtimeCondition.id»() {
         super();
-        impl = new Constraint«behaviour.runtimeCondition.id»Impl();
+        this.impl = new Constraint«behaviour.runtimeCondition.id»Impl();
     }
 
     public void getConstraint(ProblemDescriptor c, RunningPlan rp) {
-«««        «IF (behaviour.runtimeCondition !== null && behaviour.runtimeCondition.pluginName == "DefaultPlugin")»
-«««            «IF (behaviour.runtimeCondition.variables.size > 0) || (behaviour.runtimeCondition.quantifiers.size > 0)»
-                impl.getConstraint(c, rp);
-«««            «ENDIF»
-«««        «ENDIF»
+        this.impl.getConstraint(c, rp);
     }
 }
 '''
@@ -320,15 +302,11 @@ public class Constraint«behaviour.postCondition.id» extends BasicConstraint {
 
     public Constraint«behaviour.postCondition.id»() {
         super();
-        impl = new Constraint«behaviour.postCondition.id»Impl();
+        this.impl = new Constraint«behaviour.postCondition.id»Impl();
     }
 
     public void getConstraint(ProblemDescriptor c, RunningPlan rp) {
-«««        «IF (behaviour.postCondition !== null && behaviour.postCondition.pluginName == "DefaultPlugin")»
-«««            «IF (behaviour.postCondition.variables.size > 0) || (behaviour.postCondition.quantifiers.size > 0)»
-                impl.getConstraint(c, rp);
-«««            «ENDIF»
-«««        «ENDIF»
+        this.impl.getConstraint(c, rp);
     }
 }
 '''

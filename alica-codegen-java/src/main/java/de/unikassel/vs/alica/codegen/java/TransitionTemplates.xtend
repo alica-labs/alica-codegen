@@ -23,22 +23,11 @@ public class Constraint«transition.preCondition.id» extends BasicConstraint {
 
     public Constraint«transition.preCondition.id»() {
         super();
-        impl = new Constraint«transition.preCondition.id»Impl();
+        this.impl = new Constraint«transition.preCondition.id»Impl();
     }
 
     public void getConstraint(ProblemDescriptor c, RunningPlan rp) {
-«««        «var List<State> states = plan.states»
-«««        «FOR state: states»
-«««            «var List<Transition> outTransitions = state.outTransitions»
-«««            «FOR outTransition: outTransitions»
-«««                «IF outTransition.preCondition !== null»
-«««                     «var List<Variable> variables = outTransition.preCondition.variables»
-«««                     «IF (outTransition.preCondition !== null && outTransition.preCondition.pluginName == "DefaultPlugin" && variables.size > 0)»
-            impl.getConstraint(c, rp);
-«««                     «ENDIF»
-«««                 «ENDIF»
-«««             «ENDFOR»
-«««         «ENDFOR»
+        this.impl.getConstraint(c, rp);
     }
 }
 '''
@@ -76,21 +65,11 @@ public class PreCondition«transition.preCondition.id» extends DomainCondition 
 
     public PreCondition«transition.preCondition.id»(Object context) {
         super(context);
-        impl = new PreCondition«transition.preCondition.id»Impl();
+        this.impl = new PreCondition«transition.preCondition.id»Impl();
     }
 
     public boolean evaluate(RunningPlan rp) {
-        return impl.evaluate(rp);
-«««         boolean result = true;
-«««         «var List<Transition> outTransitions = state.outTransitions»
-«««         «FOR outTransition: outTransitions»
-«««             «IF (outTransition.preCondition !== null && outTransition.preCondition.pluginName == "DefaultPlugin")»
-«««                 if (!impl.evaluate(rp)) {
-«««                     result = false;
-«««                }
-«««             «ENDIF»
-«««         «ENDFOR»
-«««         return result;
+        return this.impl.evaluate(rp);
     }
 }
 '''

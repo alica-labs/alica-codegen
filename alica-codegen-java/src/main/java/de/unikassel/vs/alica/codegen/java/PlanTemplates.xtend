@@ -41,13 +41,11 @@ public class Constraint«plan.preCondition.id» extends BasicConstraint {
 
     public Constraint«plan.preCondition.id»() {
         super();
-        impl = new Constraint«plan.preCondition.id»Impl();
+        this.impl = new Constraint«plan.preCondition.id»Impl();
     }
 
     public void getConstraint(ProblemDescriptor c, RunningPlan rp) {
-«««        «IF (plan.preCondition !== null && plan.preCondition.pluginName == "DefaultPlugin")»
-            impl.getConstraint(c, rp);
-«««        «ENDIF»
+        this.impl.getConstraint(c, rp);
     }
 }
 '''
@@ -92,13 +90,11 @@ public class Constraint«plan.runtimeCondition.id» extends BasicConstraint {
 
     public Constraint«plan.runtimeCondition.id»() {
         super();
-        impl = new Constraint«plan.runtimeCondition.id»Impl();
+        this.impl = new Constraint«plan.runtimeCondition.id»Impl();
     }
 
     public void getConstraint(ProblemDescriptor c, RunningPlan rp) {
-«««        «IF (plan.runtimeCondition !== null && plan.runtimeCondition.pluginName == "DefaultPlugin")»
-            impl.getConstraint(c, rp);
-«««        «ENDIF»
+        this.impl.getConstraint(c, rp);
     }
 }
 '''
@@ -140,11 +136,11 @@ public class UtilityFunction«plan.id» extends BasicUtilityFunction {
     private UtilityFunction«plan.id»Impl impl;
 
     public UtilityFunction«plan.id»() {
-        impl = new UtilityFunction«plan.id»Impl();
+        this.impl = new UtilityFunction«plan.id»Impl();
     }
 
     public UtilityFunction getUtilityFunction(BasicPlan plan) {
-        return impl.getUtilityFunction(plan);
+        return this.impl.getUtilityFunction(plan);
     }
 }
 '''
@@ -154,7 +150,6 @@ package de.uniks.vs.alica.code.impl.utilityfunctions;
 
 import de.uniks.vs.jalica.engine.DefaultUtilityFunction;
 import de.uniks.vs.jalica.engine.UtilityFunction;
-// import de.uniks.vs.jalica.engine.model.Plan;
 import de.uniks.vs.jalica.engine.BasicPlan;
 
 public class UtilityFunction«plan.id»Impl {
@@ -184,15 +179,11 @@ public class PreCondition«plan.preCondition.id» extends DomainCondition {
 
     public PreCondition«plan.preCondition.id»(Object context) {
         super(context);
-        impl = new PreCondition«plan.preCondition.id»Impl();
+        this.impl = new PreCondition«plan.preCondition.id»Impl();
     }
 
     public boolean evaluate(RunningPlan rp) {
-«««        «IF (plan.preCondition !== null && plan.preCondition.pluginName == "DefaultPlugin")»
-            return impl.evaluate(rp);
-«««        «ELSE»
-«««            return true;
-«««        «ENDIF»
+        return this.impl.evaluate(rp);
     }
 }
 '''
@@ -230,15 +221,11 @@ public class RunTimeCondition«plan.runtimeCondition.id» extends DomainConditio
 
     public RunTimeCondition«plan.runtimeCondition.id»(Object context) {
         super(context);
-        impl = new RunTimeCondition«plan.runtimeCondition.id»Impl();
+        this.impl = new RunTimeCondition«plan.runtimeCondition.id»Impl();
     }
 
     public boolean evaluate(RunningPlan rp) {
-«««        «IF (plan.runtimeCondition !== null && plan.runtimeCondition.pluginName == "DefaultPlugin")»
-            impl.evaluate(rp);
-«««        «ELSE»
-«««            return true;
-«««        «ENDIF»
+        return this.impl.evaluate(rp);
     }
 }
 '''

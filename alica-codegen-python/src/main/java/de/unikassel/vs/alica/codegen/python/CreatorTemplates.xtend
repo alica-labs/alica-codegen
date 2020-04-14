@@ -14,6 +14,7 @@ import de.unikassel.vs.alica.codegen.templates.ICreatorTemplates;
 class CreatorTemplates implements ICreatorTemplates {
 
     override String behaviourCreator(List<Behaviour> behaviours)'''
+from typing import Any
 from engine import BasicBehaviour
 «FOR beh : behaviours»
     «IF (!beh.relativeDirectory.isEmpty)»
@@ -25,10 +26,10 @@ from engine import BasicBehaviour
 
 
 class BehaviourCreator(object):
-    def create_behaviour(self, behaviour_id: int) -> BasicBehaviour:
+    def create_behaviour(self, behaviour_id: int, context: Any) -> BasicBehaviour:
         «FOR beh : behaviours»
         if behaviour_id == «beh.id»:
-            return «StringUtils.capitalize(beh.name)»()
+            return «StringUtils.capitalize(beh.name)»(context)
         «ENDFOR»
         print("BehaviourCreator: Unknown behaviour requested: {}".format(behaviour_id))
 '''
@@ -50,6 +51,7 @@ class UtilityFunctionCreator(object):
 '''
 
     override String conditionCreator(List<Plan> plans, List<Behaviour> behaviours, List<Condition> conditions) '''
+from typing import Any
 from engine import BasicCondition
 «FOR con: conditions»
     from gen.conditions.pre_condition_«con.id» import PreCondition«con.id»
@@ -57,32 +59,33 @@ from engine import BasicCondition
 
 
 class ConditionCreator(object):
-    def create_conditions(self, condition_conf_id: int) -> BasicCondition:
+    def create_conditions(self, condition_conf_id: int, context: Any) -> BasicCondition:
         «FOR con: conditions»
         if condition_conf_id == «con.id»:
             «IF (con instanceof PreCondition)»
-            return PreCondition«con.id»()
+                return PreCondition«con.id»(context)
             «ENDIF»
             «IF (con instanceof PostCondition)»
-            return PostCondition«con.id»()
-            «ENDIF»
+            return PostCondition«con.id»(context)
+                «ENDIF»
             «IF (con instanceof RuntimeCondition)»
-            return RunTimeCondition«con.id»()
+                return RunTimeCondition«con.id»(context)
             «ENDIF»
         «ENDFOR»
         print("ConditionCreator: Unknown condition id requested: {}".format(condition_conf_id))
 '''
 
     override String constraintCreator(List<Plan> plans, List<Behaviour> behaviours, List<Condition> conditions)'''
+from typing import Any
 from engine import BasicConstraint
 
 
 class ConstraintCreator(object):
-    def create_constraint(self, constraint_conf_id: int) -> BasicConstraint:
+    def create_constraint(self, constraint_conf_id: int, context: Any) -> BasicConstraint:
         «FOR c: conditions»
             «IF (c.variables.size > 0) || (c.quantifiers.size > 0)»
                 if constraint_conf_id == «c.id»:
-                    return Constraint«c.id»()
+                    return Constraint«c.id»(context)
             «ENDIF»
         «ENDFOR»
         print("ConstraintCreator: Unknown constraint requested: {}".format(constraint_conf_id))

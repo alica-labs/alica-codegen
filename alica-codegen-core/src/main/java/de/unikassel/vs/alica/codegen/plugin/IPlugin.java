@@ -7,7 +7,6 @@ import javafx.scene.Parent;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Map;
 
 /**
  * This interface defines the basic functionality that a plugin has to implement.
@@ -55,12 +54,4 @@ public interface IPlugin<T> {
     File getPluginFile();
 
     void setPluginFile(File pluginFile);
-
-    /**
-     * This method should make a delegate to the
-     * {@link IConstraintCodeGenerator} and make the protected regions known for it.
-     * It is mainly a reminder to not forget the implementation
-     * @param protectedRegions
-     */
-    void setProtectedRegions(Map<String, String> protectedRegions);
 }

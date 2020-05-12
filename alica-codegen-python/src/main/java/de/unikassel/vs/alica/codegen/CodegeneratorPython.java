@@ -56,11 +56,6 @@ public class CodegeneratorPython extends Codegenerator {
             throw new RuntimeException(e);
         }
 
-        IPlugin<?> defaultPlugin = PluginManager.getInstance().getDefaultPlugin();
-        if (defaultPlugin != null) {
-            defaultPlugin.setProtectedRegions(new HashMap<>());
-        }
-
         languageSpecificGenerator.createDomainBehaviour();
         languageSpecificGenerator.createDomainCondition();
 

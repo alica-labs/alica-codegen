@@ -50,7 +50,7 @@ public class «StringUtils.capitalize(behaviour.name)»Impl extends DomainBehavi
     }
 
     public void run(Object msg) {
-        System.out.println("Behaviour «StringUtils.capitalize(behaviour.name)»(" + this.domain.getOwnId()+ "): started");
+        System.out.println("Behaviour «StringUtils.capitalize(behaviour.name)»(" + this.domain.getOwnId() + "): started");
     }
 
     public void initialiseParameters() {
@@ -97,6 +97,8 @@ public class PreCondition«behaviour.preCondition.id» extends DomainCondition {
     override String preConditionBehaviourImpl(Behaviour behaviour) '''
 package de.uniks.vs.alica.code.impl.conditions;
 
+import de.uniks.vs.jalica.engine.RunningPlan;
+
 public class PreCondition«behaviour.preCondition.id»Impl {
     static long id = «behaviour.preCondition.id»L;
 
@@ -137,6 +139,8 @@ public class RunTimeCondition«behaviour.runtimeCondition.id» extends DomainCon
     override String runtimeConditionBehaviourImpl(Behaviour behaviour) '''
 package de.uniks.vs.alica.code.impl.conditions;
 
+import de.uniks.vs.jalica.engine.RunningPlan;
+
 public class RunTimeCondition«behaviour.runtimeCondition.id»Impl {
     static long id = «behaviour.runtimeCondition.id»L;
 
@@ -175,6 +179,8 @@ public class PostCondition«behaviour.postCondition.id» extends DomainCondition
 
     override String postConditionBehaviourImpl(Behaviour behaviour) '''
 package de.uniks.vs.alica.code.impl.conditions;
+
+import de.uniks.vs.jalica.engine.RunningPlan;
 
 public class PostCondition«behaviour.postCondition.id»Impl {
     static long id = «behaviour.postCondition.id»L;

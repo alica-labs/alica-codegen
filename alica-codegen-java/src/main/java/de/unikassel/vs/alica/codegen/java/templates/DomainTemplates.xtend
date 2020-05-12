@@ -24,7 +24,7 @@ public abstract class DomainBehaviour extends BasicBehaviour {
     }
 
     public Object getContext() {
-        return context;
+        return this.context;
     }
 
     public long getOwnId() {

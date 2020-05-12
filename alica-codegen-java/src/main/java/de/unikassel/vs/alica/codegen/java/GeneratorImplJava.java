@@ -7,17 +7,18 @@ import de.unikassel.vs.alica.planDesigner.alicamodel.*;
 /**
  * The following lines must be the following. If they are not, they must be re-inserted.
  *
- * import de.unikassel.vs.alica.codegen.java.CreatorTemplates;
- * import de.unikassel.vs.alica.codegen.java.BehaviourTemplates;
- * import de.unikassel.vs.alica.codegen.java.DomainTemplates;
- * import de.unikassel.vs.alica.codegen.java.PlanTemplates;
- * import de.unikassel.vs.alica.codegen.java.TransitionTemplates;
+ * import de.unikassel.vs.alica.codegen.java.templates.CreatorTemplates;
+ * import de.unikassel.vs.alica.codegen.java.templates.BehaviourTemplates;
+ * import de.unikassel.vs.alica.codegen.java.templates.DomainTemplates;
+ * import de.unikassel.vs.alica.codegen.java.templates.PlanTemplates;
+ * import de.unikassel.vs.alica.codegen.java.templates.TransitionTemplates;
  */
-import de.unikassel.vs.alica.codegen.java.CreatorTemplates;
-import de.unikassel.vs.alica.codegen.java.BehaviourTemplates;
-import de.unikassel.vs.alica.codegen.java.DomainTemplates;
-import de.unikassel.vs.alica.codegen.java.PlanTemplates;
-import de.unikassel.vs.alica.codegen.java.TransitionTemplates;
+import de.unikassel.vs.alica.codegen.java.templates.CreatorTemplates;
+import de.unikassel.vs.alica.codegen.java.templates.BehaviourTemplates;
+import de.unikassel.vs.alica.codegen.java.templates.DomainTemplates;
+import de.unikassel.vs.alica.codegen.java.templates.PlanTemplates;
+import de.unikassel.vs.alica.codegen.java.templates.TransitionTemplates;
+
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package de.unikassel.vs.alica.codegen.python;
+package de.unikassel.vs.alica.codegen.python.templates;
 
 import de.unikassel.vs.alica.codegen.templates.IDomainTemplates;
 

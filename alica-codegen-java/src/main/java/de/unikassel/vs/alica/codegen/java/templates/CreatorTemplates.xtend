@@ -1,4 +1,4 @@
-package de.unikassel.vs.alica.codegen.java;
+package de.unikassel.vs.alica.codegen.java.templates;
 
 import de.unikassel.vs.alica.planDesigner.alicamodel.Behaviour;
 import de.unikassel.vs.alica.planDesigner.alicamodel.Condition;

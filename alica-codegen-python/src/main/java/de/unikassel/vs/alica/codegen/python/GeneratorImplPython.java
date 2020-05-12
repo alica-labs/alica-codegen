@@ -7,17 +7,18 @@ import de.unikassel.vs.alica.planDesigner.alicamodel.*;
 /**
  * The following lines must be the following. If they are not, they must be re-inserted.
  *
- * import de.unikassel.vs.alica.codegen.python.CreatorTemplates;
- * import de.unikassel.vs.alica.codegen.python.BehaviourTemplates;
- * import de.unikassel.vs.alica.codegen.python.DomainTemplates;
- * import de.unikassel.vs.alica.codegen.python.PlanTemplates;
- * import de.unikassel.vs.alica.codegen.python.TransitionTemplates;
+ * import de.unikassel.vs.alica.codegen.python.templates.CreatorTemplates;
+ * import de.unikassel.vs.alica.codegen.python.templates.BehaviourTemplates;
+ * import de.unikassel.vs.alica.codegen.python.templates.DomainTemplates;
+ * import de.unikassel.vs.alica.codegen.python.templates.PlanTemplates;
+ * import de.unikassel.vs.alica.codegen.python.templates.TransitionTemplates;
  */
-import de.unikassel.vs.alica.codegen.python.CreatorTemplates;
-import de.unikassel.vs.alica.codegen.python.BehaviourTemplates;
-import de.unikassel.vs.alica.codegen.python.DomainTemplates;
-import de.unikassel.vs.alica.codegen.python.PlanTemplates;
-import de.unikassel.vs.alica.codegen.python.TransitionTemplates;
+import de.unikassel.vs.alica.codegen.python.templates.CreatorTemplates;
+import de.unikassel.vs.alica.codegen.python.templates.BehaviourTemplates;
+import de.unikassel.vs.alica.codegen.python.templates.DomainTemplates;
+import de.unikassel.vs.alica.codegen.python.templates.PlanTemplates;
+import de.unikassel.vs.alica.codegen.python.templates.TransitionTemplates;
+
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;

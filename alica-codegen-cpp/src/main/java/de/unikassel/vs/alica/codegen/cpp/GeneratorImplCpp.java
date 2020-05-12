@@ -44,18 +44,18 @@ public class GeneratorImplCpp extends GeneratorImpl implements IGenerator<Genera
 
     public void setGeneratedSourcesManager(GeneratedSourcesManagerCpp generatedSourcesManager) {
         codegenHelperHeader.setGeneratedSourcesManager(generatedSourcesManager);
-        String sourcePath = generatedSourcesManager.getSourcePath();
-        codegenHelperHeader.setBaseDir(sourcePath);
+        String headerPath = generatedSourcesManager.getHeaderPath();
+        codegenHelperHeader.setBaseDir(headerPath);
 
         codegenHelperSource.setGeneratedSourcesManager(generatedSourcesManager);
-        String headerPath = generatedSourcesManager.getHeaderPath();
-        codegenHelperSource.setBaseDir(headerPath);
+        String sourcePath = generatedSourcesManager.getSourcePath();
+        codegenHelperSource.setBaseDir(sourcePath);
     }
 
     @Override
     public void createBehaviourCreator(List<Behaviour> behaviours) {
         String filenameHeader = "BehaviourCreator.h";
-        codegenHelperSource.createBehaviourCreator(filenameHeader, behaviours);
+        codegenHelperHeader.createBehaviourCreator(filenameHeader, behaviours);
 
         String filenameSource = "BehaviourCreator.cpp";
         codegenHelperSource.createBehaviourCreator(filenameSource, behaviours);

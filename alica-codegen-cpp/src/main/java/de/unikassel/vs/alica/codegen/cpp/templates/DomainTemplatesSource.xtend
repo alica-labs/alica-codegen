@@ -68,7 +68,7 @@ namespace alica {
     }
 
     boolean DomainConditionImpl::evaluate(std::shared_ptr<RunningPlan> rp) {
-        std::cout << "DC-Impl: Missing link" << std::endl;
+        std::cerr << "DC-Impl: Missing link" << std::endl;
         return false;
     }
 }

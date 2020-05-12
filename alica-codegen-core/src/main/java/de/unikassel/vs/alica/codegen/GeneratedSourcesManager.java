@@ -8,8 +8,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GeneratedSourcesManager implements IGeneratedSourcesManager {
-    String genSrcPath;
+public abstract class GeneratedSourcesManager implements IGeneratedSourcesManager {
+    String sourcePath;
     private String editorExecutablePath;
     private Map<Long, Integer> linesForGeneratedElements;
 
@@ -17,8 +17,12 @@ public class GeneratedSourcesManager implements IGeneratedSourcesManager {
         linesForGeneratedElements = new HashMap<>();
     }
 
-    public void setGenSrcPath(String genSrcPath) {
-        this.genSrcPath = genSrcPath;
+    public void setSourcePath(String sourcePath) {
+        this.sourcePath = sourcePath;
+    }
+
+    public String getSourcePath() {
+        return sourcePath;
     }
 
     public void setEditorExecutablePath(String editorExecutablePath) {
@@ -53,31 +57,11 @@ public class GeneratedSourcesManager implements IGeneratedSourcesManager {
         return linesForGeneratedElements.getOrDefault(modelElementId, 0);
     }
 
-    @Override
-    public List<File> getGeneratedFilesForBehaviour(Behaviour behaviour) {
-        return null;
-    }
+    public abstract List<File> getGeneratedFilesForBehaviour(Behaviour behaviour);
 
-    @Override
-    public List<File> getGeneratedConditionFilesForPlan(AbstractPlan abstractPlan) {
-        return null;
-    }
+    public abstract List<File> getGeneratedConditionFilesForPlan(AbstractPlan abstractPlan);
 
-    @Override
-    public List<File> getGeneratedConstraintFilesForPlan(AbstractPlan abstractPlan) {
-        return null;
-    }
+    public abstract List<File> getGeneratedConstraintFilesForPlan(AbstractPlan abstractPlan);
 
-    @Override
-    public List<File> getGeneratedConstraintFilesForBehaviour(Behaviour behaviour) {
-        return null;
-    }
-
-    public String getIncludeDir() {
-        return null;
-    }
-
-    public String getSrcDir() {
-        return null;
-    }
+    public abstract List<File> getGeneratedConstraintFilesForBehaviour(Behaviour behaviour);
 }

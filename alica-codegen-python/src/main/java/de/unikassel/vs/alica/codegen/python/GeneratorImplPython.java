@@ -11,18 +11,10 @@ import java.util.List;
 
 /**
  * The following lines must be the following. If they are not, they must be re-inserted.
- * <p>
- * import de.unikassel.vs.alica.codegen.python.templates.CreatorTemplates;
- * import de.unikassel.vs.alica.codegen.python.templates.BehaviourTemplates;
- * import de.unikassel.vs.alica.codegen.python.templates.DomainTemplates;
- * import de.unikassel.vs.alica.codegen.python.templates.PlanTemplates;
- * import de.unikassel.vs.alica.codegen.python.templates.TransitionTemplates;
+ *
+ * import de.unikassel.vs.alica.codegen.python.templates.*;
  */
-import de.unikassel.vs.alica.codegen.python.templates.CreatorTemplates;
-import de.unikassel.vs.alica.codegen.python.templates.BehaviourTemplates;
-import de.unikassel.vs.alica.codegen.python.templates.DomainTemplates;
-import de.unikassel.vs.alica.codegen.python.templates.PlanTemplates;
-import de.unikassel.vs.alica.codegen.python.templates.TransitionTemplates;
+import de.unikassel.vs.alica.codegen.python.templates.*;
 
 /**
  * Code generator for Python. It uses the XtendTemplates for creating the code.

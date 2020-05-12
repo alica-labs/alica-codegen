@@ -69,7 +69,7 @@ public class CodegenPythonTest {
 
         // generate code
         GeneratedSourcesManagerPython generatedSourcesManager = new GeneratedSourcesManagerPython();
-        generatedSourcesManager.setGenSrcPath(tmpPath);
+        generatedSourcesManager.setSourcePath(tmpPath);
         CodegeneratorPython codegenerator = new CodegeneratorPython(
                 plans,
                 behaviours,

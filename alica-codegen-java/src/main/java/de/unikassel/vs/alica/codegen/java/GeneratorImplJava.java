@@ -8,17 +8,9 @@ import de.unikassel.vs.alica.planDesigner.alicamodel.*;
 /**
  * The following lines must be the following. If they are not, they must be re-inserted.
  *
- * import de.unikassel.vs.alica.codegen.java.templates.CreatorTemplates;
- * import de.unikassel.vs.alica.codegen.java.templates.BehaviourTemplates;
- * import de.unikassel.vs.alica.codegen.java.templates.DomainTemplates;
- * import de.unikassel.vs.alica.codegen.java.templates.PlanTemplates;
- * import de.unikassel.vs.alica.codegen.java.templates.TransitionTemplates;
+ * import de.unikassel.vs.alica.codegen.java.templates.*;
  */
-import de.unikassel.vs.alica.codegen.java.templates.CreatorTemplates;
-import de.unikassel.vs.alica.codegen.java.templates.BehaviourTemplates;
-import de.unikassel.vs.alica.codegen.java.templates.DomainTemplates;
-import de.unikassel.vs.alica.codegen.java.templates.PlanTemplates;
-import de.unikassel.vs.alica.codegen.java.templates.TransitionTemplates;
+import de.unikassel.vs.alica.codegen.java.templates.*;
 
 import org.apache.commons.lang3.StringUtils;
 

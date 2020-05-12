@@ -70,7 +70,7 @@ public class CodegenJavaTest {
         // generate code
         String genPath = tmpPath + File.separator + "src" + File.separator + "main" + File.separator + "java";
         GeneratedSourcesManagerJava generatedSourcesManager = new GeneratedSourcesManagerJava();
-        generatedSourcesManager.setGenSrcPath(genPath);
+        generatedSourcesManager.setSourcePath(genPath);
         CodegeneratorJava codegenerator = new CodegeneratorJava(
                 plans,
                 behaviours,

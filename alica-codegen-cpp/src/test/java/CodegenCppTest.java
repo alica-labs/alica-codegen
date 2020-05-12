@@ -62,9 +62,9 @@ public class CodegenCppTest {
         conditions.add(preCondition);
 
         // generate code
-        String genPath = tmpPath + File.separator + "src" + File.separator + "main" + File.separator + "java";
+        String genPath = tmpPath;
         GeneratedSourcesManagerCpp generatedSourcesManager = new GeneratedSourcesManagerCpp();
-        generatedSourcesManager.setGenSrcPath(genPath);
+        generatedSourcesManager.setSourcePath(genPath);
         CodegeneratorCpp codegenerator = new CodegeneratorCpp(
                 plans,
                 behaviours,
@@ -77,6 +77,7 @@ public class CodegenCppTest {
     @Test
     public void testGeneratedCode() {
         generateCode();
+        System.out.println();
 
         // TODO: Use test framework https://github.com/catchorg/Catch2 ?
     }

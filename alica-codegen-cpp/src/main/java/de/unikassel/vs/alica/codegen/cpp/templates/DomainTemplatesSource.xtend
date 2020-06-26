@@ -8,13 +8,13 @@ class DomainTemplatesSource implements IDomainTemplates {
     override String domainBehaviour() '''
 #include "DomainBehaviour.h"
 #include "DomainBehaviourImpl.h"
-#include "engine/BasicBehaviour.h"
+#include <engine/BasicBehaviour.h>
 
 namespace alica {
     DomainBehaviour::DomainBehaviour(std::string name, long id, void* context): BasicBehaviour(name) {
-        this.id = id;
-        this.context = context;
-        this.impl = std::make_shared<DomainBehaviourImpl>(this);
+        this -> id = id;
+        this -> context = context;
+        this -> impl = new DomainBehaviourImpl(this);
     }
 
     DomainBehaviour::~DomainBehaviour() {
@@ -22,19 +22,21 @@ namespace alica {
     }
 
     void* DomainBehaviour::getContext() {
-        return this.context;
+        return this -> context;
     }
 
     long DomainBehaviour::getOwnId() {
-        return this.id;
+        return this -> id;
     }
 }
 '''
 
     override String domainBehaviourImpl() '''
+#include "DomainBehaviourImpl.h"
+
 namespace alica {
-    DomainBehaviourImpl::DomainBehaviourImpl(std::shared_ptr<DomainBehaviour> domain) {
-        this.domain = domain;
+    DomainBehaviourImpl::DomainBehaviourImpl(DomainBehaviour* domain) {
+        this -> domain = domain;
     }
 
     void DomainBehaviourImpl::run(void* msg) {
@@ -49,6 +51,7 @@ namespace alica {
 
     override String domainCondition() '''
 #include "DomainCondition.h"
+#include <engine/BasicCondition.h>
 
 namespace alica {
     DomainCondition::DomainCondition(void* context): BasicCondition() {
@@ -62,12 +65,15 @@ namespace alica {
 '''
 
     override String domainConditionImpl() '''
+#include "DomainConditionImpl.h"
+#include <engine/RunningPlan.h>
+#include <iostream>
 namespace alica {
     DomainConditionImpl::DomainConditionImpl() {
 
     }
 
-    boolean DomainConditionImpl::evaluate(std::shared_ptr<RunningPlan> rp) {
+    bool DomainConditionImpl::evaluate(RunningPlan* rp) {
         std::cerr << "DC-Impl: Missing link" << std::endl;
         return false;
     }

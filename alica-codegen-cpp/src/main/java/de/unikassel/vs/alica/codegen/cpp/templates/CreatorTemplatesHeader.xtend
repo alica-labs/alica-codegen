@@ -18,7 +18,6 @@ class CreatorTemplatesHeader implements ICreatorTemplates {
 
 #include <engine/BasicBehaviour.h>
 #include <engine/IBehaviourCreator.h>
-#include <memory>
 #include <iostream>
 
 namespace alica {
@@ -26,7 +25,7 @@ namespace alica {
         public:
             BehaviourCreator();
             virtual ~BehaviourCreator();
-            virtual std::shared_ptr<BasicBehaviour> createBehaviour(long behaviourId);
+            virtual BasicBehaviour* createBehaviour(long behaviourId, void* context);
     };
 }
 '''
@@ -35,14 +34,14 @@ namespace alica {
 #pragma once
 
 #include <engine/IUtilityCreator.h>
-#include <memory>
+#include <engine/BasicUtilityFunction.h>
 
 namespace alica {
     class UtilityFunctionCreator: public IUtilityCreator {
         public:
             virtual ~UtilityFunctionCreator();
             UtilityFunctionCreator();
-            std::shared_ptr<BasicUtilityFunction> createUtility(long utilityfunctionConfId);
+            BasicUtilityFunction* createUtility(long utilityFunctionConfId);
     };
 }
 '''
@@ -52,7 +51,6 @@ namespace alica {
 
 #include <engine/BasicCondition.h>
 #include <engine/IConditionCreator.h>
-#include <memory>
 #include <iostream>
 
 namespace alica {
@@ -60,7 +58,7 @@ namespace alica {
         public:
             ConditionCreator();
             virtual ~ConditionCreator();
-            std::shared_ptr<BasicCondition> createConditions(long conditionConfId);
+            BasicCondition* createConditions(long conditionConfId, void* context);
     };
 }
 '''
@@ -69,14 +67,14 @@ namespace alica {
 #pragma once
 
 #include <engine/IConstraintCreator.h>
-#include <memory>
+#include <engine/BasicConstraint.h>
 
 namespace alica {
     class ConstraintCreator: public IConstraintCreator {
         public:
             ConstraintCreator();
             virtual ~ConstraintCreator();
-            std::shared_ptr<BasicConstraint> createConstraint(long constraintConfId);
+            BasicConstraint* createConstraint(long constraintConfId);
     };
 }
 '''

@@ -7,14 +7,12 @@ class DomainTemplatesSource implements IDomainTemplates {
 
     override String domainBehaviour() '''
 #include "DomainBehaviour.h"
-#include "DomainBehaviourImpl.h"
-#include <engine/BasicBehaviour.h>
 
 namespace alica {
     DomainBehaviour::DomainBehaviour(std::string name, long id, void* context): BasicBehaviour(name) {
         this -> id = id;
         this -> context = context;
-        this -> impl = new DomainBehaviourImpl(this);
+        // this -> impl = new DomainBehaviourImpl(this);  // TODO: check how to fix this
     }
 
     DomainBehaviour::~DomainBehaviour() {
@@ -51,7 +49,6 @@ namespace alica {
 
     override String domainCondition() '''
 #include "DomainCondition.h"
-#include <engine/BasicCondition.h>
 
 namespace alica {
     DomainCondition::DomainCondition(void* context): BasicCondition() {
@@ -66,8 +63,7 @@ namespace alica {
 
     override String domainConditionImpl() '''
 #include "DomainConditionImpl.h"
-#include <engine/RunningPlan.h>
-#include <iostream>
+
 namespace alica {
     DomainConditionImpl::DomainConditionImpl() {
 

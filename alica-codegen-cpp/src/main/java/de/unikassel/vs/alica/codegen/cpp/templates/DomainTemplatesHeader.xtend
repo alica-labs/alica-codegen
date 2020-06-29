@@ -8,9 +8,9 @@ class DomainTemplatesHeader implements IDomainTemplates {
     override String domainBehaviour() '''
 #pragma once
 
+#include "DomainBehaviourImpl.h"
 #include <engine/BasicBehaviour.h>
 #include <string>
-#include "DomainBehaviourImpl.h"
 
 namespace alica {
     class DomainBehaviour: public BasicBehaviour {
@@ -31,7 +31,11 @@ namespace alica {
     override String domainBehaviourImpl() '''
 #pragma once
 
-#include "DomainBehaviour.h"
+// Forward declaration
+struct DomainBehaviour {
+    long getOwnId();
+};
+
 namespace alica {
     class DomainBehaviourImpl {
         public:
@@ -66,8 +70,11 @@ namespace alica {
     override String domainConditionImpl() '''
 #pragma once
 
-#include "DomainBehaviour.h"
+// Forward declaration
+class DomainBehaviour;
+
 #include <engine/RunningPlan.h>
+#include <iostream>
 
 namespace alica {
     class DomainConditionImpl {

@@ -16,6 +16,13 @@ class CreatorTemplatesHeader implements ICreatorTemplates {
     override String behaviourCreator(List<Behaviour> behaviours)'''
 #pragma once
 
+«FOR beh: behaviours»
+    «IF (beh.relativeDirectory.isEmpty)»
+        #include "«StringUtils.capitalize(beh.name)».h"
+    «ELSE»
+        #include "«beh.relativeDirectory»/«StringUtils.capitalize(beh.name)».h"
+    «ENDIF»
+«ENDFOR»
 #include <engine/BasicBehaviour.h>
 #include <engine/IBehaviourCreator.h>
 #include <iostream>
@@ -33,8 +40,10 @@ namespace alica {
     override String utilityFunctionCreator(List<Plan> plans)'''
 #pragma once
 
+#include <UtilityFunction1575724499793.h>
 #include <engine/IUtilityCreator.h>
 #include <engine/BasicUtilityFunction.h>
+#include <iostream>
 
 namespace alica {
     class UtilityFunctionCreator: public IUtilityCreator {
@@ -49,6 +58,17 @@ namespace alica {
     override String conditionCreator(List<Plan> plans, List<Behaviour> behaviours, List<Condition> conditions) '''
 #pragma once
 
+«FOR con: conditions»
+    «IF (con instanceof PreCondition)»
+        #include "PreCondition«con.id».h"
+    «ENDIF»
+    «IF (con instanceof PostCondition)»
+        #include "PostCondition«con.id».h"
+    «ENDIF»
+    «IF (con instanceof RuntimeCondition)»
+        #include "RuntimeCondition«con.id».h"
+    «ENDIF»
+«ENDFOR»
 #include <engine/BasicCondition.h>
 #include <engine/IConditionCreator.h>
 #include <iostream>
@@ -68,6 +88,7 @@ namespace alica {
 
 #include <engine/IConstraintCreator.h>
 #include <engine/BasicConstraint.h>
+#include <iostream>
 
 namespace alica {
     class ConstraintCreator: public IConstraintCreator {

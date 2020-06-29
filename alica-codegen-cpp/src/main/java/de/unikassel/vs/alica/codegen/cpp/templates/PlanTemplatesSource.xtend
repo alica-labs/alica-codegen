@@ -21,10 +21,6 @@ namespace alica {
 '''
 
     override String constraintPlanPreCondition(Plan plan) '''
-#include "Constraint«plan.preCondition.id»Impl.h"
-#include <engine/BasicConstraint.h>
-#include <engine/ProblemDescriptor.h>
-#include <engine/RunningPlan.h>
 #include "Constraint«plan.preCondition.id».h"
 
 namespace alica {
@@ -43,9 +39,6 @@ namespace alica {
 
     override String constraintPlanPreConditionImpl(Plan plan) '''
 #include "Constraint«plan.preCondition.id»Impl.h"
-#include <engine/ProblemDescriptor.h>
-#include <engine/RunningPlan.h>
-#include "Constraint«plan.preCondition.id».h"
 
 namespace alica {
     long Constraint«plan.preCondition.id»Impl::id = «plan.preCondition.id»;
@@ -82,10 +75,6 @@ namespace alica {
 
     override String constraintPlanRuntimeConditionImpl(Plan plan) '''
 #include "Constraint«plan.runtimeCondition.id»Impl.h"
-#include <engine/BasicConstraint.h>
-#include <engine/ProblemDescriptor.h>
-#include <engine/RunningPlan.h>
-#include "Constraint«plan.runtimeCondition.id».h"
 
 namespace alica {
     long Constraint«plan.runtimeCondition.id»Impl::id = «plan.runtimeCondition.id»;
@@ -102,9 +91,6 @@ namespace alica {
 
     override String utilityFunctionPlan(Plan plan) '''
 #include "UtilityFunction«plan.id».h"
-#include "UtilityFunction«plan.id»Impl.h"
-#include <engine/UtilityFunction.h>
-#include <engine/BasicPlan.h>
 
 namespace alica {
     long UtilityFunction«plan.id»::id = «plan.id»;
@@ -121,10 +107,6 @@ namespace alica {
 
     override String utilityFunctionPlanImpl(Plan plan) '''
 #include "UtilityFunction«plan.id»Impl.h"
-#include <engine/BasicPlan.h>
-#include <engine/UtilityFunction.h>
-#include <engine/DefaultUtilityFunction.h>
-#include <iostream>
 
 namespace alica {
     long UtilityFunction«plan.id»Impl::id = «plan.id»;
@@ -158,8 +140,7 @@ namespace alica {
     override String preConditionPlanImpl(Plan plan) '''
 #include "PreCondition«plan.preCondition.id»Impl.h"
 #include "PreCondition«plan.preCondition.id».h"
-#include <engine/RunningPlan.h>
-#include <iostream>
+
 namespace alica {
     long PreCondition«plan.preCondition.id»Impl::id = «plan.preCondition.id»;
 
@@ -192,6 +173,7 @@ namespace alica {
 
     override String runtimeConditionPlanImpl(Plan plan) '''
 #include <iostream>
+
 namespace alica {
     long RunTimeCondition«plan.runtimeCondition.id»Impl::id = «plan.runtimeCondition.id»;
 

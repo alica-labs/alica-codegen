@@ -15,15 +15,6 @@ class CreatorTemplatesSource implements ICreatorTemplates {
 
     override String behaviourCreator(List<Behaviour> behaviours)'''
 #include "BehaviourCreator.h"
-#include <engine/BasicBehaviour.h>
-#include <iostream>
-«FOR beh: behaviours»
-    «IF (beh.relativeDirectory.isEmpty)»
-        #include "«StringUtils.capitalize(beh.name)».h"
-    «ELSE»
-        #include "«beh.relativeDirectory»/«StringUtils.capitalize(beh.name)».h"
-    «ENDIF»
-«ENDFOR»
 
 namespace alica {
     BehaviourCreator::BehaviourCreator() {
@@ -50,9 +41,6 @@ namespace alica {
 
     override String utilityFunctionCreator(List<Plan> plans)'''
 #include "UtilityFunctionCreator.h"
-#include <engine/BasicUtilityFunction.h>
-#include <iostream>
-#include <UtilityFunction1575724499793.h>
 
 namespace alica {
     UtilityFunctionCreator::~UtilityFunctionCreator() {
@@ -77,19 +65,7 @@ namespace alica {
 
     override String conditionCreator(List<Plan> plans, List<Behaviour> behaviours, List<Condition> conditions) '''
 #include "ConditionCreator.h"
-«FOR con: conditions»
-    «IF (con instanceof PreCondition)»
-        #include "PreCondition«con.id».h"
-    «ENDIF»
-    «IF (con instanceof PostCondition)»
-        #include "PostCondition«con.id».h"
-    «ENDIF»
-    «IF (con instanceof RuntimeCondition)»
-        #include "RuntimeCondition«con.id».h"
-    «ENDIF»
-«ENDFOR»
-#include <engine/BasicCondition.h>
-#include <iostream>
+
 namespace alica{
     ConditionCreator::ConditionCreator() {
     }
@@ -105,7 +81,7 @@ namespace alica{
                         return new PreCondition«con.id»(context);
                     «ENDIF»
                     «IF (con instanceof PostCondition)»
-                        return new PostCondition«con.id»*(new PostCondition«con.id»(context));
+                        return new PostCondition«con.id»(context);
                     «ENDIF»
                     «IF (con instanceof RuntimeCondition)»
                         return new RunTimeCondition«con.id»(context);
@@ -121,8 +97,7 @@ namespace alica{
 
     override String constraintCreator(List<Plan> plans, List<Behaviour> behaviours, List<Condition> conditions)'''
 #include "ConstraintCreator.h"
-#include <engine/BasicConstraint.h>
-#include <iostream>
+
 namespace alica {
     ConstraintCreator::ConstraintCreator() {
     }

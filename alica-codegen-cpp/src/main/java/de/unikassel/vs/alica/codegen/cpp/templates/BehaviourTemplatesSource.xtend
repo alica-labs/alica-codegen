@@ -13,8 +13,7 @@ class BehaviourTemplatesSource implements IBehaviourTemplates {
 «ELSE»
     #include "«behaviour.relativeDirectory»/«StringUtils.capitalize(behaviour.name)».h"
 «ENDIF»
-#include "DomainBehaviour.h"
-#include "«StringUtils.capitalize(behaviour.name)»Impl.h"
+
 namespace alica {
     «StringUtils.capitalize(behaviour.name)»::«StringUtils.capitalize(behaviour.name)»(void* context): DomainBehaviour("«behaviour.name»", «behaviour.id», context) {
         this -> impl = new «StringUtils.capitalize(behaviour.name)»Impl(this);
@@ -31,10 +30,7 @@ namespace alica {
 '''
 
     override String behaviourImpl(Behaviour behaviour) '''
-#include "DomainBehaviour.h"
-#include "DomainBehaviourImpl.h"
 #include "«StringUtils.capitalize(behaviour.name)»Impl.h"
-#include <iostream>
 
 namespace alica {
     «StringUtils.capitalize(behaviour.name)»Impl::«StringUtils.capitalize(behaviour.name)»Impl(DomainBehaviour* domain): DomainBehaviourImpl(domain) {
@@ -81,6 +77,7 @@ namespace alica {
 
     override String preConditionBehaviourImpl(Behaviour behaviour) '''
 #include <iostream>
+
 namespace alica {
     long PreCondition«behaviour.preCondition.id»Impl::id = «behaviour.preCondition.id»;
 
@@ -113,6 +110,7 @@ namespace alica {
 
     override String runtimeConditionBehaviourImpl(Behaviour behaviour) '''
 #include <iostream>
+
 namespace alica {
     long RunTimeCondition«behaviour.runtimeCondition.id»Impl::id = «behaviour.runtimeCondition.id»;
 
@@ -145,6 +143,7 @@ namespace alica {
 
     override String postConditionBehaviourImpl(Behaviour behaviour) '''
 #include <iostream>
+
 namespace alica {
     long PostCondition«behaviour.postCondition.id»Impl::id = «behaviour.postCondition.id»;
 
@@ -193,9 +192,6 @@ namespace alica {
 
     override String constraintPreConditionImpl(Behaviour behaviour) '''
 #include "Constraint«behaviour.preCondition.id»Impl.h"
-#include <engine/ProblemDescriptor.h>
-#include <engine/RunningPlan.h>
-#include "Constraint«behaviour.preCondition.id».h"
 
 namespace alica {
     long Constraint«behaviour.preCondition.id»Impl::id = «behaviour.preCondition.id»;
@@ -231,9 +227,6 @@ namespace alica {
 
     override String constraintRuntimeConditionImpl(Behaviour behaviour) '''
 #include "Constraint«behaviour.runtimeCondition.id»Impl.h"
-#include <engine/ProblemDescriptor.h>
-#include <engine/RunningPlan.h>
-#include "Constraint«behaviour.runtimeCondition.id».h"
 
 namespace alica {
     long Constraint«behaviour.runtimeCondition.id»Impl::id = «behaviour.runtimeCondition.id»;
@@ -269,9 +262,6 @@ namespace alica {
 
     override String constraintPostConditionImpl(Behaviour behaviour) '''
 #include "Constraint«behaviour.postCondition.id»Impl.h"
-#include <engine/ProblemDescriptor.h>
-#include <engine/RunningPlan.h>
-#include "Constraint«behaviour.postCondition.id».h"
 
 namespace alica {
     long Constraint«behaviour.postCondition.id»Impl::id = «behaviour.postCondition.id»;

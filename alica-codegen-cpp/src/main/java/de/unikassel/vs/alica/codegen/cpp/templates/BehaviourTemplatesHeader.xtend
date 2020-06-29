@@ -12,6 +12,7 @@ class BehaviourTemplatesHeader implements IBehaviourTemplates {
 
 #include "DomainBehaviour.h"
 #include "«StringUtils.capitalize(behaviour.name)»Impl.h"
+
 namespace alica {
     class «StringUtils.capitalize(behaviour.name)»: public DomainBehaviour {
         public:
@@ -28,8 +29,11 @@ namespace alica {
     override String behaviourImpl(Behaviour behaviour) '''
 #pragma once
 
-#include "DomainBehaviour.h"
+// Forward declaration
+class DomainBehaviour;
+
 #include "DomainBehaviourImpl.h"
+#include <iostream>
 
 namespace alica {
     class «StringUtils.capitalize(behaviour.name)»Impl: public DomainBehaviourImpl {
@@ -76,6 +80,7 @@ namespace alica {
 #pragma once
 
 #include <engine/RunningPlan.h>
+#include <iostream>
 
 namespace alica {
     class PreCondition«behaviour.preCondition.id»Impl {
@@ -95,6 +100,7 @@ namespace alica {
 #include <engine/RunningPlan.h>
 #include "DomainCondition.h"
 #include "RunTimeCondition«behaviour.runtimeCondition.id»Impl.h"
+
 namespace alica {
     class RunTimeCondition«behaviour.runtimeCondition.id»: public DomainCondition {
         public:
@@ -113,6 +119,7 @@ namespace alica {
 
 #include <engine/RunningPlan.h>
 #include "DomainCondition.h"
+
 namespace alica {
     class RunTimeCondition«behaviour.runtimeCondition.id»Impl: public DomainCondition {
         public:
@@ -131,6 +138,7 @@ namespace alica {
 #include <engine/RunningPlan.h>
 #include "DomainCondition.h"
 #include "PostCondition«behaviour.postCondition.id»Impl.h"
+
 namespace alica {
     class PostCondition«behaviour.postCondition.id»: public DomainCondition {
         public:
@@ -175,6 +183,7 @@ namespace alica {
     override String constraintPreCondition(Behaviour behaviour) '''
 #pragma once
 
+#include "Constraint«behaviour.preCondition.id»Impl.h"
 #include <engine/BasicConstraint.h>
 #include <engine/RunningPlan.h>
 #include <engine/ProblemDescriptor.h>
@@ -213,6 +222,7 @@ namespace alica {
     override String constraintRuntimeCondition(Behaviour behaviour) '''
 #pragma once
 
+#include "Constraint«behaviour.runtimeCondition.id»Impl.h"
 #include <engine/BasicConstraint.h>
 #include <engine/RunningPlan.h>
 #include <engine/ProblemDescriptor.h>
@@ -251,6 +261,7 @@ namespace alica {
     override String constraintPostCondition(Behaviour behaviour) '''
 #pragma once
 
+#include "Constraint«behaviour.postCondition.id»Impl.h"
 #include <engine/BasicConstraint.h>
 #include <engine/RunningPlan.h>
 #include <engine/ProblemDescriptor.h>

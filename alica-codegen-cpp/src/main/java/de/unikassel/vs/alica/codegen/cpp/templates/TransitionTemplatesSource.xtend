@@ -64,6 +64,7 @@ namespace alica {
 
     override String transitionPreConditionPlanImpl(Transition transition) '''
 #include <iostream>
+
 namespace alica {
     long PreCondition«transition.preCondition.id»Impl::id = «transition.preCondition.id»;
 

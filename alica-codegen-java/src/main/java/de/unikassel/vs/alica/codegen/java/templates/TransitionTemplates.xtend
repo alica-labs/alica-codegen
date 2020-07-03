@@ -1,19 +1,20 @@
-package de.unikassel.vs.alica.codegen.java;
+package de.unikassel.vs.alica.codegen.java.templates;
 
 import de.unikassel.vs.alica.planDesigner.alicamodel.Plan;
 import de.unikassel.vs.alica.planDesigner.alicamodel.Transition;
 import de.unikassel.vs.alica.planDesigner.alicamodel.State;
+import de.unikassel.vs.alica.codegen.templates.ITransitionTemplates;
 
 
-class TransitionTemplates {
+class TransitionTemplates implements ITransitionTemplates {
 
-    def String constraintPlanTransitionPreCondition(Plan plan, Transition transition) '''
+    override String constraintPlanTransitionPreCondition(Plan plan, Transition transition) '''
 package de.uniks.vs.alica.code.gen.constraints;
 
 import de.uniks.vs.jalica.engine.BasicConstraint;
 import de.uniks.vs.jalica.engine.ProblemDescriptor;
 import de.uniks.vs.jalica.engine.RunningPlan;
-import de.uniks.vs.alica.code.impl.Constraint«transition.preCondition.id»Impl;
+import de.uniks.vs.alica.code.impl.constraints.Constraint«transition.preCondition.id»Impl;
 
 public class Constraint«transition.preCondition.id» extends BasicConstraint {
     static long id = «transition.preCondition.id»L;
@@ -22,27 +23,16 @@ public class Constraint«transition.preCondition.id» extends BasicConstraint {
 
     public Constraint«transition.preCondition.id»() {
         super();
-        impl = new Constraint«transition.preCondition.id»Impl();
+        this.impl = new Constraint«transition.preCondition.id»Impl();
     }
 
     public void getConstraint(ProblemDescriptor c, RunningPlan rp) {
-«««        «var List<State> states = plan.states»
-«««        «FOR state: states»
-«««            «var List<Transition> outTransitions = state.outTransitions»
-«««            «FOR outTransition: outTransitions»
-«««                «IF outTransition.preCondition !== null»
-«««                     «var List<Variable> variables = outTransition.preCondition.variables»
-«««                     «IF (outTransition.preCondition !== null && outTransition.preCondition.pluginName == "DefaultPlugin" && variables.size > 0)»
-            impl.getConstraint(c, rp);
-«««                     «ENDIF»
-«««                 «ENDIF»
-«««             «ENDFOR»
-«««         «ENDFOR»
+        this.impl.getConstraint(c, rp);
     }
 }
 '''
 
-def String constraintPlanTransitionPreConditionImpl(Transition transition) '''
+    override String constraintPlanTransitionPreConditionImpl(Transition transition) '''
 package de.uniks.vs.alica.code.impl.constraints;
 
 import de.uniks.vs.jalica.engine.ProblemDescriptor;
@@ -61,7 +51,7 @@ public class Constraint«transition.preCondition.id»Impl {
 }
 '''
 
-    def String transitionPreConditionPlan(State state, Transition transition) '''
+    override String transitionPreConditionPlan(State state, Transition transition) '''
 package de.uniks.vs.alica.code.gen.conditions;
 
 import de.uniks.vs.jalica.engine.RunningPlan;
@@ -75,26 +65,16 @@ public class PreCondition«transition.preCondition.id» extends DomainCondition 
 
     public PreCondition«transition.preCondition.id»(Object context) {
         super(context);
-        impl = new PreCondition«transition.preCondition.id»Impl();
+        this.impl = new PreCondition«transition.preCondition.id»Impl();
     }
 
     public boolean evaluate(RunningPlan rp) {
-        return impl.evaluate(rp);
-«««         boolean result = true;
-«««         «var List<Transition> outTransitions = state.outTransitions»
-«««         «FOR outTransition: outTransitions»
-«««             «IF (outTransition.preCondition !== null && outTransition.preCondition.pluginName == "DefaultPlugin")»
-«««                 if (!impl.evaluate(rp)) {
-«««                     result = false;
-«««                }
-«««             «ENDIF»
-«««         «ENDFOR»
-«««         return result;
+        return this.impl.evaluate(rp);
     }
 }
 '''
 
-def String transitionPreConditionPlanImpl(Transition transition) '''
+    override String transitionPreConditionPlanImpl(Transition transition) '''
 package de.uniks.vs.alica.code.impl.conditions;
 
 import de.uniks.vs.jalica.engine.RunningPlan;

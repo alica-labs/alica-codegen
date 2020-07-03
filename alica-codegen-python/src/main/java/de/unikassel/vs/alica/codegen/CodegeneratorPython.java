@@ -56,11 +56,6 @@ public class CodegeneratorPython extends Codegenerator {
             throw new RuntimeException(e);
         }
 
-        IPlugin<?> defaultPlugin = PluginManager.getInstance().getDefaultPlugin();
-        if (defaultPlugin != null) {
-            defaultPlugin.setProtectedRegions(new HashMap<>());
-        }
-
         languageSpecificGenerator.createDomainBehaviour();
         languageSpecificGenerator.createDomainCondition();
 
@@ -73,7 +68,7 @@ public class CodegeneratorPython extends Codegenerator {
         languageSpecificGenerator.createPlans(plans);
 
         for (Behaviour behaviour : behaviours) {
-            languageSpecificGenerator.createBehaviour(behaviour);
+            languageSpecificGenerator.createBehaviours(behaviour);
             languageSpecificGenerator.createConstraintsForBehaviour(behaviour);
         }
         LOG.info("Generated all files successfully");

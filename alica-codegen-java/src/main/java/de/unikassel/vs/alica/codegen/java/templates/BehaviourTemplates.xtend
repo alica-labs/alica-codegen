@@ -1,12 +1,13 @@
-package de.unikassel.vs.alica.codegen.java;
+package de.unikassel.vs.alica.codegen.java.templates;
 
 import de.unikassel.vs.alica.planDesigner.alicamodel.Behaviour;
 import org.apache.commons.lang3.StringUtils;
+import de.unikassel.vs.alica.codegen.templates.IBehaviourTemplates;
 
 
-class BehaviourTemplates {
+class BehaviourTemplates implements IBehaviourTemplates {
 
-    def String behaviour(Behaviour behaviour) '''
+    override String behaviour(Behaviour behaviour) '''
 «IF (behaviour.relativeDirectory.isEmpty)»
     package de.uniks.vs.alica.code.gen.behaviours;
 «ELSE»
@@ -22,6 +23,11 @@ public class «StringUtils.capitalize(behaviour.name)» extends DomainBehaviour 
         this.impl = new «StringUtils.capitalize(behaviour.name)»Impl(this);
     }
 
+    @Override
+    public void run() {
+
+    }
+
     public void run(Object msg) {
         this.impl.run(msg);
     }
@@ -29,15 +35,10 @@ public class «StringUtils.capitalize(behaviour.name)» extends DomainBehaviour 
     public void initialiseParameters() {
         this.impl.initialiseParameters();
     }
-
-    @Override
-    public void run() {
-
-    }
 }
 '''
 
-    def String behaviourImpl(Behaviour behaviour) '''
+    override String behaviourImpl(Behaviour behaviour) '''
 package de.uniks.vs.alica.code.impl.behaviours;
 
 import de.uniks.vs.alica.code.gen.domain.DomainBehaviour;
@@ -49,14 +50,16 @@ public class «StringUtils.capitalize(behaviour.name)»Impl extends DomainBehavi
     }
 
     public void run(Object msg) {
-        System.out.println("Behaviour «StringUtils.capitalize(behaviour.name)»(" + this.domain.getOwnId()+ "): started");
+        System.out.println("Behaviour «StringUtils.capitalize(behaviour.name)»(" + this.domain.getOwnId() + "): started");
     }
 
-    public void initialiseParameters() { }
+    public void initialiseParameters() {
+
+    }
 }
 '''
 
-    def String behaviourCondition(Behaviour behaviour) '''
+    override String behaviourCondition(Behaviour behaviour) '''
 «IF (behaviour.relativeDirectory.isEmpty)»
     package de.uniks.vs.alica.code.gen.behaviours;
 «ELSE»
@@ -68,35 +71,33 @@ public class «StringUtils.capitalize(behaviour.name)»«behaviour.id» {
 }
 '''
 
-    def String preConditionBehaviour(Behaviour behaviour) '''
+    override String preConditionBehaviour(Behaviour behaviour) '''
 package de.uniks.vs.alica.code.gen.conditions;
 
 import de.uniks.vs.jalica.engine.RunningPlan;
 import de.uniks.vs.alica.code.gen.domain.DomainCondition;
-««««IF (behaviour.postCondition !== null && behaviour.postCondition.pluginName == "DefaultPlugin")»
-    import de.uniks.vs.alica.code.impl.conditions.PreCondition«behaviour.preCondition.id»Impl;
-««««ENDIF»
+import de.uniks.vs.alica.code.impl.conditions.PreCondition«behaviour.preCondition.id»Impl;
 
 public class PreCondition«behaviour.preCondition.id» extends DomainCondition {
-«««    «IF (behaviour.preCondition !== null && behaviour.preCondition.pluginName == "DefaultPlugin")»
-        static long id = «behaviour.preCondition.id»L;
+    static long id = «behaviour.preCondition.id»L;
 
-        private PreCondition«behaviour.preCondition.id»Impl impl;
+    private PreCondition«behaviour.preCondition.id»Impl impl;
 
-        public PreCondition«behaviour.preCondition.id»(Object context) {
-            super(context);
-            impl = new PreCondition«behaviour.preCondition.id»Impl();
-        }
+    public PreCondition«behaviour.preCondition.id»(Object context) {
+        super(context);
+        this.impl = new PreCondition«behaviour.preCondition.id»Impl();
+    }
 
-        public boolean evaluate(RunningPlan rp) {
-            return impl.evaluate(rp);
-        }
-«««    «ENDIF»
+    public boolean evaluate(RunningPlan rp) {
+        return this.impl.evaluate(rp);
+    }
 }
 '''
 
-def String preConditionBehaviourImpl(Behaviour behaviour) '''
+    override String preConditionBehaviourImpl(Behaviour behaviour) '''
 package de.uniks.vs.alica.code.impl.conditions;
+
+import de.uniks.vs.jalica.engine.RunningPlan;
 
 public class PreCondition«behaviour.preCondition.id»Impl {
     static long id = «behaviour.preCondition.id»L;
@@ -112,35 +113,33 @@ public class PreCondition«behaviour.preCondition.id»Impl {
 }
 '''
 
-    def String runtimeConditionBehaviour(Behaviour behaviour) '''
+    override String runtimeConditionBehaviour(Behaviour behaviour) '''
 package de.uniks.vs.alica.code.gen.conditions;
 
 import de.uniks.vs.jalica.engine.RunningPlan;
 import de.uniks.vs.alica.code.gen.domain.DomainCondition;
-««««IF (behaviour.runtimeCondition !== null && behaviour.runtimeCondition.pluginName == "DefaultPlugin")»
-    import de.uniks.vs.alica.code.impl.conditions.RunTimeCondition«behaviour.runtimeCondition.id»Impl;
-««««ENDIF»
+import de.uniks.vs.alica.code.impl.conditions.RunTimeCondition«behaviour.runtimeCondition.id»Impl;
 
 public class RunTimeCondition«behaviour.runtimeCondition.id» extends DomainCondition {
-«««    «IF (behaviour.runtimeCondition !== null && behaviour.runtimeCondition.pluginName == "DefaultPlugin")»
-        static long id = «behaviour.runtimeCondition.id»L;
+    static long id = «behaviour.runtimeCondition.id»L;
 
-        private RunTimeCondition«behaviour.runtimeCondition.id»Impl impl;
+    private RunTimeCondition«behaviour.runtimeCondition.id»Impl impl;
 
-        public RunTimeCondition«behaviour.runtimeCondition.id»(Object context) {
-            super(context);
-            impl = new PostCondition«behaviour.postCondition.id»Impl();
-        }
+    public RunTimeCondition«behaviour.runtimeCondition.id»(Object context) {
+        super(context);
+        this.impl = new PostCondition«behaviour.postCondition.id»Impl();
+    }
 
-        public boolean evaluate(RunningPlan rp) {
-            return impl.evaluate(rp);
-        }
-«««    «ENDIF»
+    public boolean evaluate(RunningPlan rp) {
+        return this.impl.evaluate(rp);
+    }
 }
 '''
 
-def String runtimeConditionBehaviourImpl(Behaviour behaviour) '''
+    override String runtimeConditionBehaviourImpl(Behaviour behaviour) '''
 package de.uniks.vs.alica.code.impl.conditions;
+
+import de.uniks.vs.jalica.engine.RunningPlan;
 
 public class RunTimeCondition«behaviour.runtimeCondition.id»Impl {
     static long id = «behaviour.runtimeCondition.id»L;
@@ -155,35 +154,33 @@ public class RunTimeCondition«behaviour.runtimeCondition.id»Impl {
 }
 '''
 
-    def String postConditionBehaviour(Behaviour behaviour) '''
+    override String postConditionBehaviour(Behaviour behaviour) '''
 package de.uniks.vs.alica.code.gen.conditions;
 
 import de.uniks.vs.jalica.engine.RunningPlan;
 import de.uniks.vs.alica.code.gen.domain.DomainCondition;
-««««IF (behaviour.postCondition !== null && behaviour.postCondition.pluginName == "DefaultPlugin")»
-    import de.uniks.vs.alica.code.impl.conditions.PostCondition«behaviour.postCondition.id»Impl;
-««««ENDIF»
+import de.uniks.vs.alica.code.impl.conditions.PostCondition«behaviour.postCondition.id»Impl;
 
 public class PostCondition«behaviour.postCondition.id» extends DomainCondition {
-«««    «IF (behaviour.postCondition !== null && behaviour.postCondition.pluginName == "DefaultPlugin")»
-        static long id = «behaviour.postCondition.id»L;
+    static long id = «behaviour.postCondition.id»L;
 
-        private PostCondition«behaviour.postCondition.id»Impl impl;
+    private PostCondition«behaviour.postCondition.id»Impl impl;
 
-        public PostCondition«behaviour.postCondition.id»(Object context) {
-            super(context);
-            impl = new PostCondition«behaviour.postCondition.id»Impl();
-        }
+    public PostCondition«behaviour.postCondition.id»(Object context) {
+        super(context);
+        this.impl = new PostCondition«behaviour.postCondition.id»Impl();
+    }
 
-        public boolean evaluate(RunningPlan rp) {
-            return impl.evaluate(rp);
-        }
-«««    «ENDIF»
+    public boolean evaluate(RunningPlan rp) {
+        return this.impl.evaluate(rp);
+    }
 }
 '''
 
-def String postConditionBehaviourImpl(Behaviour behaviour) '''
+    override String postConditionBehaviourImpl(Behaviour behaviour) '''
 package de.uniks.vs.alica.code.impl.conditions;
+
+import de.uniks.vs.jalica.engine.RunningPlan;
 
 public class PostCondition«behaviour.postCondition.id»Impl {
     static long id = «behaviour.postCondition.id»L;
@@ -198,7 +195,7 @@ public class PostCondition«behaviour.postCondition.id»Impl {
 }
 '''
 
-    def String constraints(Behaviour behaviour) '''
+    override String constraints(Behaviour behaviour) '''
 «IF (behaviour.relativeDirectory.isEmpty)»
     package de.uniks.vs.alica.code.gen.constraints;
 «ELSE»
@@ -210,7 +207,7 @@ public class «StringUtils.capitalize(behaviour.name)»«behaviour.id»Constrain
 }
 '''
 
-    def String constraintPreCondition(Behaviour behaviour) '''
+    override String constraintPreCondition(Behaviour behaviour) '''
 package de.uniks.vs.alica.code.gen.constraints;
 
 import de.uniks.vs.jalica.engine.BasicConstraint;
@@ -225,20 +222,16 @@ public class Constraint«behaviour.preCondition.id» extends BasicConstraint {
 
     public Constraint«behaviour.preCondition.id»() {
         super();
-        impl = new Constraint«behaviour.preCondition.id»Impl();
+        this.impl = new Constraint«behaviour.preCondition.id»Impl();
     }
 
     public void getConstraint(ProblemDescriptor c, RunningPlan rp) {
-«««        «IF (behaviour.preCondition !== null && behaviour.preCondition.pluginName == "DefaultPlugin")»
-«««            «IF (behaviour.preCondition.variables.size > 0) || (behaviour.preCondition.quantifiers.size > 0)»
-                impl.getConstraint(c, rp);
-«««            «ENDIF»
-«««        «ENDIF»
+        this.impl.getConstraint(c, rp);
     }
 }
 '''
 
-def String constraintPreConditionImpl(Behaviour behaviour) '''
+    override String constraintPreConditionImpl(Behaviour behaviour) '''
 package de.uniks.vs.alica.code.impl.constraints;
 
 import de.uniks.vs.jalica.engine.ProblemDescriptor;
@@ -257,7 +250,7 @@ public class Constraint«behaviour.preCondition.id»Impl {
 }
 '''
 
-    def String constraintRuntimeCondition(Behaviour behaviour) '''
+    override String constraintRuntimeCondition(Behaviour behaviour) '''
 package de.uniks.vs.alica.code.gen.constraints;
 
 import de.uniks.vs.jalica.engine.BasicConstraint;
@@ -272,20 +265,16 @@ public class Constraint«behaviour.runtimeCondition.id» extends BasicConstraint
 
     public Constraint«behaviour.runtimeCondition.id»() {
         super();
-        impl = new Constraint«behaviour.runtimeCondition.id»Impl();
+        this.impl = new Constraint«behaviour.runtimeCondition.id»Impl();
     }
 
     public void getConstraint(ProblemDescriptor c, RunningPlan rp) {
-«««        «IF (behaviour.runtimeCondition !== null && behaviour.runtimeCondition.pluginName == "DefaultPlugin")»
-«««            «IF (behaviour.runtimeCondition.variables.size > 0) || (behaviour.runtimeCondition.quantifiers.size > 0)»
-                impl.getConstraint(c, rp);
-«««            «ENDIF»
-«««        «ENDIF»
+        this.impl.getConstraint(c, rp);
     }
 }
 '''
 
-def String constraintRuntimeConditionImpl(Behaviour behaviour) '''
+    override String constraintRuntimeConditionImpl(Behaviour behaviour) '''
 package de.uniks.vs.alica.code.impl.constraints;
 
 import de.uniks.vs.jalica.engine.ProblemDescriptor;
@@ -304,7 +293,7 @@ public class Constraint«behaviour.runtimeCondition.id»Impl {
 }
 '''
 
-    def String constraintPostCondition(Behaviour behaviour) '''
+    override String constraintPostCondition(Behaviour behaviour) '''
 package de.uniks.vs.alica.code.gen.constraints;
 
 import de.uniks.vs.jalica.engine.BasicConstraint;
@@ -319,20 +308,16 @@ public class Constraint«behaviour.postCondition.id» extends BasicConstraint {
 
     public Constraint«behaviour.postCondition.id»() {
         super();
-        impl = new Constraint«behaviour.postCondition.id»Impl();
+        this.impl = new Constraint«behaviour.postCondition.id»Impl();
     }
 
     public void getConstraint(ProblemDescriptor c, RunningPlan rp) {
-«««        «IF (behaviour.postCondition !== null && behaviour.postCondition.pluginName == "DefaultPlugin")»
-«««            «IF (behaviour.postCondition.variables.size > 0) || (behaviour.postCondition.quantifiers.size > 0)»
-                impl.getConstraint(c, rp);
-«««            «ENDIF»
-«««        «ENDIF»
+        this.impl.getConstraint(c, rp);
     }
 }
 '''
 
-def String constraintPostConditionImpl(Behaviour behaviour) '''
+    override String constraintPostConditionImpl(Behaviour behaviour) '''
 package de.uniks.vs.alica.code.impl.constraints;
 
 import de.uniks.vs.jalica.engine.ProblemDescriptor;

@@ -12,5 +12,4 @@ public interface ICodegenerator {
     void generate(AbstractPlan abstractPlan);
     void generate(Plan plan);
     void generate(Behaviour behaviour);
-    void collectProtectedRegions(List<File> filesToParse);
 }

@@ -15,9 +15,8 @@ import java.util.Map;
 public interface IGenerator<T> {
 
     void setGeneratedSourcesManager(T generatedSourcesManager);
-    void setProtectedRegions(Map<String, String> protectedRegions);
     void createBehaviourCreator(List<Behaviour> behaviours);
-    void createBehaviour(Behaviour behaviour);
+    void createBehaviours(Behaviour behaviour);
     void createConditionCreator(List<Plan> plans, List<Behaviour> behaviours, List<Condition> conditions);
     void createConstraintCreator(List<Plan> plans, List<Behaviour> behaviours, List<Condition> conditions);
     void createConstraints(List<Plan> plans);

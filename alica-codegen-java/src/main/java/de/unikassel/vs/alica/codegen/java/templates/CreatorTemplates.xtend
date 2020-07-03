@@ -1,4 +1,4 @@
-package de.unikassel.vs.alica.codegen.java;
+package de.unikassel.vs.alica.codegen.java.templates;
 
 import de.unikassel.vs.alica.planDesigner.alicamodel.Behaviour;
 import de.unikassel.vs.alica.planDesigner.alicamodel.Condition;
@@ -8,11 +8,12 @@ import de.unikassel.vs.alica.planDesigner.alicamodel.PreCondition;
 import de.unikassel.vs.alica.planDesigner.alicamodel.RuntimeCondition;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
+import de.unikassel.vs.alica.codegen.templates.ICreatorTemplates;
 
 
-class CreatorTemplates {
+class CreatorTemplates implements ICreatorTemplates {
 
-    def String behaviourCreator(List<Behaviour> behaviours)'''
+    override String behaviourCreator(List<Behaviour> behaviours)'''
 package de.uniks.vs.alica.code.gen.creators;
 
 import de.uniks.vs.jalica.engine.BasicBehaviour;
@@ -40,7 +41,7 @@ public class BehaviourCreator implements IBehaviourCreator {
 }
 '''
 
-    def String utilityFunctionCreator(List<Plan> plans)'''
+    override String utilityFunctionCreator(List<Plan> plans)'''
 package de.uniks.vs.alica.code.gen.creators;
 
 import de.uniks.vs.jalica.engine.BasicUtilityFunction;
@@ -68,7 +69,7 @@ public class UtilityFunctionCreator implements IUtilityCreator {
 }
 '''
 
-    def String conditionCreator(List<Plan> plans, List<Behaviour> behaviours, List<Condition> conditions) '''
+    override String conditionCreator(List<Plan> plans, List<Behaviour> behaviours, List<Condition> conditions) '''
 package de.uniks.vs.alica.code.gen.creators;
 
 import de.uniks.vs.jalica.engine.BasicCondition;
@@ -100,7 +101,7 @@ public class ConditionCreator implements IConditionCreator {
 }
 '''
 
-    def String constraintCreator(List<Plan> plans, List<Behaviour> behaviours, List<Condition> conditions)'''
+    override String constraintCreator(List<Plan> plans, List<Behaviour> behaviours, List<Condition> conditions)'''
 package de.uniks.vs.alica.code.gen.creators;
 
 import de.uniks.vs.jalica.engine.BasicConstraint;

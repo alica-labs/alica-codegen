@@ -11,15 +11,16 @@ import java.util.List;
 
 public class GeneratedSourcesManagerJava extends GeneratedSourcesManager {
 
-    public String getBaseDir() {
-        return Paths.get(genSrcPath, "de", "uniks", "vs", "alica", "code").toString();
+    @Override
+    public String getSourcePath() {
+        return Paths.get(sourcePath, "de", "uniks", "vs", "alica", "code").toString();
     }
 
     public List<File> getGeneratedFilesForBehaviour(Behaviour behaviour) {
         List<File> generatedFiles = new ArrayList<>();
         String path = trimFileFromPath(behaviour.getRelativeDirectory());
         String filename = StringUtils.capitalize(behaviour.getName()) + ".java";
-        generatedFiles.add(Paths.get(getBaseDir(), path, filename).toFile());
+        generatedFiles.add(Paths.get(getSourcePath(), path, filename).toFile());
         return generatedFiles;
     }
 
@@ -27,7 +28,7 @@ public class GeneratedSourcesManagerJava extends GeneratedSourcesManager {
         List<File> generatedFiles = new ArrayList<>();
         String path = trimFileFromPath(abstractPlan.getRelativeDirectory());
         String filename = StringUtils.capitalize(abstractPlan.getName()) + abstractPlan.getId() + ".java";
-        generatedFiles.add(Paths.get(getBaseDir(), path, filename).toFile());
+        generatedFiles.add(Paths.get(getSourcePath(), path, filename).toFile());
         return generatedFiles;
     }
 
@@ -35,7 +36,7 @@ public class GeneratedSourcesManagerJava extends GeneratedSourcesManager {
         List<File> generatedFiles = new ArrayList<>();
         String path = trimFileFromPath(abstractPlan.getRelativeDirectory());
         String filename = StringUtils.capitalize(abstractPlan.getName()) + abstractPlan.getId() + "Constraints.java";
-        generatedFiles.add(Paths.get(getBaseDir(), path, "constraints", filename).toFile());
+        generatedFiles.add(Paths.get(getSourcePath(), path, "constraints", filename).toFile());
         return generatedFiles;
     }
 
@@ -43,7 +44,7 @@ public class GeneratedSourcesManagerJava extends GeneratedSourcesManager {
         List<File> generatedFiles = new ArrayList<>();
         String path = trimFileFromPath(behaviour.getRelativeDirectory());
         String filename = StringUtils.capitalize(behaviour.getName()) + behaviour.getId() + "Constraints.java";
-        generatedFiles.add(Paths.get(getBaseDir(), path, "constraints", filename).toFile());
+        generatedFiles.add(Paths.get(getSourcePath(), path, "constraints", filename).toFile());
         return generatedFiles;
     }
 }

@@ -1,9 +1,11 @@
-package de.unikassel.vs.alica.codegen.java;
+package de.unikassel.vs.alica.codegen.java.templates;
+
+import de.unikassel.vs.alica.codegen.templates.IDomainTemplates;
 
 
-class DomainTemplates {
+class DomainTemplates implements IDomainTemplates {
 
-    def String domainBehaviour() '''
+    override String domainBehaviour() '''
 package de.uniks.vs.alica.code.gen.domain;
 
 import de.uniks.vs.alica.code.impl.domain.DomainBehaviourImpl;
@@ -18,10 +20,11 @@ public abstract class DomainBehaviour extends BasicBehaviour {
         super(name);
         this.id = id;
         this.context = context;
+        this.impl = new DomainBehaviourImpl(this);
     }
 
     public Object getContext() {
-        return context;
+        return this.context;
     }
 
     public long getOwnId() {
@@ -30,7 +33,7 @@ public abstract class DomainBehaviour extends BasicBehaviour {
 }
 '''
 
-    def String domainBehaviourImpl() '''
+    override String domainBehaviourImpl() '''
 package de.uniks.vs.alica.code.impl.domain;
 
 import de.uniks.vs.alica.code.gen.domain.DomainBehaviour;
@@ -52,7 +55,7 @@ public class DomainBehaviourImpl {
 }
 '''
 
-    def String domainCondition() '''
+    override String domainCondition() '''
 package de.uniks.vs.alica.code.gen.domain;
 
 import de.uniks.vs.alica.code.impl.domain.DomainConditionImpl;
@@ -67,13 +70,15 @@ public abstract class DomainCondition extends BasicCondition {
 }
 '''
 
-    def String domainConditionImpl() '''
+    override String domainConditionImpl() '''
 package de.uniks.vs.alica.code.impl.domain;
 
 import de.uniks.vs.jalica.engine.RunningPlan;
 
 public class DomainConditionImpl {
-    public DomainConditionImpl() {}
+    public DomainConditionImpl() {
+
+    }
 
     public boolean evaluate(RunningPlan rp) {
         System.out.println("DC-Impl: Missing link");

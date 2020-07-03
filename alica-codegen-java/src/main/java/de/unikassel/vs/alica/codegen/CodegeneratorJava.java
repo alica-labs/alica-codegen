@@ -1,8 +1,6 @@
 package de.unikassel.vs.alica.codegen;
 
 import de.unikassel.vs.alica.codegen.java.GeneratorImplJava;
-import de.unikassel.vs.alica.codegen.plugin.IPlugin;
-import de.unikassel.vs.alica.codegen.plugin.PluginManager;
 import de.unikassel.vs.alica.planDesigner.alicamodel.AbstractPlan;
 import de.unikassel.vs.alica.planDesigner.alicamodel.Behaviour;
 import de.unikassel.vs.alica.planDesigner.alicamodel.Condition;
@@ -11,7 +9,6 @@ import de.unikassel.vs.alica.planDesigner.alicamodel.Plan;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -50,15 +47,9 @@ public class CodegeneratorJava extends Codegenerator {
             if (Files.notExists(Paths.get(codeGenerationDestination))) {
                 Files.createDirectories(Paths.get(codeGenerationDestination));
             }
-
         } catch (IOException e) {
             LOG.error("Could not find expression validator path! ", e);
             throw new RuntimeException(e);
-        }
-
-        IPlugin<?> defaultPlugin = PluginManager.getInstance().getDefaultPlugin();
-        if (defaultPlugin != null) {
-            defaultPlugin.setProtectedRegions(new HashMap<>());
         }
 
         languageSpecificGenerator.createDomainBehaviour();
@@ -73,7 +64,7 @@ public class CodegeneratorJava extends Codegenerator {
         languageSpecificGenerator.createPlans(plans);
 
         for (Behaviour behaviour : behaviours) {
-            languageSpecificGenerator.createBehaviour(behaviour);
+            languageSpecificGenerator.createBehaviours(behaviour);
             languageSpecificGenerator.createConstraintsForBehaviour(behaviour);
         }
         LOG.info("Generated all files successfully");

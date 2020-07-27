@@ -71,13 +71,13 @@ public class CodegenJavaTest {
         String genPath = tmpPath + File.separator + "src" + File.separator + "main" + File.separator + "java";
         GeneratedSourcesManagerJava generatedSourcesManager = new GeneratedSourcesManagerJava();
         generatedSourcesManager.setSourcePath(genPath);
-        CodegeneratorJava codegenerator = new CodegeneratorJava(
-                plans,
-                behaviours,
-                conditions,
-                genPath,
-                generatedSourcesManager);
-        codegenerator.generate();
+        CodegeneratorJava codeGenerator = new CodegeneratorJava();
+        codeGenerator.setPlans(plans);
+        codeGenerator.setBehaviours(behaviours);
+        codeGenerator.setConditions(conditions);
+        codeGenerator.setDestination(genPath);
+        codeGenerator.setGeneratedSourcesManager(generatedSourcesManager);
+        codeGenerator.generate();
 
         // copy engine folder from resources to destination
         URL url = CodegenJavaTest.class.getResource("testProject");

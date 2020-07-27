@@ -14,33 +14,12 @@ import java.util.List;
 public class Codegenerator implements ICodegenerator {
     static final Logger LOG = LogManager.getLogger(Codegenerator.class);
 
-    final IGenerator languageSpecificGenerator;
-    final String codeGenerationDestination;
-    final GeneratedSourcesManager generatedSourcesManager;
-
-    List<Plan> plans;
-    List<Behaviour> behaviours;
-    List<Condition> conditions;
-
-    public Codegenerator(IGenerator generatorImpl,
-                         List<Plan> plans,
-                         List<Behaviour> behaviours,
-                         List<Condition> conditions,
-                         String destination,
-                         GeneratedSourcesManager generatedSourcesManager
-    ) {
-        languageSpecificGenerator = generatorImpl;
-        languageSpecificGenerator.setGeneratedSourcesManager(generatedSourcesManager);
-        codeGenerationDestination = destination;
-        this.generatedSourcesManager = generatedSourcesManager;
-
-        this.plans = plans;
-        Collections.sort(plans, new PlanElementComparator());
-        this.behaviours = behaviours;
-        Collections.sort(behaviours, new PlanElementComparator());
-        this.conditions = conditions;
-        Collections.sort(conditions, new PlanElementComparator());
-    }
+    protected IGenerator generator;
+    protected List<Plan> plans;
+    protected List<Behaviour> behaviours;
+    protected List<Condition> conditions;
+    protected String destination;
+    protected GeneratedSourcesManager generatedSourcesManager;
 
     @Override
     public void generate() {
@@ -68,18 +47,51 @@ public class Codegenerator implements ICodegenerator {
     public void generate(Plan plan) {
         List<File> generatedFiles = generatedSourcesManager.getGeneratedConditionFilesForPlan(plan);
         generatedFiles.addAll(generatedSourcesManager.getGeneratedConstraintFilesForPlan(plan));
-        languageSpecificGenerator.createConstraintsForPlan(plan);
-        languageSpecificGenerator.createPlan(plan);
-        languageSpecificGenerator.createConditionCreator(plans, behaviours, conditions);
-        languageSpecificGenerator.createUtilityFunctionCreator(plans);
+        generator.createConstraintsForPlan(plan);
+        generator.createPlan(plan);
+        generator.createConditionCreator(plans, behaviours, conditions);
+        generator.createUtilityFunctionCreator(plans);
     }
 
     @Override
     public void generate(Behaviour behaviour) {
         List<File> generatedFiles = generatedSourcesManager.getGeneratedFilesForBehaviour(behaviour);
         generatedFiles.addAll(generatedSourcesManager.getGeneratedConstraintFilesForBehaviour(behaviour));
-        languageSpecificGenerator.createBehaviourCreator(behaviours);
-        languageSpecificGenerator.createConstraintsForBehaviour(behaviour);
-        languageSpecificGenerator.createBehaviours(behaviour);
+        generator.createBehaviourCreator(behaviours);
+        generator.createConstraintsForBehaviour(behaviour);
+        generator.createBehaviours(behaviour);
+    }
+
+    public void setGenerator(IGenerator<?> generator) {
+        this.generator = generator;
+        if (this.generatedSourcesManager != null) {
+            this.generator.setGeneratedSourcesManager(this.generatedSourcesManager);
+        }
+    }
+
+    public void setPlans(List<Plan> plans) {
+        this.plans = plans;
+        Collections.sort(plans, new PlanElementComparator());
+    }
+
+    public void setBehaviours(List<Behaviour> behaviours) {
+        this.behaviours = behaviours;
+        Collections.sort(behaviours, new PlanElementComparator());
+    }
+
+    public void setConditions(List<Condition> conditions) {
+        this.conditions = conditions;
+        Collections.sort(conditions, new PlanElementComparator());
+    }
+
+    public void setDestination(String destination) {
+        this.destination = destination;
+    }
+
+    public void setGeneratedSourcesManager(GeneratedSourcesManager generatedSourcesManager) {
+        this.generatedSourcesManager = generatedSourcesManager;
+        if (this.generator != null) {
+            this.generator.setGeneratedSourcesManager(generatedSourcesManager);
+        }
     }
 }

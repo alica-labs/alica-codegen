@@ -63,8 +63,9 @@ public class PluginManager {
         for (File file: files) {
             try {
                 loadPlugin(file);
+                LOG.debug("Loaded plugin: " + file.toString());
             } catch (Exception e) {
-                LOG.warn("Skipping plugin: " + file.toString());
+                LOG.debug("Skipped plugin: " + file.toString());
             }
         }
 

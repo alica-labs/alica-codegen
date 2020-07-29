@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public abstract class GeneratedSourcesManager implements IGeneratedSourcesManager {
-    String sourcePath;
+    protected String sourcePath;
     private String editorExecutablePath;
     private Map<Long, Integer> linesForGeneratedElements;
 

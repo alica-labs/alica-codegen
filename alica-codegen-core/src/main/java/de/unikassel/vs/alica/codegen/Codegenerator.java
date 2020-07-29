@@ -12,7 +12,7 @@ import java.util.Collections;
 import java.util.List;
 
 public class Codegenerator implements ICodegenerator {
-    static final Logger LOG = LogManager.getLogger(Codegenerator.class);
+    protected final Logger LOG = LogManager.getLogger(this.getClass());
 
     protected IGenerator generator;
     protected List<Plan> plans;
@@ -60,13 +60,6 @@ public class Codegenerator implements ICodegenerator {
         generator.createBehaviourCreator(behaviours);
         generator.createConstraintsForBehaviour(behaviour);
         generator.createBehaviours(behaviour);
-    }
-
-    public void setGenerator(IGenerator<?> generator) {
-        this.generator = generator;
-        if (this.generatedSourcesManager != null) {
-            this.generator.setGeneratedSourcesManager(this.generatedSourcesManager);
-        }
     }
 
     public void setPlans(List<Plan> plans) {

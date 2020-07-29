@@ -20,7 +20,7 @@ import java.nio.file.Paths;
 public class CodegeneratorJava extends Codegenerator {
 
     public CodegeneratorJava() {
-        this.setGenerator(new GeneratorImplJava());
+        this.generator = new GeneratorImplJava();
     }
 
     /**

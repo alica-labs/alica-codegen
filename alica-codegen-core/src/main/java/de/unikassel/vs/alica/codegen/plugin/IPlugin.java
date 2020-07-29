@@ -9,7 +9,7 @@ import java.io.IOException;
 /**
  * This interface defines the basic functionality that a plugin has to implement.
  */
-public interface IPlugin<T> {
+public interface IPlugin {
     /**
      * Returns the plugin view that will be embedded into the properties view of the newCondition
      * @return the

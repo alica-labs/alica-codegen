@@ -1,5 +1,6 @@
 package de.unikassel.vs.alica.codegen.python;
 
+import de.unikassel.vs.alica.codegen.GeneratedSourcesManager;
 import de.unikassel.vs.alica.codegen.GeneratedSourcesManagerPython;
 import de.unikassel.vs.alica.codegen.GeneratorImpl;
 import de.unikassel.vs.alica.codegen.IGenerator;
@@ -20,7 +21,7 @@ import de.unikassel.vs.alica.codegen.python.templates.*;
  * Code generator for Python. It uses the XtendTemplates for creating the code.
  * After this the created strings are written to disk according to {@link GeneratedSourcesManagerPython}.
  */
-public class GeneratorImplPython extends GeneratorImpl implements IGenerator<GeneratedSourcesManagerPython>  {
+public class GeneratorImplPython extends GeneratorImpl implements IGenerator  {
     private final CodegenHelperPython codegenHelper;
 
     public GeneratorImplPython() {
@@ -32,9 +33,11 @@ public class GeneratorImplPython extends GeneratorImpl implements IGenerator<Gen
         codegenHelper.setTransitionTemplates(new TransitionTemplates());
     }
 
-    public void setGeneratedSourcesManager(GeneratedSourcesManagerPython generatedSourcesManager) {
-        codegenHelper.setGeneratedSourcesManager(generatedSourcesManager);
-        String baseDir = generatedSourcesManager.getSourcePath();
+    public void setGeneratedSourcesManager(GeneratedSourcesManager generatedSourcesManager) {
+        GeneratedSourcesManagerPython generatedSourcesManagerPython = (GeneratedSourcesManagerPython) generatedSourcesManager;
+
+        codegenHelper.setGeneratedSourcesManager(generatedSourcesManagerPython);
+        String baseDir = generatedSourcesManagerPython.getSourcePath();
         codegenHelper.setBaseDir(baseDir);
     }
 

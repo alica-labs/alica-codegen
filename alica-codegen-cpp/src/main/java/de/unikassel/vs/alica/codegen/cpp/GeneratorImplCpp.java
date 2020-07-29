@@ -1,9 +1,6 @@
 package de.unikassel.vs.alica.codegen.cpp;
 
-import de.unikassel.vs.alica.codegen.CodegenHelper;
-import de.unikassel.vs.alica.codegen.GeneratedSourcesManagerCpp;
-import de.unikassel.vs.alica.codegen.GeneratorImpl;
-import de.unikassel.vs.alica.codegen.IGenerator;
+import de.unikassel.vs.alica.codegen.*;
 import de.unikassel.vs.alica.planDesigner.alicamodel.*;
 
 /**
@@ -22,7 +19,7 @@ import java.util.List;
  * Code generator for Java. It uses the XtendTemplates for creating the code.
  * After this the created strings are written to disk according to {@link GeneratedSourcesManagerCpp}.
  */
-public class GeneratorImplCpp extends GeneratorImpl implements IGenerator<GeneratedSourcesManagerCpp> {
+public class GeneratorImplCpp extends GeneratorImpl implements IGenerator {
     private final CodegenHelper codegenHelperHeader;
     private final CodegenHelper codegenHelperSource;
 
@@ -42,13 +39,15 @@ public class GeneratorImplCpp extends GeneratorImpl implements IGenerator<Genera
         codegenHelperSource.setTransitionTemplates(new TransitionTemplatesSource());
     }
 
-    public void setGeneratedSourcesManager(GeneratedSourcesManagerCpp generatedSourcesManager) {
-        codegenHelperHeader.setGeneratedSourcesManager(generatedSourcesManager);
-        String headerPath = generatedSourcesManager.getHeaderPath();
+    public void setGeneratedSourcesManager(GeneratedSourcesManager generatedSourcesManager) {
+        GeneratedSourcesManagerCpp generatedSourcesManagerCpp = (GeneratedSourcesManagerCpp) generatedSourcesManager;
+
+        codegenHelperHeader.setGeneratedSourcesManager(generatedSourcesManagerCpp);
+        String headerPath = generatedSourcesManagerCpp.getHeaderPath();
         codegenHelperHeader.setBaseDir(headerPath);
 
-        codegenHelperSource.setGeneratedSourcesManager(generatedSourcesManager);
-        String sourcePath = generatedSourcesManager.getSourcePath();
+        codegenHelperSource.setGeneratedSourcesManager(generatedSourcesManagerCpp);
+        String sourcePath = generatedSourcesManagerCpp.getSourcePath();
         codegenHelperSource.setBaseDir(sourcePath);
     }
 

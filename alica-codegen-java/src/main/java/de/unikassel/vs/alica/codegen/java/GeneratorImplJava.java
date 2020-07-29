@@ -1,9 +1,6 @@
 package de.unikassel.vs.alica.codegen.java;
 
-import de.unikassel.vs.alica.codegen.CodegenHelper;
-import de.unikassel.vs.alica.codegen.GeneratedSourcesManagerJava;
-import de.unikassel.vs.alica.codegen.GeneratorImpl;
-import de.unikassel.vs.alica.codegen.IGenerator;
+import de.unikassel.vs.alica.codegen.*;
 import de.unikassel.vs.alica.planDesigner.alicamodel.*;
 /**
  * The following lines must be the following. If they are not, they must be re-inserted.
@@ -21,7 +18,7 @@ import java.util.List;
  * Code generator for Java. It uses the XtendTemplates for creating the code.
  * After this the created strings are written to disk according to {@link GeneratedSourcesManagerJava}.
  */
-public class GeneratorImplJava extends GeneratorImpl implements IGenerator<GeneratedSourcesManagerJava> {
+public class GeneratorImplJava extends GeneratorImpl implements IGenerator {
     private final CodegenHelper codegenHelper;
 
     public GeneratorImplJava() {
@@ -33,9 +30,11 @@ public class GeneratorImplJava extends GeneratorImpl implements IGenerator<Gener
         codegenHelper.setTransitionTemplates(new TransitionTemplates());
     }
 
-    public void setGeneratedSourcesManager(GeneratedSourcesManagerJava generatedSourcesManager) {
-        codegenHelper.setGeneratedSourcesManager(generatedSourcesManager);
-        String baseDir = generatedSourcesManager.getSourcePath();
+    public void setGeneratedSourcesManager(GeneratedSourcesManager generatedSourcesManager) {
+        GeneratedSourcesManagerJava generatedSourcesManagerJava = (GeneratedSourcesManagerJava) generatedSourcesManager;
+
+        codegenHelper.setGeneratedSourcesManager(generatedSourcesManagerJava);
+        String baseDir = generatedSourcesManagerJava.getSourcePath();
         codegenHelper.setBaseDir(baseDir);
     }
 

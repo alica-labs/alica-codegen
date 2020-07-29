@@ -35,8 +35,8 @@ public class PluginManager {
     }
 
     private static Logger LOG = LogManager.getLogger(PluginManager.class);
-    private final Map<String, IPlugin<?>> availablePlugins;
-    private IPlugin<?> defaultPlugin;
+    private final Map<String, IPlugin> availablePlugins;
+    private IPlugin defaultPlugin;
 
     /**
      * The PluginManager initializes its plugin list at construction.
@@ -81,7 +81,7 @@ public class PluginManager {
 
         URLClassLoader urlClassLoader = new URLClassLoader(new URL[]{file.toURI().toURL()});
         Class<?> mainClass = urlClassLoader.loadClass(main);
-        IPlugin<?> plugin = (IPlugin<?>) mainClass.getDeclaredConstructor().newInstance();
+        IPlugin plugin = (IPlugin) mainClass.getDeclaredConstructor().newInstance();
         availablePlugins.put(file.getName(), plugin);
     }
 
@@ -106,7 +106,7 @@ public class PluginManager {
 
     public ObservableList<String> getAvailablePluginNames() {
         ObservableList<String> pluginNamesList = FXCollections.observableArrayList();
-        for (IPlugin<?> plugin: availablePlugins.values()) {
+        for (IPlugin plugin: availablePlugins.values()) {
             pluginNamesList.add(plugin.getName());
         }
         return pluginNamesList;
@@ -118,8 +118,8 @@ public class PluginManager {
      * @param name of the wanted plugin
      * @return plugin with matching name otherwise null
      */
-    public IPlugin<?> getPlugin(String name) {
-        for (IPlugin<?> plugin: availablePlugins.values()) {
+    public IPlugin getPlugin(String name) {
+        for (IPlugin plugin: availablePlugins.values()) {
             if (plugin.getName().equals(name)) {
                 return plugin;
             }
@@ -133,7 +133,7 @@ public class PluginManager {
      * @param defaultPluginName the plugin that should be active now
      */
     public void setDefaultPlugin(String defaultPluginName) {
-        for (IPlugin<?> plugin: availablePlugins.values()) {
+        for (IPlugin plugin: availablePlugins.values()) {
             if (plugin.getName().equals(defaultPluginName)) {
                 this.defaultPlugin = plugin;
                 return;
@@ -146,7 +146,7 @@ public class PluginManager {
      *
      * @return The default plugin
      */
-    public IPlugin<?> getDefaultPlugin() {
+    public IPlugin getDefaultPlugin() {
         return defaultPlugin;
     }
 }

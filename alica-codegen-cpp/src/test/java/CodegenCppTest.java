@@ -70,13 +70,13 @@ public class CodegenCppTest {
         String genPath = tmpPath;
         GeneratedSourcesManagerCpp generatedSourcesManager = new GeneratedSourcesManagerCpp();
         generatedSourcesManager.setSourcePath(genPath);
-        CodegeneratorCpp codegenerator = new CodegeneratorCpp(
-                plans,
-                behaviours,
-                conditions,
-                genPath,
-                generatedSourcesManager);
-        codegenerator.generate();
+        CodegeneratorCpp codeGenerator = new CodegeneratorCpp();
+        codeGenerator.setPlans(plans);
+        codeGenerator.setBehaviours(behaviours);
+        codeGenerator.setConditions(conditions);
+        codeGenerator.setDestination(genPath);
+        codeGenerator.setGeneratedSourcesManager(generatedSourcesManager);
+        codeGenerator.generate();
 
         // copy engine folder from resources to destination
         URL url = CodegenCppTest.class.getResource("testProject");

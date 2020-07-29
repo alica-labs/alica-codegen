@@ -70,13 +70,13 @@ public class CodegenPythonTest {
         // generate code
         GeneratedSourcesManagerPython generatedSourcesManager = new GeneratedSourcesManagerPython();
         generatedSourcesManager.setSourcePath(tmpPath);
-        CodegeneratorPython codegenerator = new CodegeneratorPython(
-                plans,
-                behaviours,
-                conditions,
-                tmpPath,
-                generatedSourcesManager);
-        codegenerator.generate();
+        CodegeneratorPython codeGenerator = new CodegeneratorPython();
+        codeGenerator.setPlans(plans);
+        codeGenerator.setBehaviours(behaviours);
+        codeGenerator.setConditions(conditions);
+        codeGenerator.setDestination(tmpPath);
+        codeGenerator.setGeneratedSourcesManager(generatedSourcesManager);
+        codeGenerator.generate();
 
         // copy engine folder from resources to destination
         URL url = CodegenPythonTest.class.getResource("testProject");

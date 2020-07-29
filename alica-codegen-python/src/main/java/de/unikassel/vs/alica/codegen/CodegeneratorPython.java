@@ -1,18 +1,12 @@
 package de.unikassel.vs.alica.codegen;
 
 import de.unikassel.vs.alica.codegen.python.GeneratorImplPython;
-import de.unikassel.vs.alica.codegen.plugin.IPlugin;
-import de.unikassel.vs.alica.codegen.plugin.PluginManager;
 import de.unikassel.vs.alica.planDesigner.alicamodel.AbstractPlan;
 import de.unikassel.vs.alica.planDesigner.alicamodel.Behaviour;
-import de.unikassel.vs.alica.planDesigner.alicamodel.Condition;
-import de.unikassel.vs.alica.planDesigner.alicamodel.Plan;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.List;
 
 /**
  * General Code Generator. It manages calling the correct {@link IGenerator} implementation
@@ -25,20 +19,8 @@ import java.util.List;
  */
 public class CodegeneratorPython extends Codegenerator {
 
-    public CodegeneratorPython(
-            List<Plan> plans,
-            List<Behaviour> behaviours,
-            List<Condition> conditions,
-            String destination,
-            GeneratedSourcesManagerPython generatedSourcesManager
-    ) {
-        super(new GeneratorImplPython(),
-                plans,
-                behaviours,
-                conditions,
-                destination,
-                generatedSourcesManager
-        );
+    public CodegeneratorPython() {
+        this.generator = new GeneratorImplPython();
     }
 
     /**
@@ -47,29 +29,28 @@ public class CodegeneratorPython extends Codegenerator {
     // TODO: To be reviewed and maybe adapted, because of MVC pattern adaption.
     public void generate() {
         try {
-            if (Files.notExists(Paths.get(codeGenerationDestination))) {
-                Files.createDirectories(Paths.get(codeGenerationDestination));
+            if (Files.notExists(Paths.get(destination))) {
+                Files.createDirectories(Paths.get(destination));
             }
-
         } catch (IOException e) {
             LOG.error("Could not find expression validator path! ", e);
             throw new RuntimeException(e);
         }
 
-        languageSpecificGenerator.createDomainBehaviour();
-        languageSpecificGenerator.createDomainCondition();
+        generator.createDomainBehaviour();
+        generator.createDomainCondition();
 
-        languageSpecificGenerator.createUtilityFunctionCreator(plans);
-        languageSpecificGenerator.createBehaviourCreator(behaviours);
-        languageSpecificGenerator.createConditionCreator(plans, behaviours, conditions);
-        languageSpecificGenerator.createConstraintCreator(plans, behaviours, conditions);
+        generator.createUtilityFunctionCreator(plans);
+        generator.createBehaviourCreator(behaviours);
+        generator.createConditionCreator(plans, behaviours, conditions);
+        generator.createConstraintCreator(plans, behaviours, conditions);
 
-        languageSpecificGenerator.createConstraints(plans);
-        languageSpecificGenerator.createPlans(plans);
+        generator.createConstraints(plans);
+        generator.createPlans(plans);
 
         for (Behaviour behaviour : behaviours) {
-            languageSpecificGenerator.createBehaviours(behaviour);
-            languageSpecificGenerator.createConstraintsForBehaviour(behaviour);
+            generator.createBehaviours(behaviour);
+            generator.createConstraintsForBehaviour(behaviour);
         }
         LOG.info("Generated all files successfully");
     }

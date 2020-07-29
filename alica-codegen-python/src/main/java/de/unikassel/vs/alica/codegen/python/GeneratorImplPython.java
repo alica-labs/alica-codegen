@@ -4,7 +4,6 @@ import de.unikassel.vs.alica.codegen.GeneratedSourcesManager;
 import de.unikassel.vs.alica.codegen.GeneratedSourcesManagerPython;
 import de.unikassel.vs.alica.codegen.GeneratorImpl;
 import de.unikassel.vs.alica.codegen.IGenerator;
-import de.unikassel.vs.alica.codegen.python.templates.*;
 import de.unikassel.vs.alica.planDesigner.alicamodel.*;
 import org.apache.commons.lang3.StringUtils;
 

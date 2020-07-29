@@ -18,12 +18,6 @@
             <artifactId>model</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-        <dependency>
-            <!-- https://github.com/dasys-lab/alica-plan-designer-fx -->
-            <groupId>de.unikassel.vs.alica</groupId>
-            <artifactId>modelmanagement</artifactId>
-            <version>1.0-SNAPSHOT</version>
-        </dependency>
 
         <dependency>
             <!-- https://mvnrepository.com/artifact/org.eclipse.xtext/org.eclipse.xtext.xbase.lib -->

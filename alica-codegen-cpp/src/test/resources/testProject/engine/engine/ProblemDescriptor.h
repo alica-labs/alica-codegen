@@ -1,5 +1,7 @@
 #pragma once
 
-class ProblemDescriptor {
+namespace alica {
+    class ProblemDescriptor {
 
-};
+    };
+}

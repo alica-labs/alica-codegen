@@ -9,11 +9,11 @@ import de.unikassel.vs.alica.codegen.templates.ITransitionTemplates;
 class TransitionTemplatesSource implements ITransitionTemplates {
 
     override String constraintPlanTransitionPreCondition(Plan plan, Transition transition) '''
-#include "Constraint«transition.preCondition.id»Impl.h"
+#include "constraints/Constraint«transition.preCondition.id».h"
+#include "constraints/Constraint«transition.preCondition.id»Impl.h"
 #include <engine/BasicConstraint.h>
 #include <engine/ProblemDescriptor.h>
 #include <engine/RunningPlan.h>
-#include "Constraint«transition.preCondition.id».h"
 
 namespace alica {
     long Constraint«transition.preCondition.id»::id = «transition.preCondition.id»;
@@ -45,8 +45,8 @@ namespace alica {
 '''
 
     override String transitionPreConditionPlan(State state, Transition transition) '''
-#include "PreCondition1575724578855.h"
-#include "PreCondition1575724578855Impl.h"
+#include "conditions/PreCondition«transition.preCondition.id».h"
+#include "conditions/PreCondition«transition.preCondition.id»Impl.h"
 #include <engine/RunningPlan.h>
 
 namespace alica {

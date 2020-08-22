@@ -1,5 +1,7 @@
 #pragma once
 
-class BasicCondition {
+namespace alica {
+    class BasicCondition {
 
-};
+    };
+}

@@ -1,5 +1,7 @@
 #pragma once
 
-class IConstraintCreator {
+namespace alica {
+    class IConstraintCreator {
 
-};
+    };
+}

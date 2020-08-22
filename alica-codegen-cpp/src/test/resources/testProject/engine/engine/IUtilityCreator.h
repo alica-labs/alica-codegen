@@ -1,5 +1,7 @@
 #pragma once
 
-class IUtilityCreator {
+namespace alica {
+    class IUtilityCreator {
 
-};
+    };
+}

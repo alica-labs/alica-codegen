@@ -9,10 +9,11 @@ class BehaviourTemplatesSource implements IBehaviourTemplates {
 
     override String behaviour(Behaviour behaviour) '''
 «IF (behaviour.relativeDirectory.isEmpty)»
-    #include "«StringUtils.capitalize(behaviour.name)».h"
+    #include "behaviours/«StringUtils.capitalize(behaviour.name)».h"
 «ELSE»
-    #include "«behaviour.relativeDirectory»/«StringUtils.capitalize(behaviour.name)».h"
+    #include "behaviours/«behaviour.relativeDirectory»/«StringUtils.capitalize(behaviour.name)».h"
 «ENDIF»
+#include "behaviours/«StringUtils.capitalize(behaviour.name)»Impl.h"
 
 namespace alica {
     «StringUtils.capitalize(behaviour.name)»::«StringUtils.capitalize(behaviour.name)»(void* context): DomainBehaviour("«behaviour.name»", «behaviour.id», context) {
@@ -30,7 +31,8 @@ namespace alica {
 '''
 
     override String behaviourImpl(Behaviour behaviour) '''
-#include "«StringUtils.capitalize(behaviour.name)»Impl.h"
+#include "behaviours/«StringUtils.capitalize(behaviour.name)»Impl.h"
+#include "domain/DomainBehaviour.h"
 
 namespace alica {
     «StringUtils.capitalize(behaviour.name)»Impl::«StringUtils.capitalize(behaviour.name)»Impl(DomainBehaviour* domain): DomainBehaviourImpl(domain) {
@@ -49,9 +51,9 @@ namespace alica {
 
     override String behaviourCondition(Behaviour behaviour) '''
 «IF (behaviour.relativeDirectory.isEmpty)»
-    #include "«StringUtils.capitalize(behaviour.name)»«behaviour.id».h"
+    #include "behaviours/«StringUtils.capitalize(behaviour.name)»«behaviour.id».h"
 «ELSE»
-    #include "«behaviour.relativeDirectory»/«StringUtils.capitalize(behaviour.name)»«behaviour.id».h"
+    #include "behaviours/«behaviour.relativeDirectory»/«StringUtils.capitalize(behaviour.name)»«behaviour.id».h"
 «ENDIF»
 
 namespace alica {
@@ -60,7 +62,9 @@ namespace alica {
 '''
 
     override String preConditionBehaviour(Behaviour behaviour) '''
-#include <PreCondition«behaviour.preCondition.id».h>
+#include "conditions/PreCondition«behaviour.preCondition.id».h"
+#include "conditions/PreCondition«behaviour.preCondition.id»Impl.h"
+#include <engine/RunningPlan.h>
 
 namespace alica {
     long PreCondition«behaviour.preCondition.id»::id = «behaviour.preCondition.id»;
@@ -93,7 +97,9 @@ namespace alica {
 '''
 
     override String runtimeConditionBehaviour(Behaviour behaviour) '''
-#include <RunTimeCondition«behaviour.runtimeCondition.id».h>
+#include "conditions/RunTimeCondition«behaviour.runtimeCondition.id».h"
+#include "conditions/RunTimeCondition«behaviour.runtimeCondition.id»Impl.h"
+#include <engine/RunningPlan.h>
 
 namespace alica {
     long RunTimeCondition«behaviour.runtimeCondition.id»::id = «behaviour.runtimeCondition.id»;
@@ -126,7 +132,9 @@ namespace alica {
 '''
 
     override String postConditionBehaviour(Behaviour behaviour) '''
-#include <PostCondition«behaviour.postCondition.id».h>
+#include "conditions/PostCondition«behaviour.postCondition.id».h"
+#include "conditions/PostCondition«behaviour.postCondition.id»Impl.h"
+#include <engine/RunningPlan.h>
 
 namespace alica {
     long PostCondition«behaviour.postCondition.id»::id = «behaviour.postCondition.id»;
@@ -160,9 +168,9 @@ namespace alica {
 
     override String constraints(Behaviour behaviour) '''
 «IF (behaviour.relativeDirectory.isEmpty)»
-    #include "«StringUtils.capitalize(behaviour.name)»«behaviour.id»Constraints.h"
+    #include "constraints/«StringUtils.capitalize(behaviour.name)»«behaviour.id»Constraints.h"
 «ELSE»
-    #include "«behaviour.relativeDirectory»/«StringUtils.capitalize(behaviour.name)»«behaviour.id»Constraints.h"
+    #include "constraints/«behaviour.relativeDirectory»/«StringUtils.capitalize(behaviour.name)»«behaviour.id»Constraints.h"
 «ENDIF»
 
 namespace alica {
@@ -171,11 +179,11 @@ namespace alica {
 '''
 
     override String constraintPreCondition(Behaviour behaviour) '''
-#include "Constraint«behaviour.preCondition.id»Impl.h"
+#include "constraints/Constraint«behaviour.preCondition.id».h"
+#include "constraints/Constraint«behaviour.preCondition.id»Impl.h"
 #include <engine/BasicConstraint.h>
 #include <engine/ProblemDescriptor.h>
 #include <engine/RunningPlan.h>
-#include "Constraint«behaviour.preCondition.id».h"
 
 namespace alica {
     long Constraint«behaviour.preCondition.id»::id = «behaviour.preCondition.id»;
@@ -191,7 +199,9 @@ namespace alica {
 '''
 
     override String constraintPreConditionImpl(Behaviour behaviour) '''
-#include "Constraint«behaviour.preCondition.id»Impl.h"
+#include "constraints/Constraint«behaviour.preCondition.id»Impl.h"
+#include <engine/ProblemDescriptor.h>
+#include <engine/RunningPlan.h>
 
 namespace alica {
     long Constraint«behaviour.preCondition.id»Impl::id = «behaviour.preCondition.id»;
@@ -207,10 +217,10 @@ namespace alica {
 '''
 
     override String constraintRuntimeCondition(Behaviour behaviour) '''
-#include "Constraint«behaviour.runtimeCondition.id»Impl.h"
+#include "constraints/Constraint«behaviour.runtimeCondition.id».h"
+#include "constraints/Constraint«behaviour.runtimeCondition.id»Impl.h"
 #include <engine/ProblemDescriptor.h>
 #include <engine/RunningPlan.h>
-#include "Constraint«behaviour.runtimeCondition.id».h"
 
 namespace alica {
     long Constraint«behaviour.runtimeCondition.id»::id = «behaviour.runtimeCondition.id»;
@@ -226,7 +236,9 @@ namespace alica {
 '''
 
     override String constraintRuntimeConditionImpl(Behaviour behaviour) '''
-#include "Constraint«behaviour.runtimeCondition.id»Impl.h"
+#include "constraints/Constraint«behaviour.runtimeCondition.id»Impl.h"
+#include <engine/ProblemDescriptor.h>
+#include <engine/RunningPlan.h>
 
 namespace alica {
     long Constraint«behaviour.runtimeCondition.id»Impl::id = «behaviour.runtimeCondition.id»;
@@ -242,10 +254,10 @@ namespace alica {
 '''
 
     override String constraintPostCondition(Behaviour behaviour) '''
-#include "Constraint«behaviour.postCondition.id»Impl.h"
+#include "constraints/Constraint«behaviour.postCondition.id».h"
+#include "constraints/Constraint«behaviour.postCondition.id»Impl.h"
 #include <engine/ProblemDescriptor.h>
 #include <engine/RunningPlan.h>
-#include "Constraint«behaviour.postCondition.id».h"
 
 namespace alica {
     long Constraint«behaviour.postCondition.id»::id = «behaviour.postCondition.id»;
@@ -261,7 +273,9 @@ namespace alica {
 '''
 
     override String constraintPostConditionImpl(Behaviour behaviour) '''
-#include "Constraint«behaviour.postCondition.id»Impl.h"
+#include "constraints/Constraint«behaviour.postCondition.id»Impl.h"
+#include <engine/ProblemDescriptor.h>
+#include <engine/RunningPlan.h>
 
 namespace alica {
     long Constraint«behaviour.postCondition.id»Impl::id = «behaviour.postCondition.id»;

@@ -1,9 +1,12 @@
 #pragma once
 
-#include "BasicPlan.h"
-#include "UtilityFunction.h"
+#include "engine/UtilityFunction.h"
 
-class DefaultUtilityFunction: public UtilityFunction {
-    public:
-        DefaultUtilityFunction(BasicPlan* plan);
-};
+namespace alica {
+    class BasicPlan;
+
+    class DefaultUtilityFunction: public UtilityFunction {
+        public:
+            DefaultUtilityFunction(BasicPlan* plan) {};
+    };
+}

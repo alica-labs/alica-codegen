@@ -10,9 +10,9 @@ class PlanTemplatesSource implements IPlanTemplates {
 
     override String constraints(Plan plan) '''
 «IF (plan.relativeDirectory.isEmpty)»
-    #include "«StringUtils.capitalize(plan.name)»«plan.id»Constraints.h"
+    #include "constraints/«StringUtils.capitalize(plan.name)»«plan.id»Constraints.h"
 «ELSE»
-    #include "«plan.relativeDirectory»/«StringUtils.capitalize(plan.name)»«plan.id»Constraints.h"
+    #include "constraints/«plan.relativeDirectory»/«StringUtils.capitalize(plan.name)»«plan.id»Constraints.h"
 «ENDIF»
 
 namespace alica {
@@ -21,7 +21,8 @@ namespace alica {
 '''
 
     override String constraintPlanPreCondition(Plan plan) '''
-#include "Constraint«plan.preCondition.id».h"
+#include "constraints/Constraint«plan.preCondition.id».h"
+#include "constraints/Constraint«plan.preCondition.id»Impl.h"
 
 namespace alica {
     long Constraint«plan.preCondition.id»::id = «plan.preCondition.id»;
@@ -38,7 +39,9 @@ namespace alica {
 '''
 
     override String constraintPlanPreConditionImpl(Plan plan) '''
-#include "Constraint«plan.preCondition.id»Impl.h"
+#include "constraints/Constraint«plan.preCondition.id»Impl.h"
+#include <engine/ProblemDescriptor.h>
+#include <engine/RunningPlan.h>
 
 namespace alica {
     long Constraint«plan.preCondition.id»Impl::id = «plan.preCondition.id»;
@@ -54,11 +57,11 @@ namespace alica {
 '''
 
     override String constraintPlanRuntimeCondition(Plan plan) '''
-#include "Constraint«plan.runtimeCondition.id»Impl.h"
+#include "constraints/Constraint«plan.runtimeCondition.id».h"
+#include "constraints/Constraint«plan.runtimeCondition.id»Impl.h"
 #include <engine/BasicConstraint.h>
 #include <engine/ProblemDescriptor.h>
 #include <engine/RunningPlan.h>
-#include "Constraint«plan.runtimeCondition.id».h"
 
 namespace alica {
     long Constraint«plan.runtimeCondition.id»::id = «plan.runtimeCondition.id»;
@@ -74,7 +77,9 @@ namespace alica {
 '''
 
     override String constraintPlanRuntimeConditionImpl(Plan plan) '''
-#include "Constraint«plan.runtimeCondition.id»Impl.h"
+#include "constraints/Constraint«plan.runtimeCondition.id»Impl.h"
+#include <engine/ProblemDescriptor.h>
+#include <engine/RunningPlan.h>
 
 namespace alica {
     long Constraint«plan.runtimeCondition.id»Impl::id = «plan.runtimeCondition.id»;
@@ -90,7 +95,12 @@ namespace alica {
 '''
 
     override String utilityFunctionPlan(Plan plan) '''
-#include "UtilityFunction«plan.id».h"
+#include "utilityfunctions/UtilityFunction«plan.id».h"
+#include "utilityfunctions/UtilityFunction«plan.id»Impl.h"
+#include <engine/ProblemDescriptor.h>
+#include <engine/RunningPlan.h>
+#include <engine/BasicPlan.h>
+#include <engine/UtilityFunction.h>
 
 namespace alica {
     long UtilityFunction«plan.id»::id = «plan.id»;
@@ -106,7 +116,11 @@ namespace alica {
 '''
 
     override String utilityFunctionPlanImpl(Plan plan) '''
-#include "UtilityFunction«plan.id»Impl.h"
+#include "utilityfunctions/UtilityFunction«plan.id»Impl.h"
+#include <engine/BasicPlan.h>
+#include <engine/UtilityFunction.h>
+#include <engine/DefaultUtilityFunction.h>
+#include <iostream>
 
 namespace alica {
     long UtilityFunction«plan.id»Impl::id = «plan.id»;
@@ -122,7 +136,9 @@ namespace alica {
 '''
 
     override String preConditionPlan(Plan plan) '''
-#include <PreCondition«plan.preCondition.id».h>
+#include "conditions/PreCondition«plan.preCondition.id».h"
+#include "conditions/PreCondition«plan.preCondition.id»Impl.h"
+#include <engine/RunningPlan.h>
 
 namespace alica {
     long PreCondition«plan.preCondition.id»::id = «plan.preCondition.id»;
@@ -138,8 +154,10 @@ namespace alica {
 '''
 
     override String preConditionPlanImpl(Plan plan) '''
-#include "PreCondition«plan.preCondition.id»Impl.h"
-#include "PreCondition«plan.preCondition.id».h"
+#include "conditions/PreCondition«plan.preCondition.id».h"
+#include "conditions/PreCondition«plan.preCondition.id»Impl.h"
+#include <engine/RunningPlan.h>
+#include <iostream>
 
 namespace alica {
     long PreCondition«plan.preCondition.id»Impl::id = «plan.preCondition.id»;
@@ -148,7 +166,7 @@ namespace alica {
 
     }
 
-    bool PreCondition«plan.preCondition.id»::evaluate(RunningPlan* rp) {
+    bool PreCondition«plan.preCondition.id»Impl::evaluate(RunningPlan* rp) {
         std::cerr << "The PreCondition " << id << " in Plan «plan.getName» is not implement yet!" << std::endl;
         return false;
     }
@@ -156,7 +174,9 @@ namespace alica {
 '''
 
     override String runtimeConditionPlan(Plan plan) '''
-#include <RunTimeCondition«plan.runtimeCondition.id».h>
+#include "conditions/RunTimeCondition«plan.runtimeCondition.id».h"
+#include "conditions/RunTimeCondition«plan.runtimeCondition.id»Impl.h"
+#include <engine/RunningPlan.h>
 
 namespace alica {
     long RunTimeCondition«plan.runtimeCondition.id»::id = «plan.runtimeCondition.id»;

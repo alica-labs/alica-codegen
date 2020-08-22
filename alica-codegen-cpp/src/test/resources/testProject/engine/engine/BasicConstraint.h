@@ -1,5 +1,7 @@
 #pragma once
 
-class BasicConstraint {
+namespace alica {
+    class BasicConstraint {
 
-};
+    };
+}

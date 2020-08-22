@@ -1,5 +1,7 @@
 #pragma once
 
-class BasicPlan {
+namespace alica {
+    class BasicPlan {
 
-};
+    };
+}

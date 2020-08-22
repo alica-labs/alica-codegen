@@ -1,7 +1,9 @@
 #pragma once
 
-#include "BasicUtilityFunction.h"
+#include "engine/BasicUtilityFunction.h"
 
-class UtilityFunction: BasicUtilityFunction {
+namespace alica {
+    class UtilityFunction: public BasicUtilityFunction {
 
-};
+    };
+}

@@ -2,7 +2,9 @@
 
 #include <string>
 
-class BasicBehaviour {
-    public:
-        BasicBehaviour(std::string name);
-};
+namespace alica {
+    class BasicBehaviour {
+        public:
+            BasicBehaviour(std::string name) {};
+    };
+}

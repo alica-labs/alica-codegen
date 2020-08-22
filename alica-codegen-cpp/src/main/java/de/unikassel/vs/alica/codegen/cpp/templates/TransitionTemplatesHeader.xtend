@@ -11,12 +11,15 @@ class TransitionTemplatesHeader implements ITransitionTemplates {
     override String constraintPlanTransitionPreCondition(Plan plan, Transition transition) '''
 #pragma once
 
-#include "Constraint«transition.preCondition.id»Impl.h"
 #include <engine/BasicConstraint.h>
-#include <engine/ProblemDescriptor.h>
-#include <engine/RunningPlan.h>
 
 namespace alica {
+    class Constraint«transition.preCondition.id»Impl;
+
+    class ProblemDescriptor;
+
+    class RunningPlan;
+
     class Constraint«transition.preCondition.id»: public BasicConstraint {
         public:
             static long id;
@@ -63,7 +66,7 @@ namespace alica {
     override String transitionPreConditionPlanImpl(Transition transition) '''
 #pragma once
 
-#include "DomainCondition.h"
+#include "domain/DomainCondition.h"
 #include <iostream>
 
 namespace alica {

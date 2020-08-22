@@ -1,5 +1,7 @@
 #pragma once
 
-class BasicUtilityFunction {
+namespace alica {
+    class BasicUtilityFunction {
 
-};
+    };
+}

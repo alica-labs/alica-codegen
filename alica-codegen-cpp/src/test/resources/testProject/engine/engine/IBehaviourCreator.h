@@ -1,5 +1,7 @@
 #pragma once
 
-class IBehaviourCreator {
+namespace alica {
+    class IBehaviourCreator {
 
-};
+    };
+}

@@ -22,12 +22,15 @@ namespace alica {
     override String constraintPlanPreCondition(Plan plan) '''
 #pragma once
 
-#include "Constraint«plan.preCondition.id»Impl.h"
-#include <engine/ProblemDescriptor.h>
-#include <engine/RunningPlan.h>
 #include <engine/BasicConstraint.h>
 
 namespace alica {
+    class Constraint«plan.preCondition.id»Impl;
+
+    class ProblemDescriptor;
+
+    class RunningPlan;
+
     class Constraint«plan.preCondition.id»: public BasicConstraint {
         public:
             static long id;
@@ -43,11 +46,11 @@ namespace alica {
     override String constraintPlanPreConditionImpl(Plan plan) '''
 #pragma once
 
-#include <engine/BasicConstraint.h>
-#include <engine/ProblemDescriptor.h>
-#include <engine/RunningPlan.h>
-
 namespace alica {
+    class ProblemDescriptor;
+
+    class RunningPlan;
+
     class Constraint«plan.preCondition.id»Impl {
         public:
             static long id;
@@ -60,11 +63,15 @@ namespace alica {
     override String constraintPlanRuntimeCondition(Plan plan) '''
 #pragma once
 
-#include "Constraint«plan.runtimeCondition.id»Impl.h"
-#include <engine/ProblemDescriptor.h>
-#include <engine/RunningPlan.h>
+#include <engine/BasicConstraint.h>
 
 namespace alica {
+    class Constraint«plan.runtimeCondition.id»Impl;
+
+    class ProblemDescriptor;
+
+    class RunningPlan;
+
     class Constraint«plan.runtimeCondition.id»: public BasicConstraint {
         public:
             static long id;
@@ -80,11 +87,11 @@ namespace alica {
     override String constraintPlanRuntimeConditionImpl(Plan plan) '''
 #pragma once
 
-#include <engine/BasicConstraint.h>
-#include <engine/ProblemDescriptor.h>
-#include <engine/RunningPlan.h>
-
 namespace alica {
+    class ProblemDescriptor;
+
+    class RunningPlan;
+
     class Constraint«plan.runtimeCondition.id»Impl {
         public:
             static long id;
@@ -97,14 +104,19 @@ namespace alica {
     override String utilityFunctionPlan(Plan plan) '''
 #pragma once
 
-#include "UtilityFunction1575724499793Impl.h"
-#include <engine/ProblemDescriptor.h>
-#include <engine/RunningPlan.h>
-#include <engine/BasicPlan.h>
-#include <engine/UtilityFunction.h>
 #include <engine/BasicUtilityFunction.h>
 
 namespace alica {
+    class ProblemDescriptor;
+
+    class RunningPlan;
+
+    class BasicPlan;
+
+    class UtilityFunction;
+
+    class UtilityFunction«plan.id»Impl;
+
     class UtilityFunction«plan.id»: public BasicUtilityFunction {
         public:
             static long id;
@@ -121,12 +133,11 @@ namespace alica {
     override String utilityFunctionPlanImpl(Plan plan) '''
 #pragma once
 
-#include <engine/BasicPlan.h>
-#include <engine/UtilityFunction.h>
-#include <engine/DefaultUtilityFunction.h>
-#include <iostream>
-
 namespace alica {
+    class BasicPlan;
+
+    class UtilityFunction;
+
     class UtilityFunction«plan.id»Impl {
         public:
             static long id;
@@ -139,11 +150,13 @@ namespace alica {
     override String preConditionPlan(Plan plan) '''
 #pragma once
 
-#include "DomainCondition.h"
-#include "PreCondition1575724578855Impl.h"
-#include <engine/RunningPlan.h>
+#include "domain/DomainCondition.h"
 
 namespace alica {
+    class PreCondition«plan.preCondition.id»Impl;
+
+    class RunningPlan;
+
     class PreCondition«plan.preCondition.id»: public DomainCondition {
         public:
             static long id;
@@ -159,10 +172,9 @@ namespace alica {
     override String preConditionPlanImpl(Plan plan) '''
 #pragma once
 
-#include <engine/RunningPlan.h>
-#include <iostream>
-
 namespace alica {
+    class RunningPlan;
+
     class PreCondition«plan.preCondition.id»Impl {
         public:
             static long id;

@@ -1,5 +1,7 @@
 #pragma once
 
-class IConditionCreator {
+namespace alica {
+    class IConditionCreator {
 
-};
+    };
+}

@@ -6,13 +6,15 @@ import de.unikassel.vs.alica.codegen.templates.IDomainTemplates;
 class DomainTemplatesSource implements IDomainTemplates {
 
     override String domainBehaviour() '''
-#include "DomainBehaviour.h"
+#include "domain/DomainBehaviour.h"
+#include "domain/DomainBehaviourImpl.h"
+#include <string>
 
 namespace alica {
     DomainBehaviour::DomainBehaviour(std::string name, long id, void* context): BasicBehaviour(name) {
         this -> id = id;
         this -> context = context;
-        // this -> impl = new DomainBehaviourImpl(this);  // TODO: check how to fix this
+        this -> impl = new DomainBehaviourImpl(this);
     }
 
     DomainBehaviour::~DomainBehaviour() {
@@ -30,7 +32,8 @@ namespace alica {
 '''
 
     override String domainBehaviourImpl() '''
-#include "DomainBehaviourImpl.h"
+#include "domain/DomainBehaviour.h"
+#include "domain/DomainBehaviourImpl.h"
 
 namespace alica {
     DomainBehaviourImpl::DomainBehaviourImpl(DomainBehaviour* domain) {
@@ -48,7 +51,7 @@ namespace alica {
 '''
 
     override String domainCondition() '''
-#include "DomainCondition.h"
+#include "domain/DomainCondition.h"
 
 namespace alica {
     DomainCondition::DomainCondition(void* context): BasicCondition() {
@@ -62,7 +65,10 @@ namespace alica {
 '''
 
     override String domainConditionImpl() '''
-#include "DomainConditionImpl.h"
+#include "domain/DomainBehaviour.h"
+#include "domain/DomainConditionImpl.h"
+#include <engine/RunningPlan.h>
+#include <iostream>
 
 namespace alica {
     DomainConditionImpl::DomainConditionImpl() {

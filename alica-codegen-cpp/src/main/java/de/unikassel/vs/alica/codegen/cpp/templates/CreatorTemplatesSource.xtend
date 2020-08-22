@@ -14,7 +14,10 @@ import de.unikassel.vs.alica.codegen.templates.ICreatorTemplates;
 class CreatorTemplatesSource implements ICreatorTemplates {
 
     override String behaviourCreator(List<Behaviour> behaviours)'''
-#include "BehaviourCreator.h"
+#include "creators/BehaviourCreator.h"
+#include "behaviours/TestfxBehaviour.h"
+#include <engine/BasicBehaviour.h>
+#include <iostream>
 
 namespace alica {
     BehaviourCreator::BehaviourCreator() {
@@ -40,7 +43,11 @@ namespace alica {
 '''
 
     override String utilityFunctionCreator(List<Plan> plans)'''
-#include "UtilityFunctionCreator.h"
+«FOR p: plans»
+    #include "utilityfunctions/UtilityFunction«p.id».h"
+«ENDFOR»
+#include "creators/UtilityFunctionCreator.h"
+#include <iostream>
 
 namespace alica {
     UtilityFunctionCreator::~UtilityFunctionCreator() {
@@ -64,7 +71,20 @@ namespace alica {
 '''
 
     override String conditionCreator(List<Plan> plans, List<Behaviour> behaviours, List<Condition> conditions) '''
-#include "ConditionCreator.h"
+«FOR con: conditions»
+    «IF (con instanceof PreCondition)»
+        #include "conditions/PreCondition«con.id».h"
+    «ENDIF»
+    «IF (con instanceof PostCondition)»
+        #include "conditions/PostCondition«con.id».h"
+    «ENDIF»
+    «IF (con instanceof RuntimeCondition)»
+        #include "conditions/RunTimeCondition«con.id».h"
+    «ENDIF»
+«ENDFOR»
+#include "creators/ConditionCreator.h"
+#include <engine/BasicCondition.h>
+#include <iostream>
 
 namespace alica{
     ConditionCreator::ConditionCreator() {
@@ -96,7 +116,7 @@ namespace alica{
 '''
 
     override String constraintCreator(List<Plan> plans, List<Behaviour> behaviours, List<Condition> conditions)'''
-#include "ConstraintCreator.h"
+#include "creators/ConstraintCreator.h"
 
 namespace alica {
     ConstraintCreator::ConstraintCreator() {

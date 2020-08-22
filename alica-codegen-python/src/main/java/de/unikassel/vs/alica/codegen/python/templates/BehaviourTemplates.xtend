@@ -1,8 +1,6 @@
 package de.unikassel.vs.alica.codegen.python.templates;
 
 import de.unikassel.vs.alica.planDesigner.alicamodel.Behaviour;
-import de.unikassel.vs.alica.planDesigner.alicamodel.PostCondition;
-import de.unikassel.vs.alica.planDesigner.alicamodel.PreCondition;
 import org.apache.commons.lang3.StringUtils;
 import de.unikassel.vs.alica.codegen.templates.IBehaviourTemplates;
 

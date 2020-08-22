@@ -1,11 +1,8 @@
 package de.unikassel.vs.alica.codegen.python.templates;
 
 import de.unikassel.vs.alica.planDesigner.alicamodel.Plan;
-import de.unikassel.vs.alica.planDesigner.alicamodel.PreCondition;
-import java.util.List;
 import de.unikassel.vs.alica.planDesigner.alicamodel.Transition;
 import de.unikassel.vs.alica.planDesigner.alicamodel.State;
-import de.unikassel.vs.alica.planDesigner.alicamodel.Variable;
 import de.unikassel.vs.alica.codegen.templates.ITransitionTemplates;
 
 

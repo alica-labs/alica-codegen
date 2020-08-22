@@ -1,7 +1,6 @@
 package de.unikassel.vs.alica.codegen.cpp.templates;
 
 import de.unikassel.vs.alica.planDesigner.alicamodel.Plan;
-import de.unikassel.vs.alica.planDesigner.alicamodel.Transition;
 import org.apache.commons.lang3.StringUtils;
 import de.unikassel.vs.alica.codegen.templates.IPlanTemplates;
 

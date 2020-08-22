@@ -111,6 +111,10 @@ namespace alica {
     UtilityFunction* UtilityFunction«plan.id»::getUtilityFunction(BasicPlan* plan) {
         return this -> impl -> getUtilityFunction(plan);
     }
+
+    void UtilityFunction«plan.id»::getConstraint(ProblemDescriptor *c, RunningPlan *rp) {
+
+    }
 }
 '''
 

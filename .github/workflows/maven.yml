@@ -39,3 +39,8 @@ jobs:
       - name: Build alica-codegen
         run: mvn -B package --file pom.xml
         working-directory: ${{ github.workspace }}/alica-codegen
+
+      - name: Upload plugins as artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          path: ${{ github.workspace }}/alica-codegen/alica-codegen-*/target/codegen-*.jar

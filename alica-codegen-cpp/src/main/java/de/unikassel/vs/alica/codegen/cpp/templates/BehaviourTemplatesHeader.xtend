@@ -219,10 +219,11 @@ namespace alica {
 #pragma once
 
 #include <memory>
-#include <engine/ProblemDescriptor.h>
 #include <engine/RunningPlan.h>
 
 namespace alica {
+    class ProblemDescriptor;
+
     class Constraint«behaviour.preCondition.id»Impl {
         public:
             static long id;
@@ -263,10 +264,11 @@ namespace alica {
 #pragma once
 
 #include <memory>
-#include <engine/ProblemDescriptor.h>
 #include <engine/RunningPlan.h>
 
 namespace alica {
+    class ProblemDescriptor;
+
     class Constraint«behaviour.runtimeCondition.id»Impl {
         public:
             static long id;
@@ -307,10 +309,11 @@ namespace alica {
 #pragma once
 
 #include <memory>
-#include <engine/ProblemDescriptor.h>
 #include <engine/RunningPlan.h>
 
 namespace alica {
+    class ProblemDescriptor;
+
     class Constraint«behaviour.postCondition.id»Impl {
         public:
             static long id;

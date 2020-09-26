@@ -39,7 +39,6 @@ namespace alica {
 
     override String constraintPlanPreConditionImpl(Plan plan) '''
 #include "constraints/Constraint«plan.preCondition.id»Impl.h"
-#include <engine/ProblemDescriptor.h>
 #include <engine/RunningPlan.h>
 
 namespace alica {
@@ -59,7 +58,6 @@ namespace alica {
 #include "constraints/Constraint«plan.runtimeCondition.id».h"
 #include "constraints/Constraint«plan.runtimeCondition.id»Impl.h"
 #include <engine/BasicConstraint.h>
-#include <engine/ProblemDescriptor.h>
 #include <engine/RunningPlan.h>
 
 namespace alica {
@@ -77,7 +75,6 @@ namespace alica {
 
     override String constraintPlanRuntimeConditionImpl(Plan plan) '''
 #include "constraints/Constraint«plan.runtimeCondition.id»Impl.h"
-#include <engine/ProblemDescriptor.h>
 #include <engine/RunningPlan.h>
 
 namespace alica {
@@ -96,7 +93,6 @@ namespace alica {
     override String utilityFunctionPlan(Plan plan) '''
 #include "utilityfunctions/UtilityFunction«plan.id».h"
 #include "utilityfunctions/UtilityFunction«plan.id»Impl.h"
-#include <engine/ProblemDescriptor.h>
 #include <engine/RunningPlan.h>
 #include <engine/BasicPlan.h>
 #include <engine/UtilityFunction.h>

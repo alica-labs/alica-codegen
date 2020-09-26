@@ -182,7 +182,6 @@ namespace alica {
 #include "constraints/Constraint«behaviour.preCondition.id».h"
 #include "constraints/Constraint«behaviour.preCondition.id»Impl.h"
 #include <engine/BasicConstraint.h>
-#include <engine/ProblemDescriptor.h>
 #include <engine/RunningPlan.h>
 
 namespace alica {
@@ -200,7 +199,6 @@ namespace alica {
 
     override String constraintPreConditionImpl(Behaviour behaviour) '''
 #include "constraints/Constraint«behaviour.preCondition.id»Impl.h"
-#include <engine/ProblemDescriptor.h>
 #include <engine/RunningPlan.h>
 
 namespace alica {
@@ -219,7 +217,6 @@ namespace alica {
     override String constraintRuntimeCondition(Behaviour behaviour) '''
 #include "constraints/Constraint«behaviour.runtimeCondition.id».h"
 #include "constraints/Constraint«behaviour.runtimeCondition.id»Impl.h"
-#include <engine/ProblemDescriptor.h>
 #include <engine/RunningPlan.h>
 
 namespace alica {
@@ -237,7 +234,6 @@ namespace alica {
 
     override String constraintRuntimeConditionImpl(Behaviour behaviour) '''
 #include "constraints/Constraint«behaviour.runtimeCondition.id»Impl.h"
-#include <engine/ProblemDescriptor.h>
 #include <engine/RunningPlan.h>
 
 namespace alica {
@@ -256,7 +252,6 @@ namespace alica {
     override String constraintPostCondition(Behaviour behaviour) '''
 #include "constraints/Constraint«behaviour.postCondition.id».h"
 #include "constraints/Constraint«behaviour.postCondition.id»Impl.h"
-#include <engine/ProblemDescriptor.h>
 #include <engine/RunningPlan.h>
 
 namespace alica {
@@ -274,7 +269,6 @@ namespace alica {
 
     override String constraintPostConditionImpl(Behaviour behaviour) '''
 #include "constraints/Constraint«behaviour.postCondition.id»Impl.h"
-#include <engine/ProblemDescriptor.h>
 #include <engine/RunningPlan.h>
 
 namespace alica {

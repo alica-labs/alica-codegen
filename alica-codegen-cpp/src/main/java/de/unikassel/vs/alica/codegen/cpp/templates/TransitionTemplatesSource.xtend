@@ -12,7 +12,6 @@ class TransitionTemplatesSource implements ITransitionTemplates {
 #include "constraints/Constraint«transition.preCondition.id».h"
 #include "constraints/Constraint«transition.preCondition.id»Impl.h"
 #include <engine/BasicConstraint.h>
-#include <engine/ProblemDescriptor.h>
 #include <engine/RunningPlan.h>
 
 namespace alica {

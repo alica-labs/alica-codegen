@@ -62,19 +62,23 @@ public class GeneratorImplCpp extends GeneratorImpl implements IGenerator {
 
     @Override
     public void createBehaviourImpl(Behaviour behaviour) {
-        String filenameHeader = StringUtils.capitalize(behaviour.getName()) + "Impl.h";
+        String name = StringUtils.capitalize(behaviour.getName()) + "Impl";
+
+        String filenameHeader = name + ".h";
         codegenHelperHeader.createBehaviourImpl(filenameHeader, behaviour);
         
-        String filenameSource = StringUtils.capitalize(behaviour.getName()) + "Impl.cpp";
+        String filenameSource = name + ".cpp";
         codegenHelperSource.createBehaviourImpl(filenameSource, behaviour);
     }
 
     @Override
     public void preConditionBehaviourImpl(Behaviour behaviour) {
-        String filenameHeader = "PreCondition" + behaviour.getPreCondition().getId() + "Impl.h";
+        String nameId = "PreCondition" + behaviour.getPreCondition().getId() + "Impl";
+
+        String filenameHeader = nameId + ".h";
         codegenHelperHeader.preConditionBehaviourImpl(filenameHeader, behaviour);
         
-        String filenameSource = "PreCondition" + behaviour.getPreCondition().getId() + "Impl.cpp";
+        String filenameSource = nameId + ".cpp";
         codegenHelperSource.preConditionBehaviourImpl(filenameSource, behaviour);
     }
 
@@ -125,15 +129,17 @@ public class GeneratorImplCpp extends GeneratorImpl implements IGenerator {
 
     public void createBehaviours(Behaviour behaviour) {
         super.createBehaviours(behaviour);
+        String nameId = StringUtils.capitalize(behaviour.getName()) + behaviour.getId();
+        String name = StringUtils.capitalize(behaviour.getName());
 
-        String filenameHeader = StringUtils.capitalize(behaviour.getName()) + behaviour.getId() + ".h";
+        String filenameHeader = nameId + ".h";
         codegenHelperHeader.createBehaviourCondition(filenameHeader, behaviour);
-        String filenameHeader2 = StringUtils.capitalize(behaviour.getName()) + ".h";
+        String filenameHeader2 = name + ".h";
         codegenHelperHeader.createBehaviour(filenameHeader2, behaviour);
         
-        String filenameSource = StringUtils.capitalize(behaviour.getName()) + behaviour.getId() + ".cpp";
+        String filenameSource = nameId + ".cpp";
         codegenHelperSource.createBehaviourCondition(filenameSource, behaviour);
-        String filenameSource2 = StringUtils.capitalize(behaviour.getName()) + ".cpp";
+        String filenameSource2 = name + ".cpp";
         codegenHelperSource.createBehaviour(filenameSource2, behaviour);
     }
 
@@ -205,11 +211,12 @@ public class GeneratorImplCpp extends GeneratorImpl implements IGenerator {
 
     public void createConstraintsForBehaviour(Behaviour behaviour) {
         super.createConstraintsForBehaviour(behaviour);
-        
-        String filenameHeader = StringUtils.capitalize(behaviour.getName()) + behaviour.getId() + "Constraints.h";
+        String nameId = StringUtils.capitalize(behaviour.getName()) + behaviour.getId() + "Constraints";
+
+        String filenameHeader = nameId + ".h";
         codegenHelperHeader.createBehaviourConstraints(filenameHeader, behaviour);
 
-        String filenameSource = StringUtils.capitalize(behaviour.getName()) + behaviour.getId() + "Constraints.cpp";
+        String filenameSource = nameId + ".cpp";
         codegenHelperSource.createBehaviourConstraints(filenameSource, behaviour);
     }
 
@@ -263,12 +270,13 @@ public class GeneratorImplCpp extends GeneratorImpl implements IGenerator {
 
     public void createConstraintsForPlan(Plan plan) {
         super.createConstraintsForPlan(plan);
+        String nameId = StringUtils.capitalize(plan.getName()) + plan.getId() + "Constraints";
         
-        String filenameHeader = StringUtils.capitalize(plan.getName()) + plan.getId() + "Constraints.h";
+        String filenameHeader = nameId + ".h";
         codegenHelperHeader.createPlanConstraints(filenameHeader, plan);
         codegenHelperHeader.readConstraintsForPlan(filenameHeader, plan);
 
-        String filenameSource = StringUtils.capitalize(plan.getName()) + plan.getId() + "Constraints.cpp";
+        String filenameSource = nameId + ".cpp";
         codegenHelperSource.createPlanConstraints(filenameSource, plan);
         codegenHelperSource.readConstraintsForPlan(filenameSource, plan);
     }

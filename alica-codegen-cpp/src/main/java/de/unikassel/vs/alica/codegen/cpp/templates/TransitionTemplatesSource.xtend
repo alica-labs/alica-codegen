@@ -19,10 +19,10 @@ namespace alica {
     long Constraint«transition.preCondition.id»::id = «transition.preCondition.id»;
 
     Constraint«transition.preCondition.id»::Constraint«transition.preCondition.id»(): BasicConstraint() {
-        this -> impl = new Constraint«transition.preCondition.id»Impl();
+        this -> impl = std::make_shared<Constraint«transition.preCondition.id»Impl>();
     }
 
-    void Constraint«transition.preCondition.id»::getConstraint(ProblemDescriptor* c, RunningPlan* rp) {
+    void Constraint«transition.preCondition.id»::getConstraint(std::shared_ptr<ProblemDescriptor> c, std::shared_ptr<RunningPlan> rp) {
         this -> impl -> getConstraint(c, rp);
     }
 }
@@ -38,7 +38,7 @@ namespace alica {
 
     }
 
-    void Constraint«transition.preCondition.id»Impl::getConstraint(std::ProblemDescriptor* c, RunningPlan* rp) {
+    void Constraint«transition.preCondition.id»Impl::getConstraint(std::std::shared_ptr<ProblemDescriptor> c, std::shared_ptr<RunningPlan> rp) {
 
     }
 }
@@ -53,10 +53,10 @@ namespace alica {
     long PreCondition«transition.preCondition.id»::id = «transition.preCondition.id»;
 
     PreCondition«transition.preCondition.id»::PreCondition«transition.preCondition.id»(void* context): DomainCondition(context) {
-        this -> impl = new PreCondition«transition.preCondition.id»Impl();
+        this -> impl = std::make_shared<PreCondition«transition.preCondition.id»Impl>();
     }
 
-    bool PreCondition«transition.preCondition.id»::evaluate(RunningPlan* rp) {
+    bool PreCondition«transition.preCondition.id»::evaluate(std::shared_ptr<RunningPlan> rp) {
         return this -> impl -> evaluate(rp);
     }
 }
@@ -68,11 +68,11 @@ namespace alica {
 namespace alica {
     long PreCondition«transition.preCondition.id»Impl::id = «transition.preCondition.id»;
 
-    PreCondition«transition.preCondition.id»Impl::PreCondition«transition.preCondition.id»Impl(DomainCondition* condition) {
+    PreCondition«transition.preCondition.id»Impl::PreCondition«transition.preCondition.id»Impl(std::shared_ptr<DomainCondition> condition) {
         this -> condition = condition;
     }
 
-    bool PreCondition«transition.preCondition.id»Impl::evaluate(RunningPlan* rp) {
+    bool PreCondition«transition.preCondition.id»Impl::evaluate(std::shared_ptr<RunningPlan> rp) {
         std::cerr << "The PreCondition " << this -> id << " in Transition «transition.getName» is not implement yet!" << std::endl;
         return false;
     }

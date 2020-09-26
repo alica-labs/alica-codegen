@@ -34,11 +34,11 @@ namespace alica {
 
     }
 
-    BasicBehaviour* BehaviourCreator::createBehaviour(long behaviourId, void* context) {
+    std::shared_ptr<BasicBehaviour> BehaviourCreator::createBehaviour(long behaviourId, void* context) {
         switch(behaviourId) {
             «FOR beh: behaviours»
                 case «beh.id»:
-                    return new «StringUtils.capitalize(beh.name)»(context);
+                    return std::make_shared<«StringUtils.capitalize(beh.name)»>(context);
             «ENDFOR»
             default:
                 std::cerr << "BehaviourCreator: Unknown behaviour requested: " << behaviourId << std::endl;
@@ -62,11 +62,11 @@ namespace alica {
     UtilityFunctionCreator::UtilityFunctionCreator() {
     }
 
-    BasicUtilityFunction* UtilityFunctionCreator::createUtility(long utilityFunctionConfId) {
+    std::shared_ptr<BasicUtilityFunction> UtilityFunctionCreator::createUtility(long utilityFunctionConfId) {
         switch(utilityFunctionConfId) {
             «FOR p: plans»
                 case «p.id»:
-                    return new UtilityFunction«p.id»();
+                    return std::make_shared<UtilityFunction«p.id»>();
             «ENDFOR»
             default:
                 std::cerr << "UtilityFunctionCreator: Unknown utility requested: " << utilityFunctionConfId << std::endl;
@@ -99,18 +99,18 @@ namespace alica{
     ConditionCreator::~ConditionCreator() {
     }
 
-    BasicCondition* ConditionCreator::createConditions(long conditionConfId, void* context) {
+    std::shared_ptr<BasicCondition> ConditionCreator::createConditions(long conditionConfId, void* context) {
         switch (conditionConfId) {
             «FOR con: conditions»
                 case «con.id»:
                     «IF (con instanceof PreCondition)»
-                        return new PreCondition«con.id»(context);
+                        return std::make_shared<PreCondition«con.id»>(context);
                     «ENDIF»
                     «IF (con instanceof PostCondition)»
-                        return new PostCondition«con.id»(context);
+                        return std::make_shared<PostCondition«con.id»>(context);
                     «ENDIF»
                     «IF (con instanceof RuntimeCondition)»
-                        return new RunTimeCondition«con.id»(context);
+                        return std::make_shared<RunTimeCondition«con.id»>(context);
                     «ENDIF»
             «ENDFOR»
             default:
@@ -131,12 +131,12 @@ namespace alica {
     ConstraintCreator::~ConstraintCreator() {
     }
 
-    BasicConstraint* ConstraintCreator::createConstraint(long constraintConfId) {
+    std::shared_ptr<BasicConstraint> ConstraintCreator::createConstraint(long constraintConfId) {
         switch(constraintConfId) {
             «FOR c: conditions»
                 «IF (c.variables.size > 0) || (c.quantifiers.size > 0)»
                     case «c.id»:
-                        return new Constraint«c.id»();
+                        return std::make_shared<Constraint«c.id»>();
                 «ENDIF»
             «ENDFOR»
             default:

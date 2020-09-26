@@ -10,6 +10,7 @@ class BehaviourTemplatesHeader implements IBehaviourTemplates {
     override String behaviour(Behaviour behaviour) '''
 #pragma once
 
+#include <memory>
 #include "domain/DomainBehaviour.h"
 
 namespace alica {
@@ -22,7 +23,7 @@ namespace alica {
             virtual void initialiseParameters();
 
         private:
-            «StringUtils.capitalize(behaviour.name)»Impl* impl;
+            std::shared_ptr<«StringUtils.capitalize(behaviour.name)»Impl> impl;
     };
 }
 '''
@@ -30,15 +31,16 @@ namespace alica {
     override String behaviourImpl(Behaviour behaviour) '''
 #pragma once
 
-#include "domain/DomainBehaviourImpl.h"
+#include <memory>
 #include <iostream>
+#include "domain/DomainBehaviourImpl.h"
 
 namespace alica {
     class DomainBehaviour;
 
     class «StringUtils.capitalize(behaviour.name)»Impl: public DomainBehaviourImpl {
         public:
-            «StringUtils.capitalize(behaviour.name)»Impl(DomainBehaviour* domain);
+            «StringUtils.capitalize(behaviour.name)»Impl(std::shared_ptr<DomainBehaviour> domain);
             virtual void run(void* msg);
             virtual void initialiseParameters();
     };
@@ -59,6 +61,7 @@ namespace alica {
     override String preConditionBehaviour(Behaviour behaviour) '''
 #pragma once
 
+#include <memory>
 #include "domain/DomainCondition.h"
 
 namespace alica {
@@ -72,14 +75,16 @@ namespace alica {
             PreCondition«behaviour.preCondition.id»(void* context);
 
         private:
-            PreCondition«behaviour.preCondition.id»Impl* impl;
-            bool evaluate(RunningPlan* rp);
+            std::shared_ptr<PreCondition«behaviour.preCondition.id»Impl> impl;
+            bool evaluate(std::shared_ptr<RunningPlan> rp);
     };
 }
 '''
 
     override String preConditionBehaviourImpl(Behaviour behaviour) '''
 #pragma once
+
+#include <memory>
 
 namespace alica {
     class RunningPlan;
@@ -90,7 +95,7 @@ namespace alica {
             PreCondition«behaviour.preCondition.id»Impl();
 
         private:
-            bool evaluate(RunningPlan* rp);
+            bool evaluate(std::shared_ptr<RunningPlan> rp);
     };
 }
 '''
@@ -98,6 +103,7 @@ namespace alica {
     override String runtimeConditionBehaviour(Behaviour behaviour) '''
 #pragma once
 
+#include <memory>
 #include "conditions/RunTimeCondition«behaviour.runtimeCondition.id»Impl.h"
 #include "domain/DomainCondition.h"
 #include <engine/RunningPlan.h>
@@ -109,8 +115,8 @@ namespace alica {
             RunTimeCondition«behaviour.runtimeCondition.id»();
 
         private:
-            RunTimeCondition«behaviour.runtimeCondition.id»Impl* impl;
-            bool evaluate(RunningPlan* rp);
+            std::shared_ptr<RunTimeCondition«behaviour.runtimeCondition.id»Impl> impl;
+            bool evaluate(std::shared_ptr<RunningPlan> rp);
     };
 }
 '''
@@ -118,6 +124,7 @@ namespace alica {
     override String runtimeConditionBehaviourImpl(Behaviour behaviour) '''
 #pragma once
 
+#include <memory>
 #include <engine/RunningPlan.h>
 #include "domain/DomainCondition.h"
 
@@ -128,7 +135,7 @@ namespace alica {
             RunTimeCondition«behaviour.runtimeCondition.id»Impl();
 
         private:
-            bool evaluate(RunningPlan* rp);
+            bool evaluate(std::shared_ptr<RunningPlan> rp);
     };
 }
 '''
@@ -136,6 +143,7 @@ namespace alica {
     override String postConditionBehaviour(Behaviour behaviour) '''
 #pragma once
 
+#include <memory>
 #include "conditions/PostCondition«behaviour.postCondition.id»Impl.h"
 #include "domain/DomainCondition.h"
 #include <engine/RunningPlan.h>
@@ -147,8 +155,8 @@ namespace alica {
             PostCondition«behaviour.postCondition.id»(void* context);
 
         private:
-            PostCondition«behaviour.postCondition.id»Impl* impl;
-            bool evaluate(RunningPlan* rp);
+            std::shared_ptr<PostCondition«behaviour.postCondition.id»Impl> impl;
+            bool evaluate(std::shared_ptr<RunningPlan> rp);
     };
 }
 '''
@@ -156,6 +164,7 @@ namespace alica {
     override String postConditionBehaviourImpl(Behaviour behaviour) '''
 #pragma once
 
+#include <memory>
 #include <engine/RunningPlan.h>
 
 namespace alica {
@@ -165,7 +174,7 @@ namespace alica {
             PostCondition«behaviour.postCondition.id»Impl();
 
         private:
-            bool evaluate(RunningPlan* rp);
+            bool evaluate(std::shared_ptr<RunningPlan> rp);
     };
 }
 '''
@@ -184,6 +193,7 @@ namespace alica {
     override String constraintPreCondition(Behaviour behaviour) '''
 #pragma once
 
+#include <memory>
 #include <engine/BasicConstraint.h>
 
 namespace alica {
@@ -199,8 +209,8 @@ namespace alica {
             Constraint«behaviour.preCondition.id»();
 
         private:
-            Constraint«behaviour.preCondition.id»Impl* impl;
-            void getConstraint(ProblemDescriptor* c, RunningPlan* rp);
+            std::shared_ptr<Constraint«behaviour.preCondition.id»Impl> impl;
+            void getConstraint(std::shared_ptr<ProblemDescriptor> c, std::shared_ptr<RunningPlan> rp);
     }
 };
 '''
@@ -208,6 +218,7 @@ namespace alica {
     override String constraintPreConditionImpl(Behaviour behaviour) '''
 #pragma once
 
+#include <memory>
 #include <engine/ProblemDescriptor.h>
 #include <engine/RunningPlan.h>
 
@@ -218,7 +229,7 @@ namespace alica {
             Constraint«behaviour.preCondition.id»Impl();
 
         private:
-            void getConstraint(ProblemDescriptor* c, RunningPlan* rp);
+            void getConstraint(std::shared_ptr<ProblemDescriptor> c, std::shared_ptr<RunningPlan> rp);
     };
 }
 '''
@@ -226,6 +237,7 @@ namespace alica {
     override String constraintRuntimeCondition(Behaviour behaviour) '''
 #pragma once
 
+#include <memory>
 #include <engine/BasicConstraint.h>
 
 namespace alica {
@@ -241,8 +253,8 @@ namespace alica {
             Constraint«behaviour.runtimeCondition.id»();
 
         private:
-            Constraint«behaviour.runtimeCondition.id»Impl* impl;
-            void getConstraint(ProblemDescriptor* c, RunningPlan* rp);
+            std::shared_ptr<Constraint«behaviour.runtimeCondition.id»Impl> impl;
+            void getConstraint(std::shared_ptr<ProblemDescriptor> c, std::shared_ptr<RunningPlan> rp);
     }
 };
 '''
@@ -250,6 +262,7 @@ namespace alica {
     override String constraintRuntimeConditionImpl(Behaviour behaviour) '''
 #pragma once
 
+#include <memory>
 #include <engine/ProblemDescriptor.h>
 #include <engine/RunningPlan.h>
 
@@ -260,7 +273,7 @@ namespace alica {
             Constraint«behaviour.runtimeCondition.id»Impl();
 
         private:
-            void getConstraint(ProblemDescriptor* c, RunningPlan* rp);
+            void getConstraint(std::shared_ptr<ProblemDescriptor> c, std::shared_ptr<RunningPlan> rp);
     };
 }
 '''
@@ -268,6 +281,7 @@ namespace alica {
     override String constraintPostCondition(Behaviour behaviour) '''
 #pragma once
 
+#include <memory>
 #include <engine/BasicConstraint.h>
 
 namespace alica {
@@ -283,8 +297,8 @@ namespace alica {
             Constraint«behaviour.postCondition.id»();
 
         private:
-            Constraint«behaviour.postCondition.id»Impl* impl;
-            void getConstraint(ProblemDescriptor* c, RunningPlan* rp);
+            std::shared_ptr<Constraint«behaviour.postCondition.id»Impl> impl;
+            void getConstraint(std::shared_ptr<ProblemDescriptor> c, std::shared_ptr<RunningPlan> rp);
     }
 };
 '''
@@ -292,6 +306,7 @@ namespace alica {
     override String constraintPostConditionImpl(Behaviour behaviour) '''
 #pragma once
 
+#include <memory>
 #include <engine/ProblemDescriptor.h>
 #include <engine/RunningPlan.h>
 
@@ -302,7 +317,7 @@ namespace alica {
             Constraint«behaviour.postCondition.id»Impl();
 
         private:
-            void getConstraint(ProblemDescriptor* c, RunningPlan* rp);
+            void getConstraint(std::shared_ptr<ProblemDescriptor> c, std::shared_ptr<RunningPlan> rp);
     };
 }
 '''

@@ -27,10 +27,10 @@ namespace alica {
     long Constraint«plan.preCondition.id»::id = «plan.preCondition.id»;
 
     Constraint«plan.preCondition.id»::Constraint«plan.preCondition.id»(): BasicConstraint() {
-        this -> impl = new Constraint«plan.preCondition.id»Impl();
+        this -> impl = std::make_shared<Constraint«plan.preCondition.id»Impl>();
     }
 
-    void Constraint«plan.preCondition.id»::getConstraint(ProblemDescriptor* c, RunningPlan* rp) {
+    void Constraint«plan.preCondition.id»::getConstraint(std::shared_ptr<ProblemDescriptor> c, std::shared_ptr<RunningPlan> rp) {
         this -> impl -> getConstraint(c, rp);
     }
 }
@@ -49,7 +49,7 @@ namespace alica {
 
     }
 
-    void Constraint«plan.preCondition.id»Impl::getConstraint(ProblemDescriptor* c, RunningPlan* rp) {
+    void Constraint«plan.preCondition.id»Impl::getConstraint(std::shared_ptr<ProblemDescriptor> c, std::shared_ptr<RunningPlan> rp) {
 
     }
 }
@@ -66,10 +66,10 @@ namespace alica {
     long Constraint«plan.runtimeCondition.id»::id = «plan.runtimeCondition.id»;
 
     Constraint«plan.runtimeCondition.id»::Constraint«plan.runtimeCondition.id»(): BasicConstraint() {
-        this -> impl = new Constraint«plan.runtimeCondition.id»Impl();
+        this -> impl = std::make_shared<Constraint«plan.runtimeCondition.id»Impl>();
     }
 
-    void Constraint«plan.runtimeCondition.id»::getConstraint(ProblemDescriptor* c, RunningPlan* rp) {
+    void Constraint«plan.runtimeCondition.id»::getConstraint(std::shared_ptr<ProblemDescriptor> c, std::shared_ptr<RunningPlan> rp) {
         this -> impl -> getConstraint(c, rp);
     }
 }
@@ -87,7 +87,7 @@ namespace alica {
 
     }
 
-    void Constraint«plan.runtimeCondition.id»Impl::getConstraint(ProblemDescriptor* c, RunningPlan* rp) {
+    void Constraint«plan.runtimeCondition.id»Impl::getConstraint(std::shared_ptr<ProblemDescriptor> c, std::shared_ptr<RunningPlan> rp) {
 
     }
 }
@@ -105,14 +105,14 @@ namespace alica {
     long UtilityFunction«plan.id»::id = «plan.id»;
 
     UtilityFunction«plan.id»::UtilityFunction«plan.id»(): BasicUtilityFunction() {
-        this -> impl = new UtilityFunction«plan.id»Impl();
+        this -> impl = std::make_shared<UtilityFunction«plan.id»Impl>();
     }
 
-    UtilityFunction* UtilityFunction«plan.id»::getUtilityFunction(BasicPlan* plan) {
+    std::shared_ptr<UtilityFunction> UtilityFunction«plan.id»::getUtilityFunction(BasicPlan* plan) {
         return this -> impl -> getUtilityFunction(plan);
     }
 
-    void UtilityFunction«plan.id»::getConstraint(ProblemDescriptor *c, RunningPlan *rp) {
+    void UtilityFunction«plan.id»::getConstraint(std::shared_ptr<ProblemDescriptor> c, std::shared_ptr<RunningPlan> rp) {
 
     }
 }
@@ -132,8 +132,8 @@ namespace alica {
 
     }
 
-    UtilityFunction* UtilityFunction«plan.id»Impl::getUtilityFunction(BasicPlan* plan) {
-        return new DefaultUtilityFunction(plan);
+    std::shared_ptr<UtilityFunction> UtilityFunction«plan.id»Impl::getUtilityFunction(BasicPlan* plan) {
+        return std::make_shared<DefaultUtilityFunction>(plan);
     }
 }
 '''
@@ -147,10 +147,10 @@ namespace alica {
     long PreCondition«plan.preCondition.id»::id = «plan.preCondition.id»;
 
     PreCondition«plan.preCondition.id»::PreCondition«plan.preCondition.id»(void* context): DomainCondition(context) {
-        this -> impl = new PreCondition«plan.preCondition.id»Impl();
+        this -> impl = std::make_shared<PreCondition«plan.preCondition.id»Impl>();
     }
 
-    bool PreCondition«plan.preCondition.id»::evaluate(RunningPlan* rp) {
+    bool PreCondition«plan.preCondition.id»::evaluate(std::shared_ptr<RunningPlan> rp) {
         return this -> impl -> evaluate(rp);
     }
 }
@@ -169,7 +169,7 @@ namespace alica {
 
     }
 
-    bool PreCondition«plan.preCondition.id»Impl::evaluate(RunningPlan* rp) {
+    bool PreCondition«plan.preCondition.id»Impl::evaluate(std::shared_ptr<RunningPlan> rp) {
         std::cerr << "The PreCondition " << id << " in Plan «plan.getName» is not implement yet!" << std::endl;
         return false;
     }
@@ -185,10 +185,10 @@ namespace alica {
     long RunTimeCondition«plan.runtimeCondition.id»::id = «plan.runtimeCondition.id»;
 
     RunTimeCondition«plan.runtimeCondition.id»::RunTimeCondition«plan.runtimeCondition.id»(void* context): DomainCondition(context) {
-        this -> impl = new RunTimeCondition«plan.runtimeCondition.id»Impl();
+        this -> impl = std::make_shared<RunTimeCondition«plan.runtimeCondition.id»Impl>();
     }
 
-    bool RunTimeCondition«plan.runtimeCondition.id»::evaluate(RunningPlan* rp) {
+    bool RunTimeCondition«plan.runtimeCondition.id»::evaluate(std::shared_ptr<RunningPlan> rp) {
         return this -> impl -> evaluate(rp);
     }
 }
@@ -204,7 +204,7 @@ namespace alica {
 
     }
 
-    bool RunTimeCondition«plan.runtimeCondition.id»Impl::evaluate(RunningPlan* rp) {
+    bool RunTimeCondition«plan.runtimeCondition.id»Impl::evaluate(std::shared_ptr<RunningPlan> rp) {
         std::cerr << "The RunTimeCondition " << id << " is not implement yet!" << std::endl;
         return false;
     }

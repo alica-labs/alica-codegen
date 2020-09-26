@@ -21,6 +21,7 @@ namespace alica {
     override String constraintPlanPreCondition(Plan plan) '''
 #pragma once
 
+#include <memory>
 #include <engine/BasicConstraint.h>
 
 namespace alica {
@@ -34,16 +35,18 @@ namespace alica {
         public:
             static long id;
             Constraint«plan.preCondition.id»();
-            void getConstraint(ProblemDescriptor* c, RunningPlan* rp);
+            void getConstraint(std::shared_ptr<ProblemDescriptor> c, std::shared_ptr<RunningPlan> rp);
 
         private:
-            Constraint«plan.preCondition.id»Impl* impl;
+            std::shared_ptr<Constraint«plan.preCondition.id»Impl> impl;
     };
 }
 '''
 
     override String constraintPlanPreConditionImpl(Plan plan) '''
 #pragma once
+
+#include <memory>
 
 namespace alica {
     class ProblemDescriptor;
@@ -54,7 +57,7 @@ namespace alica {
         public:
             static long id;
             Constraint«plan.preCondition.id»Impl();
-            void getConstraint(ProblemDescriptor* c, RunningPlan* rp);
+            void getConstraint(std::shared_ptr<ProblemDescriptor> c, std::shared_ptr<RunningPlan> rp);
     };
 }
 '''
@@ -62,6 +65,7 @@ namespace alica {
     override String constraintPlanRuntimeCondition(Plan plan) '''
 #pragma once
 
+#include <memory>
 #include <engine/BasicConstraint.h>
 
 namespace alica {
@@ -75,16 +79,18 @@ namespace alica {
         public:
             static long id;
             Constraint«plan.runtimeCondition.id»();
-            void getConstraint(ProblemDescriptor* c, RunningPlan* rp);
+            void getConstraint(std::shared_ptr<ProblemDescriptor> c, std::shared_ptr<RunningPlan> rp);
 
         private:
-            Constraint«plan.runtimeCondition.id»Impl* impl;
+            std::shared_ptr<Constraint«plan.runtimeCondition.id»Impl> impl;
     };
 }
 '''
 
     override String constraintPlanRuntimeConditionImpl(Plan plan) '''
 #pragma once
+
+#include <memory>
 
 namespace alica {
     class ProblemDescriptor;
@@ -95,7 +101,7 @@ namespace alica {
         public:
             static long id;
             Constraint«plan.runtimeCondition.id»Impl();
-            void getConstraint(ProblemDescriptor* c, RunningPlan* rp);
+            void getConstraint(std::shared_ptr<ProblemDescriptor> c, std::shared_ptr<RunningPlan> rp);
     };
 }
 '''
@@ -103,6 +109,7 @@ namespace alica {
     override String utilityFunctionPlan(Plan plan) '''
 #pragma once
 
+#include <memory>
 #include <engine/BasicUtilityFunction.h>
 
 namespace alica {
@@ -120,17 +127,19 @@ namespace alica {
         public:
             static long id;
             UtilityFunction«plan.id»();
-            void getConstraint(ProblemDescriptor* c, RunningPlan* rp);
+            void getConstraint(std::shared_ptr<ProblemDescriptor> c, std::shared_ptr<RunningPlan> rp);
 
         private:
-            UtilityFunction«plan.id»Impl* impl;
-            UtilityFunction* getUtilityFunction(BasicPlan* plan);
+            std::shared_ptr<UtilityFunction«plan.id»Impl> impl;
+            std::shared_ptr<UtilityFunction> getUtilityFunction(BasicPlan* plan);
     };
 }
 '''
 
     override String utilityFunctionPlanImpl(Plan plan) '''
 #pragma once
+
+#include <memory>
 
 namespace alica {
     class BasicPlan;
@@ -141,7 +150,7 @@ namespace alica {
         public:
             static long id;
             UtilityFunction«plan.id»Impl();
-            UtilityFunction* getUtilityFunction(BasicPlan* plan);
+            std::shared_ptr<UtilityFunction> getUtilityFunction(BasicPlan* plan);
     };
 }
 '''
@@ -149,6 +158,7 @@ namespace alica {
     override String preConditionPlan(Plan plan) '''
 #pragma once
 
+#include <memory>
 #include "domain/DomainCondition.h"
 
 namespace alica {
@@ -162,14 +172,16 @@ namespace alica {
             PreCondition«plan.preCondition.id»(void* context);
 
         private:
-            PreCondition«plan.preCondition.id»Impl* impl;
-            bool evaluate(RunningPlan* rp);
+            std::shared_ptr<PreCondition«plan.preCondition.id»Impl> impl;
+            bool evaluate(std::shared_ptr<RunningPlan> rp);
     };
 }
 '''
 
     override String preConditionPlanImpl(Plan plan) '''
 #pragma once
+
+#include <memory>
 
 namespace alica {
     class RunningPlan;
@@ -178,7 +190,7 @@ namespace alica {
         public:
             static long id;
             PreCondition«plan.preCondition.id»Impl();
-            bool evaluate(RunningPlan* rp);
+            bool evaluate(std::shared_ptr<RunningPlan> rp);
     };
 }
 '''
@@ -186,6 +198,7 @@ namespace alica {
     override String runtimeConditionPlan(Plan plan) '''
 #pragma once
 
+#include <memory>
 #include <engine/RunningPlan.h>
 
 namespace alica {
@@ -195,8 +208,8 @@ namespace alica {
             RunTimeCondition«plan.runtimeCondition.id»(void* context);
 
         private:
-            RunTimeCondition«plan.runtimeCondition.id»Impl* impl;
-            bool evaluate(RunningPlan* rp);
+            std::shared_ptr<RunTimeCondition«plan.runtimeCondition.id»Impl> impl;
+            bool evaluate(std::shared_ptr<RunningPlan> rp);
     };
 }
 '''
@@ -204,12 +217,14 @@ namespace alica {
     override String runtimeConditionPlanImpl(Plan plan) '''
 #pragma once
 
+#include <memory>
+
 namespace alica {
     class RunTimeCondition«plan.runtimeCondition.id»Impl {
         public:
             static long id;
             RunTimeCondition«plan.runtimeCondition.id»Impl();
-            bool evaluate(RunningPlan* rp);
+            bool evaluate(std::shared_ptr<RunningPlan> rp);
     };
 }
 '''

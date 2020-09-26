@@ -12,6 +12,7 @@ class CreatorTemplatesHeader implements ICreatorTemplates {
     override String behaviourCreator(List<Behaviour> behaviours)'''
 #pragma once
 
+#include <memory>
 #include <engine/IBehaviourCreator.h>
 
 namespace alica {
@@ -21,7 +22,7 @@ namespace alica {
         public:
             BehaviourCreator();
             virtual ~BehaviourCreator();
-            virtual BasicBehaviour* createBehaviour(long behaviourId, void* context);
+            virtual std::shared_ptr<BasicBehaviour> createBehaviour(long behaviourId, void* context);
     };
 }
 '''
@@ -29,6 +30,7 @@ namespace alica {
     override String utilityFunctionCreator(List<Plan> plans)'''
 #pragma once
 
+#include <memory>
 #include <engine/IUtilityCreator.h>
 
 namespace alica {
@@ -36,9 +38,9 @@ namespace alica {
 
     class UtilityFunctionCreator: public IUtilityCreator {
         public:
-            virtual ~UtilityFunctionCreator();
             UtilityFunctionCreator();
-            BasicUtilityFunction* createUtility(long utilityFunctionConfId);
+            virtual ~UtilityFunctionCreator();
+            virtual std::shared_ptr<BasicUtilityFunction> createUtility(long utilityFunctionConfId);
     };
 }
 '''
@@ -46,6 +48,7 @@ namespace alica {
     override String conditionCreator(List<Plan> plans, List<Behaviour> behaviours, List<Condition> conditions) '''
 #pragma once
 
+#include <memory>
 #include <engine/IConditionCreator.h>
 
 namespace alica {
@@ -55,7 +58,7 @@ namespace alica {
         public:
             ConditionCreator();
             virtual ~ConditionCreator();
-            BasicCondition* createConditions(long conditionConfId, void* context);
+            std::shared_ptr<BasicCondition> createConditions(long conditionConfId, void* context);
     };
 }
 '''
@@ -63,16 +66,17 @@ namespace alica {
     override String constraintCreator(List<Plan> plans, List<Behaviour> behaviours, List<Condition> conditions)'''
 #pragma once
 
+#include <memory>
+#include <iostream>
 #include <engine/IConstraintCreator.h>
 #include <engine/BasicConstraint.h>
-#include <iostream>
 
 namespace alica {
     class ConstraintCreator: public IConstraintCreator {
         public:
             ConstraintCreator();
             virtual ~ConstraintCreator();
-            BasicConstraint* createConstraint(long constraintConfId);
+            virtual std::shared_ptr<BasicConstraint> createConstraint(long constraintConfId);
     };
 }
 '''

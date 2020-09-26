@@ -8,6 +8,7 @@ class DomainTemplatesHeader implements IDomainTemplates {
     override String domainBehaviour() '''
 #pragma once
 
+#include <memory>
 #include <engine/BasicBehaviour.h>
 
 namespace alica {
@@ -23,7 +24,7 @@ namespace alica {
         protected:
             long id;
             void* context;
-            DomainBehaviourImpl* impl;
+            std::shared_ptr<DomainBehaviourImpl> impl;
     };
 }
 '''
@@ -31,17 +32,19 @@ namespace alica {
     override String domainBehaviourImpl() '''
 #pragma once
 
+#include <memory>
+
 namespace alica {
     class DomainBehaviour;
 
     class DomainBehaviourImpl {
         public:
-            DomainBehaviourImpl(DomainBehaviour* domain);
+            DomainBehaviourImpl(std::shared_ptr<DomainBehaviour> domain);
             virtual void run(void* msg);
             virtual void initialiseParameters();
 
         protected:
-            DomainBehaviour* domain;
+            std::shared_ptr<DomainBehaviour> domain;
     };
 }
 '''
@@ -49,6 +52,7 @@ namespace alica {
     override String domainCondition() '''
 #pragma once
 
+#include <memory>
 #include <engine/BasicCondition.h>
 
 namespace alica {
@@ -60,13 +64,15 @@ namespace alica {
             virtual ~DomainCondition();
 
         private:
-            DomainConditionImpl* impl;
+            std::shared_ptr<DomainConditionImpl> impl;
     };
 }
 '''
 
     override String domainConditionImpl() '''
 #pragma once
+
+#include <memory>
 
 namespace alica {
     class DomainBehaviour;
@@ -76,10 +82,10 @@ namespace alica {
     class DomainConditionImpl {
         public:
             DomainConditionImpl();
-            bool evaluate(RunningPlan* rp);
+            bool evaluate(std::shared_ptr<RunningPlan> rp);
 
         protected:
-            DomainBehaviour* domain;
+            std::shared_ptr<DomainBehaviour> domain;
     };
 }
 '''

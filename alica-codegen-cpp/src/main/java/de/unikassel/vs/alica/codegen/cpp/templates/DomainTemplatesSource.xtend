@@ -14,7 +14,7 @@ namespace alica {
     DomainBehaviour::DomainBehaviour(std::string name, long id, void* context): BasicBehaviour(name) {
         this -> id = id;
         this -> context = context;
-        this -> impl = new DomainBehaviourImpl(this);
+        this -> impl = std::make_shared<DomainBehaviourImpl>(std::shared_ptr<DomainBehaviour>(this));
     }
 
     DomainBehaviour::~DomainBehaviour() {
@@ -36,7 +36,7 @@ namespace alica {
 #include "domain/DomainBehaviourImpl.h"
 
 namespace alica {
-    DomainBehaviourImpl::DomainBehaviourImpl(DomainBehaviour* domain) {
+    DomainBehaviourImpl::DomainBehaviourImpl(std::shared_ptr<DomainBehaviour> domain) {
         this -> domain = domain;
     }
 
@@ -75,7 +75,7 @@ namespace alica {
 
     }
 
-    bool DomainConditionImpl::evaluate(RunningPlan* rp) {
+    bool DomainConditionImpl::evaluate(std::shared_ptr<RunningPlan> rp) {
         std::cerr << "DC-Impl: Missing link" << std::endl;
         return false;
     }

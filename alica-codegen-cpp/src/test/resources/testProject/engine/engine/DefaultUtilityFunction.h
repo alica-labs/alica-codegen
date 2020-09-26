@@ -3,10 +3,10 @@
 #include "engine/UtilityFunction.h"
 
 namespace alica {
-    class BasicPlan;
+    class Plan;
 
     class DefaultUtilityFunction: public UtilityFunction {
         public:
-            DefaultUtilityFunction(BasicPlan* plan) {};
+            DefaultUtilityFunction(Plan* plan) {};
     };
 }

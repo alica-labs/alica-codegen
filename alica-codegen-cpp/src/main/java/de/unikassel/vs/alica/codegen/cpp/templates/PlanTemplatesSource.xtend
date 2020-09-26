@@ -94,7 +94,6 @@ namespace alica {
 #include "utilityfunctions/UtilityFunction«plan.id».h"
 #include "utilityfunctions/UtilityFunction«plan.id»Impl.h"
 #include <engine/RunningPlan.h>
-#include <engine/BasicPlan.h>
 #include <engine/UtilityFunction.h>
 
 namespace alica {
@@ -104,7 +103,7 @@ namespace alica {
         this -> impl = std::make_shared<UtilityFunction«plan.id»Impl>();
     }
 
-    std::shared_ptr<UtilityFunction> UtilityFunction«plan.id»::getUtilityFunction(BasicPlan* plan) {
+    std::shared_ptr<UtilityFunction> UtilityFunction«plan.id»::getUtilityFunction(Plan* plan) {
         return this -> impl -> getUtilityFunction(plan);
     }
 
@@ -116,7 +115,6 @@ namespace alica {
 
     override String utilityFunctionPlanImpl(Plan plan) '''
 #include "utilityfunctions/UtilityFunction«plan.id»Impl.h"
-#include <engine/BasicPlan.h>
 #include <engine/UtilityFunction.h>
 #include <engine/DefaultUtilityFunction.h>
 #include <iostream>
@@ -128,7 +126,7 @@ namespace alica {
 
     }
 
-    std::shared_ptr<UtilityFunction> UtilityFunction«plan.id»Impl::getUtilityFunction(BasicPlan* plan) {
+    std::shared_ptr<UtilityFunction> UtilityFunction«plan.id»Impl::getUtilityFunction(Plan* plan) {
         return std::make_shared<DefaultUtilityFunction>(plan);
     }
 }

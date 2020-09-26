@@ -117,7 +117,7 @@ namespace alica {
 
     class RunningPlan;
 
-    class BasicPlan;
+    class Plan;
 
     class UtilityFunction;
 
@@ -131,7 +131,7 @@ namespace alica {
 
         private:
             std::shared_ptr<UtilityFunction«plan.id»Impl> impl;
-            std::shared_ptr<UtilityFunction> getUtilityFunction(BasicPlan* plan);
+            std::shared_ptr<UtilityFunction> getUtilityFunction(Plan* plan);
     };
 }
 '''
@@ -142,7 +142,7 @@ namespace alica {
 #include <memory>
 
 namespace alica {
-    class BasicPlan;
+    class Plan;
 
     class UtilityFunction;
 
@@ -150,7 +150,7 @@ namespace alica {
         public:
             static long id;
             UtilityFunction«plan.id»Impl();
-            std::shared_ptr<UtilityFunction> getUtilityFunction(BasicPlan* plan);
+            std::shared_ptr<UtilityFunction> getUtilityFunction(Plan* plan);
     };
 }
 '''

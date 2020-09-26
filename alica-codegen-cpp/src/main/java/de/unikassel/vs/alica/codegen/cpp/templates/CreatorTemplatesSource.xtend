@@ -34,7 +34,7 @@ namespace alica {
 
     }
 
-    std::shared_ptr<BasicBehaviour> BehaviourCreator::createBehaviour(long behaviourId, void* context) {
+    std::shared_ptr<BasicBehaviour> BehaviourCreator::createBehaviour(int64_t behaviourId, void* context) {
         switch(behaviourId) {
             «FOR beh: behaviours»
                 case «beh.id»:
@@ -62,7 +62,7 @@ namespace alica {
     UtilityFunctionCreator::UtilityFunctionCreator() {
     }
 
-    std::shared_ptr<BasicUtilityFunction> UtilityFunctionCreator::createUtility(long utilityFunctionConfId) {
+    std::shared_ptr<BasicUtilityFunction> UtilityFunctionCreator::createUtility(int64_t utilityFunctionConfId) {
         switch(utilityFunctionConfId) {
             «FOR p: plans»
                 case «p.id»:
@@ -99,7 +99,7 @@ namespace alica{
     ConditionCreator::~ConditionCreator() {
     }
 
-    std::shared_ptr<BasicCondition> ConditionCreator::createConditions(long conditionConfId, void* context) {
+    std::shared_ptr<BasicCondition> ConditionCreator::createConditions(int64_t conditionConfId, void* context) {
         switch (conditionConfId) {
             «FOR con: conditions»
                 case «con.id»:
@@ -131,7 +131,7 @@ namespace alica {
     ConstraintCreator::~ConstraintCreator() {
     }
 
-    std::shared_ptr<BasicConstraint> ConstraintCreator::createConstraint(long constraintConfId) {
+    std::shared_ptr<BasicConstraint> ConstraintCreator::createConstraint(int64_t constraintConfId) {
         switch(constraintConfId) {
             «FOR c: conditions»
                 «IF (c.variables.size > 0) || (c.quantifiers.size > 0)»

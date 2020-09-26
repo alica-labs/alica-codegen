@@ -22,7 +22,7 @@ namespace alica {
         public:
             BehaviourCreator();
             virtual ~BehaviourCreator();
-            virtual std::shared_ptr<BasicBehaviour> createBehaviour(long behaviourId, void* context);
+            virtual std::shared_ptr<BasicBehaviour> createBehaviour(int64_t behaviourId, void* context);
     };
 }
 '''
@@ -40,7 +40,7 @@ namespace alica {
         public:
             UtilityFunctionCreator();
             virtual ~UtilityFunctionCreator();
-            virtual std::shared_ptr<BasicUtilityFunction> createUtility(long utilityFunctionConfId);
+            virtual std::shared_ptr<BasicUtilityFunction> createUtility(int64_t utilityFunctionConfId);
     };
 }
 '''
@@ -58,7 +58,7 @@ namespace alica {
         public:
             ConditionCreator();
             virtual ~ConditionCreator();
-            std::shared_ptr<BasicCondition> createConditions(long conditionConfId, void* context);
+            std::shared_ptr<BasicCondition> createConditions(int64_t conditionConfId, void* context);
     };
 }
 '''
@@ -76,7 +76,7 @@ namespace alica {
         public:
             ConstraintCreator();
             virtual ~ConstraintCreator();
-            virtual std::shared_ptr<BasicConstraint> createConstraint(long constraintConfId);
+            virtual std::shared_ptr<BasicConstraint> createConstraint(int64_t constraintConfId);
     };
 }
 '''

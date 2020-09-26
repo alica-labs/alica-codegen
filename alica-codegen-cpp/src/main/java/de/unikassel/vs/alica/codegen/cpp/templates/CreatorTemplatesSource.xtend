@@ -15,7 +15,13 @@ class CreatorTemplatesSource implements ICreatorTemplates {
 
     override String behaviourCreator(List<Behaviour> behaviours)'''
 #include "creators/BehaviourCreator.h"
-#include "behaviours/TestfxBehaviour.h"
+«FOR behaviour: behaviours»
+    «IF (behaviour.relativeDirectory.isEmpty)»
+        #include "behaviours/«StringUtils.capitalize(behaviour.name)».h"
+    «ELSE»
+        #include "behaviours/«behaviour.relativeDirectory»/«StringUtils.capitalize(behaviour.name)».h"
+    «ENDIF»
+«ENDFOR»
 #include <engine/BasicBehaviour.h>
 #include <iostream>
 

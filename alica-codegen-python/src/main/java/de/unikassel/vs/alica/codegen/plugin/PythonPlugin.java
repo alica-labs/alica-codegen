@@ -17,7 +17,7 @@ public class PythonPlugin implements IPlugin {
 
     @Override
     public String getName() {
-        return this.getClass().getSimpleName();
+        return "Python Plugin";
     }
 
     @Override

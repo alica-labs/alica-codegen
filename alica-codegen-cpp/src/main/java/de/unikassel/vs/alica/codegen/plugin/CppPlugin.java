@@ -17,7 +17,7 @@ public class CppPlugin implements IPlugin {
 
     @Override
     public String getName() {
-        return this.getClass().getSimpleName();
+        return "C++ Plugin";
     }
 
     @Override

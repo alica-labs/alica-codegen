@@ -17,7 +17,7 @@ public class JavaPlugin implements IPlugin {
 
     @Override
     public String getName() {
-        return this.getClass().getSimpleName();
+        return "Java Plugin";
     }
 
     @Override

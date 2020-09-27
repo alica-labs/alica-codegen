@@ -4,9 +4,7 @@ import de.unikassel.vs.alica.codegen.java.GeneratorImplJava;
 import de.unikassel.vs.alica.planDesigner.alicamodel.AbstractPlan;
 import de.unikassel.vs.alica.planDesigner.alicamodel.Behaviour;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.util.Arrays;
 
 /**
  * General Code Generator. It manages calling the correct {@link IGenerator} implementation
@@ -28,14 +26,7 @@ public class CodegeneratorJava extends Codegenerator {
      */
     // TODO: To be reviewed and maybe adapted, because of MVC pattern adaption.
     public void generate() {
-        try {
-            if (Files.notExists(Paths.get(destination))) {
-                Files.createDirectories(Paths.get(destination));
-            }
-        } catch (IOException e) {
-            LOG.error("Could not find expression validator path! ", e);
-            throw new RuntimeException(e);
-        }
+        monitorDestinationFiles(Arrays.asList(".java"));
 
         generator.createDomainBehaviour();
         generator.createDomainCondition();
